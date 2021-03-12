@@ -1,0 +1,8 @@
+name: ${name}
+main: ${main}
+version: ${version}
+authors: [${author}]
+commands:
+  DeEnchantment:
+    aliases: [de]
+    description: ""
