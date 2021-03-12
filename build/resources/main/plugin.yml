@@ -1,8 +1,0 @@
-name: DeEnchantment
-main: top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
-version: 1.0.0
-authors: [Iseason]
-commands:
-  DeEnchantment:
-    aliases: [de]
-    description: ""
