@@ -1,10 +1,5 @@
 package top.iseason.kotlin.deenchantment.utils
 
-import org.bukkit.enchantments.Enchantment
-import org.bukkit.inventory.meta.ItemMeta
-import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
-import top.iseason.kotlin.deenchantment.manager.ConfigManager
-
 object Tools {
     fun intToRome(number: Int): String {
         var num = number

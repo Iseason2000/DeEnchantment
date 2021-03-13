@@ -15,6 +15,7 @@ object ConfigManager {
     private lateinit var plugin: DeEnchantmentPlugin
     private lateinit var config: FileConfiguration
     var deEnchantmentsList = HashSet<DeEnchantmentWrapper>()
+    private lateinit var deEnchantmentsNameList: HashSet<String>
     private lateinit var deEnchantments: HashMap<String, Pair<String, Double>>
     private var isInit = false
     var byKey: Any? = null
@@ -34,6 +35,7 @@ object ConfigManager {
         deEnchantmentsList.clear()
         loadEnchantments()
         DeEnchantment.register()
+        loadDeEnchantmentsNameList()
         plugin.saveDefaultConfig()
     }
 
@@ -42,6 +44,14 @@ object ConfigManager {
         deEnchantments = HashMap<String, Pair<String, Double>>()
         deEnchantmentsList.clear()
         plugin.saveDefaultConfig()
+    }
+
+    private fun loadDeEnchantmentsNameList() {
+        deEnchantmentsNameList = HashSet()
+        for (enchantment in deEnchantmentsList) {
+            val enchantmentName = getEnchantmentName(enchantment.name)
+            deEnchantmentsNameList.add(ChatColor.stripColor(enchantmentName)!!)
+        }
     }
 
     private fun loadEnchantments() {
@@ -60,6 +70,7 @@ object ConfigManager {
     fun getPlugin() = plugin
     fun getConfig() = config
     fun getDeEnchantments() = deEnchantments
+    fun getDeEnchantmentsNameList() = deEnchantmentsNameList
     fun getEnchantmentName(keyName: String): String? {
         return deEnchantments[keyName]?.first
     }

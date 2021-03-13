@@ -103,7 +103,6 @@ object DeEnchantment {
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflictsWithEnchantment = setOf(DE_VANISHING_CURSE)
-
         }
 
     //锋利
@@ -138,7 +137,7 @@ object DeEnchantment {
         }
 
     //火焰附加
-    val DE_Fire_aspect: Enchantment = DeEnchantmentWrapper(DE_FIRE_ASPECT)
+    val DE_fire_aspect: Enchantment = DeEnchantmentWrapper(DE_FIRE_ASPECT)
         .apply {
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 2
@@ -328,7 +327,7 @@ object DeEnchantment {
             ConfigManager.byKey = keyMap
             ConfigManager.byName = nameMap
             var count = 1
-            val totalCount = deEnchantments.size-1
+            val totalCount = deEnchantments.size
             for (field in javaClass.declaredFields) {
                 val enchantment = field.get(this)
                 if (enchantment is DeEnchantmentWrapper && deEnchantments.contains(enchantment.name)) {
