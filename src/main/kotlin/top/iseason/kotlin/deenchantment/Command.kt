@@ -1,5 +1,6 @@
 package top.iseason.kotlin.deenchantment
 
+import io.github.bananapuncher714.nbteditor.NBTEditor
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -26,6 +27,7 @@ class Command : CommandExecutor {
         setDeEnchantLore(itemMeta)
         item.itemMeta = itemMeta
         sender.inventory.addItem(item)
+        println(NBTEditor.getNBTCompound(sender.inventory.itemInMainHand).toJson())
         return true
     }
 }

@@ -15,15 +15,15 @@ repositories {
     maven {
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
-//    maven {
-//        url = uri("https://repo.codemc.org/repository/maven-public/")
-//    }
+    maven {
+        url = uri("https://repo.codemc.org/repository/maven-public/")
+    }
 }
 
 dependencies {
     api("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.31")
-//    implementation("io.github.bananapuncher714:nbteditor:7.16.1")
+    implementation("io.github.bananapuncher714:nbteditor:7.16.1")
 }
 
 (tasks.getByName("processResources") as ProcessResources).apply {
@@ -45,7 +45,7 @@ tasks.jar {
 }
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     dependencies {
-//        include(dependency("io.github.bananapuncher714:nbteditor:7.16.1"))
+        include(dependency("io.github.bananapuncher714:nbteditor:7.16.1"))
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.4.31"))
     }
     destinationDirectory.set(file(jarOutputFile))
