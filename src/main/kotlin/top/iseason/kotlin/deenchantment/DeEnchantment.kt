@@ -18,9 +18,7 @@ object DeEnchantment {
             myStartLevel = 1
             myIsTreasure = false
             myIsCursed = false
-            conflictsWithItems
             conflictsWithEnchantment = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_FIRE_PROTECTION)
-
         }
 
     //火焰保护

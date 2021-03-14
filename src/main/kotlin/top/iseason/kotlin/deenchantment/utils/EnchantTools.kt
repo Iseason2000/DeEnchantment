@@ -1,6 +1,7 @@
 package top.iseason.kotlin.deenchantment.utils
 
 import io.github.bananapuncher714.nbteditor.NBTEditor
+import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
@@ -10,12 +11,10 @@ import top.iseason.kotlin.deenchantment.manager.ConfigManager
 
 object EnchantTools {
     fun setDeEnchantLore(itemMeta: ItemMeta) {
-        if (itemMeta is EnchantmentStorageMeta) {
+        if (itemMeta is EnchantmentStorageMeta)
             setLoreWithEnchants(itemMeta, itemMeta.storedEnchants)
-            return
-        }
-        setLoreWithEnchants(itemMeta, itemMeta.enchants)
-
+        else
+            setLoreWithEnchants(itemMeta, itemMeta.enchants)
     }
 
     private fun clearEnchantLore(itemMeta: ItemMeta) {
@@ -23,7 +22,9 @@ object EnchantTools {
         var loreList = itemMeta.lore!!
         val deEnchantmentsList = ConfigManager.getDeEnchantmentsNameList()
         for (name in deEnchantmentsList) {
-            loreList = loreList.filterNot { it.matches(Regex("$name \\w+?")) }
+            loreList = loreList.filterNot {
+                it.contains(Regex("$name \\w+?"))
+            }
         }
         itemMeta.lore = loreList
     }
@@ -41,28 +42,55 @@ object EnchantTools {
         itemMeta.lore = loreList
     }
 
-    fun combineEnchantments(en1: Map<Enchantment, Int>, en2: Map<Enchantment, Int>): Map<Enchantment, Int> {
-        //todo: 功能未完善
-        if (en1.isNullOrEmpty())
-            return en2
-        if (en2.isNullOrEmpty())
-            return en1
-        val map = mutableMapOf<Enchantment, Int>()
-        for ((e1, l1) in en1) {
-//            if (e1 !is DeEnchantmentWrapper) continue
-            for ((e2, l2) in en2) {
-//                if (e2 !is DeEnchantmentWrapper) continue
-                if (e1 != e2) continue
-                val level = when {
-                    l1 == l2 -> l1 + 1
-                    l1 > l2 -> l1
-                    else -> l2
+    fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>): Int {
+        var cost = 0
+        val itemMeta = target.itemMeta!!
+        val enchantments: Map<Enchantment, Int> =
+            if (itemMeta is EnchantmentStorageMeta)
+                itemMeta.storedEnchants
+            else
+                target.enchantments
+        val en1 = enchantments.toMutableMap()
+        if (en2.isNullOrEmpty()) return 0
+        for ((e2, l2) in en2) {
+            if (target.type != Material.ENCHANTED_BOOK && !e2.canEnchantItem(target)) continue
+            var isConflict = false
+            for ((e1, _) in en1) {
+//                println("${e2.key.key} is conflict ${e1.key.key} ? :${e2.conflictsWith(e1)}")
+                if (e1 != e2 && e2.conflictsWith(e1)) {
+                    isConflict = true
+                    break
                 }
-                map[e1] = level
-                break
             }
+            if (isConflict) continue
+            var level = l2
+            if (en1.containsKey(e2)) {
+                val nl2 = en1[e2]!!
+                level = when {
+                    nl2 == level -> level + 1
+                    nl2 > level -> nl2
+                    else -> level
+                }
+            }
+            en1[e2] = level
+            cost += level
         }
-        return map
+
+        addEnchants(itemMeta, en1)
+        setDeEnchantLore(itemMeta)
+        target.itemMeta = itemMeta
+        return cost
+    }
+
+    private fun addEnchants(itemMeta: ItemMeta, ens: MutableMap<Enchantment, Int>) {
+        if (ens.isNullOrEmpty()) return
+        if (itemMeta is EnchantmentStorageMeta) {
+            for ((en, le) in ens)
+                itemMeta.addStoredEnchant(en, le, true)
+        } else {
+            for ((en, le) in ens)
+                itemMeta.addEnchant(en, le, true)
+        }
     }
 
     fun getRepairCost(item: ItemStack): Int {
@@ -71,8 +99,8 @@ object EnchantTools {
         } else 0
     }
 
-    fun setRepairCost(item: ItemStack, cost: Int) :ItemStack{
-        return NBTEditor.set(item, cost,  "RepairCost")
+    fun setRepairCost(item: ItemStack, cost: Int): ItemStack {
+        return NBTEditor.set(item, cost, "RepairCost")
     }
 
 }

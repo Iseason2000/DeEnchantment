@@ -7,9 +7,6 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.inventory.ItemStack
 import top.iseason.kotlin.deenchantment.DeEnchantment.getDeEnum
-import top.iseason.kotlin.deenchantment.utils.LogSender
-import top.iseason.kotlin.deenchantment.utils.Tools
-
 
 class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.toLowerCase())) {
     private val myName: String = name.name
@@ -18,7 +15,6 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     var myStartLevel: Int = 1
     var myIsTreasure: Boolean = false
     var myIsCursed: Boolean = false
-    var conflictsWithItems: Set<Material> = emptySet()
     var conflictsWithEnchantment: Set<DeEnum> = emptySet()
 
     fun getEnchantment(): Enchantment {
@@ -38,9 +34,10 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     }
 
     override fun canEnchantItem(item: ItemStack): Boolean {
-        return !conflictsWithItems.contains(item.type)
+        val keyName = key.key.replace("de_", "").toLowerCase()
+        val source = getByKey(NamespacedKey.minecraft(keyName))//原附魔
+        return source?.canEnchantItem(item)?: true
     }
-
     override fun getName(): String {
         return myName
     }
