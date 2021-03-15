@@ -4,7 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.plugin.java.JavaPlugin
-import top.iseason.kotlin.deenchantment.DeEnchantment
+import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
 import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
 import top.iseason.kotlin.deenchantment.utils.LogSender

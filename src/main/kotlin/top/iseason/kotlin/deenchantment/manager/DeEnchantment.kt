@@ -1,10 +1,12 @@
-package top.iseason.kotlin.deenchantment
+package top.iseason.kotlin.deenchantment.manager
 
 import org.bukkit.ChatColor
+import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
+import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
+import top.iseason.kotlin.deenchantment.DeEnum
 import top.iseason.kotlin.deenchantment.DeEnum.*
-import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.ConfigManager.getDeEnchantments
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
@@ -341,8 +343,8 @@ object DeEnchantment {
             }
         } catch (e: Exception) {
             stopRegisterEnchantment()
-            LogSender.log("${ChatColor.RED}添加附魔异常")
             e.printStackTrace()
+            LogSender.log("${ChatColor.RED}添加附魔异常,该附魔已存在，请重启服务器!")
         }
 
     }
@@ -362,5 +364,11 @@ object DeEnchantment {
         } catch (e: IllegalArgumentException) {
             DeEnum.valueOf("de_$name".toUpperCase())
         }
+    }
+    fun getByKeyName(keyName: String) :Enchantment?{
+        return  Enchantment.getByKey(NamespacedKey.minecraft(keyName))
+    }
+    fun getByDeEnum(deEnum : DeEnum):Enchantment?{
+        return getByKeyName(deEnum.toString().toLowerCase())
     }
 }

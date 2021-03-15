@@ -1,12 +1,10 @@
 package top.iseason.kotlin.deenchantment
 
-import org.bukkit.ChatColor
-import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.inventory.ItemStack
-import top.iseason.kotlin.deenchantment.DeEnchantment.getDeEnum
+import top.iseason.kotlin.deenchantment.manager.DeEnchantment.getDeEnum
 
 class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.toLowerCase())) {
     private val myName: String = name.name

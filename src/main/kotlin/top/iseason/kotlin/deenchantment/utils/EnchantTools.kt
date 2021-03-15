@@ -7,7 +7,9 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
+import top.iseason.kotlin.deenchantment.DeEnum
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
+import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
 object EnchantTools {
     fun setDeEnchantLore(itemMeta: ItemMeta) {
@@ -15,31 +17,6 @@ object EnchantTools {
             setLoreWithEnchants(itemMeta, itemMeta.storedEnchants)
         else
             setLoreWithEnchants(itemMeta, itemMeta.enchants)
-    }
-
-    private fun clearEnchantLore(itemMeta: ItemMeta) {
-        if (!itemMeta.hasLore()) return
-        var loreList = itemMeta.lore!!
-        val deEnchantmentsList = ConfigManager.getDeEnchantmentsNameList()
-        for (name in deEnchantmentsList) {
-            loreList = loreList.filterNot {
-                it.contains(Regex("$name \\w+?"))
-            }
-        }
-        itemMeta.lore = loreList
-    }
-
-    private fun setLoreWithEnchants(itemMeta: ItemMeta, enchants: Map<Enchantment, Int>) {
-        clearEnchantLore(itemMeta)
-        if (enchants.isEmpty()) return
-        val loreList = itemMeta.lore ?: mutableListOf<String>()
-        for ((enchant, level) in enchants) {
-            if (enchant !is DeEnchantmentWrapper) continue
-            val enchantmentName = ConfigManager.getEnchantmentName(enchant.name)!!
-            val wholeName = "$enchantmentName ${Tools.intToRome(level)}"
-            loreList.add(0, wholeName)
-        }
-        itemMeta.lore = loreList
     }
 
     fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>): Int {
@@ -75,12 +52,99 @@ object EnchantTools {
             en1[e2] = level
             cost += level
         }
-
         addEnchants(itemMeta, en1)
         setDeEnchantLore(itemMeta)
         target.itemMeta = itemMeta
         return cost
     }
+
+    fun getDeEnchantByEnchant(enchant: Enchantment): Enchantment? {
+        val keyName = "de_${enchant.key.key}"
+        return DeEnchantment.getByKeyName(keyName)
+    }
+
+    private fun clearEnchantLore(itemMeta: ItemMeta) {
+        if (!itemMeta.hasLore()) return
+        var loreList = itemMeta.lore!!
+        val deEnchantmentsList = ConfigManager.getDeEnchantmentsNameList()
+        for (name in deEnchantmentsList) {
+            loreList = loreList.filterNot {
+                it.contains(Regex("$name \\w+?"))
+            }
+        }
+        itemMeta.lore = loreList
+    }
+
+    fun translateEnchantsByChance(itemStack: ItemStack, enchants: Map<Enchantment, Int>) {
+//        val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
+//        println(enchantOrStoredEnchant)
+        val enchantByChance = translateEnchantByChance(enchants)
+        println(enchantByChance)
+        clearEnchants(itemStack)
+        val itemMeta = itemStack.itemMeta!!
+        addEnchants(itemMeta, enchantByChance.toMutableMap())
+        setDeEnchantLore(itemMeta)
+        itemStack.itemMeta = itemMeta
+    }
+
+    private fun clearEnchants(itemStack: ItemStack) {
+        val itemMeta = itemStack.itemMeta!!
+        if (itemMeta is EnchantmentStorageMeta) {
+            val storedEnchants = itemMeta.storedEnchants
+            for ((storedEnchant, _) in storedEnchants)
+                itemMeta.removeStoredEnchant(storedEnchant)
+        } else {
+            val enchants = itemMeta.enchants
+            for ((en, _) in enchants)
+                itemMeta.removeEnchant(en)
+        }
+        itemStack.itemMeta = itemMeta
+    }
+
+    private fun getEnchantOrStoredEnchant(itemStack: ItemStack): Map<Enchantment, Int> {
+        val itemMeta = itemStack.itemMeta!!
+        return if (itemMeta is EnchantmentStorageMeta) {
+            itemMeta.storedEnchants
+        } else
+            itemMeta.enchants
+
+    }
+
+    private fun translateEnchantByChance(enchantment: Map<Enchantment, Int>): Map<Enchantment, Int> {
+        val enchants = enchantment.toMutableMap()
+        val removeMap = mutableMapOf<Enchantment, Int>()
+        val addSet = mutableSetOf<Enchantment>()
+        for ((en, level) in enchants) {
+            val deEnchantByEnchant = getDeEnchantByEnchant(en)
+            println("De_${en.key.key}".toUpperCase())
+            val enchantmentChance = ConfigManager.getEnchantmentChance("De_${en.key.key}".toUpperCase()) ?: 0.0
+            println(enchantmentChance)
+            if (deEnchantByEnchant != null && Math.random() < enchantmentChance) {//概率计算
+                removeMap[en] = level
+                addSet.add(deEnchantByEnchant)
+            }
+        }
+        val iterator = addSet.iterator()
+        for ((en, l) in removeMap) {
+            enchants.remove(en)
+            enchants[iterator.next()] = l
+        }
+        return enchants
+    }
+
+    private fun setLoreWithEnchants(itemMeta: ItemMeta, enchants: Map<Enchantment, Int>) {
+        clearEnchantLore(itemMeta)
+        if (enchants.isEmpty()) return
+        val loreList = itemMeta.lore ?: mutableListOf<String>()
+        for ((enchant, level) in enchants) {
+            if (enchant !is DeEnchantmentWrapper) continue
+            val enchantmentName = ConfigManager.getEnchantmentName(enchant.name)!!
+            val wholeName = "$enchantmentName ${Tools.intToRome(level)}"
+            loreList.add(0, wholeName)
+        }
+        itemMeta.lore = loreList
+    }
+
 
     private fun addEnchants(itemMeta: ItemMeta, ens: MutableMap<Enchantment, Int>) {
         if (ens.isNullOrEmpty()) return

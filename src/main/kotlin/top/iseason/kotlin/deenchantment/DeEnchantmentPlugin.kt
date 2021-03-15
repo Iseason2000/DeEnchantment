@@ -21,8 +21,7 @@ class DeEnchantmentPlugin : JavaPlugin() {
         LogSender.log("${ChatColor.AQUA}╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ")
         LogSender.log("${ChatColor.GREEN}插件已启用！")
         ListenerManager.registerListeners()
-        Bukkit.getPluginCommand("DeEnchantment")!!.setExecutor(ReloadCommand())
-
+        Bukkit.getPluginCommand("DeEnchantment")!!.setExecutor(Command())
     }
     override fun onDisable() {
         ConfigManager.quit()
