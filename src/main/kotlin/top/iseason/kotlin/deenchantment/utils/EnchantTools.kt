@@ -14,7 +14,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import java.security.SecureRandom
 
 object EnchantTools {
-    val Random = SecureRandom()
+    private val RANDOM = SecureRandom.getInstance("SHA1PRNG", "SUN")
     fun setDeEnchantLore(itemMeta: ItemMeta) {
         if (itemMeta is EnchantmentStorageMeta)
             setLoreWithEnchants(itemMeta, itemMeta.storedEnchants)
@@ -131,8 +131,7 @@ object EnchantTools {
         for ((en, level) in enchants) {
             val deEnchantByEnchant = getDeEnchantByEnchant(en)
             val enchantmentChance = ConfigManager.getEnchantmentChance("De_${en.key.key}".toUpperCase()) ?: 0.0
-            val random = Random.nextDouble()
-            println(random)
+            val random = RANDOM.nextDouble()
             if (deEnchantByEnchant != null && random < enchantmentChance) {//概率计算
                 removeMap[en] = level
                 addSet.add(deEnchantByEnchant)
