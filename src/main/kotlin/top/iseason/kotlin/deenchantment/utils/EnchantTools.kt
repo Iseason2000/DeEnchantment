@@ -3,15 +3,18 @@ package top.iseason.kotlin.deenchantment.utils
 import io.github.bananapuncher714.nbteditor.NBTEditor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.inventory.EnchantingInventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.scheduler.BukkitRunnable
 import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
-import top.iseason.kotlin.deenchantment.DeEnum
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import java.security.SecureRandom
 
 object EnchantTools {
+    val Random = SecureRandom()
     fun setDeEnchantLore(itemMeta: ItemMeta) {
         if (itemMeta is EnchantmentStorageMeta)
             setLoreWithEnchants(itemMeta, itemMeta.storedEnchants)
@@ -33,7 +36,6 @@ object EnchantTools {
             if (target.type != Material.ENCHANTED_BOOK && !e2.canEnchantItem(target)) continue
             var isConflict = false
             for ((e1, _) in en1) {
-//                println("${e2.key.key} is conflict ${e1.key.key} ? :${e2.conflictsWith(e1)}")
                 if (e1 != e2 && e2.conflictsWith(e1)) {
                     isConflict = true
                     break
@@ -58,7 +60,7 @@ object EnchantTools {
         return cost
     }
 
-    fun getDeEnchantByEnchant(enchant: Enchantment): Enchantment? {
+    private fun getDeEnchantByEnchant(enchant: Enchantment): Enchantment? {
         val keyName = "de_${enchant.key.key}"
         return DeEnchantment.getByKeyName(keyName)
     }
@@ -75,19 +77,19 @@ object EnchantTools {
         itemMeta.lore = loreList
     }
 
-    fun translateEnchantsByChance(itemStack: ItemStack, enchants: Map<Enchantment, Int>) {
-//        val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
-//        println(enchantOrStoredEnchant)
-        val enchantByChance = translateEnchantByChance(enchants)
-        println(enchantByChance)
-        clearEnchants(itemStack)
-        val itemMeta = itemStack.itemMeta!!
-        addEnchants(itemMeta, enchantByChance.toMutableMap())
-        setDeEnchantLore(itemMeta)
-        itemStack.itemMeta = itemMeta
-    }
+//    fun translateEnchantsByChance(itemStack: ItemStack, enchants: Map<Enchantment, Int>) {
+////        val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
+////        println(enchantOrStoredEnchant)
+//        val enchantByChance = translateEnchantByChance(enchants)
+//        println(enchantByChance)
+//        clearEnchants(itemStack)
+//        val itemMeta = itemStack.itemMeta!!
+//        addEnchants(itemMeta, enchantByChance.toMutableMap())
+//        setDeEnchantLore(itemMeta)
+//        itemStack.itemMeta = itemMeta
+//    }
 
-    private fun clearEnchants(itemStack: ItemStack) {
+    fun clearEnchants(itemStack: ItemStack) {
         val itemMeta = itemStack.itemMeta!!
         if (itemMeta is EnchantmentStorageMeta) {
             val storedEnchants = itemMeta.storedEnchants
@@ -109,17 +111,29 @@ object EnchantTools {
             itemMeta.enchants
 
     }
-
-    private fun translateEnchantByChance(enchantment: Map<Enchantment, Int>): Map<Enchantment, Int> {
+    class LoreSetter(
+        private val enchantingInventory : EnchantingInventory,
+        private val enchants: Map<Enchantment, Int>) : BukkitRunnable(){
+        override fun run() {
+            val itemStack = enchantingInventory.item?.clone()?:return
+            clearEnchants(itemStack)
+            val itemMeta = itemStack.itemMeta!!
+            addEnchants(itemMeta, enchants.toMutableMap())
+            setDeEnchantLore(itemMeta)
+            itemStack.itemMeta = itemMeta
+            enchantingInventory.item = itemStack
+        }
+    }
+    fun translateEnchantByChance(enchantment: Map<Enchantment, Int>): Map<Enchantment, Int> {
         val enchants = enchantment.toMutableMap()
         val removeMap = mutableMapOf<Enchantment, Int>()
         val addSet = mutableSetOf<Enchantment>()
         for ((en, level) in enchants) {
             val deEnchantByEnchant = getDeEnchantByEnchant(en)
-            println("De_${en.key.key}".toUpperCase())
             val enchantmentChance = ConfigManager.getEnchantmentChance("De_${en.key.key}".toUpperCase()) ?: 0.0
-            println(enchantmentChance)
-            if (deEnchantByEnchant != null && Math.random() < enchantmentChance) {//概率计算
+            val random = Random.nextDouble()
+            println(random)
+            if (deEnchantByEnchant != null && random < enchantmentChance) {//概率计算
                 removeMap[en] = level
                 addSet.add(deEnchantByEnchant)
             }
@@ -146,7 +160,7 @@ object EnchantTools {
     }
 
 
-    private fun addEnchants(itemMeta: ItemMeta, ens: MutableMap<Enchantment, Int>) {
+    fun addEnchants(itemMeta: ItemMeta, ens: MutableMap<Enchantment, Int>) {
         if (ens.isNullOrEmpty()) return
         if (itemMeta is EnchantmentStorageMeta) {
             for ((en, le) in ens)
