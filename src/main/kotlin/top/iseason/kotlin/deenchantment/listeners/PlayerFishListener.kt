@@ -1,6 +1,5 @@
 package top.iseason.kotlin.deenchantment.listeners
 
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
