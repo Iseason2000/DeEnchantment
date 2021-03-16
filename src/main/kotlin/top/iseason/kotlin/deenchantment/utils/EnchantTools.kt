@@ -77,17 +77,18 @@ object EnchantTools {
         itemMeta.lore = loreList
     }
 
-//    fun translateEnchantsByChance(itemStack: ItemStack, enchants: Map<Enchantment, Int>) {
-////        val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
-////        println(enchantOrStoredEnchant)
-//        val enchantByChance = translateEnchantByChance(enchants)
-//        println(enchantByChance)
-//        clearEnchants(itemStack)
-//        val itemMeta = itemStack.itemMeta!!
-//        addEnchants(itemMeta, enchantByChance.toMutableMap())
-//        setDeEnchantLore(itemMeta)
-//        itemStack.itemMeta = itemMeta
-//    }
+    fun translateEnchantsByChance(itemStack: ItemStack) {
+        val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
+        if(enchantOrStoredEnchant.isNullOrEmpty())return
+        println(enchantOrStoredEnchant)
+        val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant)
+        println(enchantByChance)
+        clearEnchants(itemStack)
+        val itemMeta = itemStack.itemMeta!!
+        addEnchants(itemMeta, enchantByChance.toMutableMap())
+        setDeEnchantLore(itemMeta)
+        itemStack.itemMeta = itemMeta
+    }
 
     fun clearEnchants(itemStack: ItemStack) {
         val itemMeta = itemStack.itemMeta!!
@@ -109,7 +110,6 @@ object EnchantTools {
             itemMeta.storedEnchants
         } else
             itemMeta.enchants
-
     }
     class LoreSetter(
         private val enchantingInventory : EnchantingInventory,
