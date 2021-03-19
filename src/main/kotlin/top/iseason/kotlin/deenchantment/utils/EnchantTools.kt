@@ -80,9 +80,7 @@ object EnchantTools {
     fun translateEnchantsByChance(itemStack: ItemStack) {
         val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
         if(enchantOrStoredEnchant.isNullOrEmpty())return
-        println(enchantOrStoredEnchant)
         val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant)
-        println(enchantByChance)
         clearEnchants(itemStack)
         val itemMeta = itemStack.itemMeta!!
         addEnchants(itemMeta, enchantByChance.toMutableMap())
@@ -104,7 +102,7 @@ object EnchantTools {
         itemStack.itemMeta = itemMeta
     }
 
-    private fun getEnchantOrStoredEnchant(itemStack: ItemStack): Map<Enchantment, Int> {
+    fun getEnchantOrStoredEnchant(itemStack: ItemStack): Map<Enchantment, Int> {
         val itemMeta = itemStack.itemMeta!!
         return if (itemMeta is EnchantmentStorageMeta) {
             itemMeta.storedEnchants

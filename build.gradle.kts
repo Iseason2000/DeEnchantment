@@ -36,17 +36,17 @@ dependencies {
         "author" to author
     )
 }
-val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-java.targetCompatibility = JavaVersion.VERSION_1_8
-tasks.jar {
-    this.destinationDirectory.set(file(jarOutputFile))
-}
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     dependencies {
         include(dependency("io.github.bananapuncher714:nbteditor:7.16.1"))
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.4.31"))
     }
     destinationDirectory.set(file(jarOutputFile))
+}
+val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
+java.sourceCompatibility = JavaVersion.VERSION_1_8
+java.targetCompatibility = JavaVersion.VERSION_1_8
+tasks.jar {
+    this.destinationDirectory.set(file(jarOutputFile))
 }
