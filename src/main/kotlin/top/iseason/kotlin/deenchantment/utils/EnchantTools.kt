@@ -79,7 +79,7 @@ object EnchantTools {
 
     fun translateEnchantsByChance(itemStack: ItemStack) {
         val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
-        if(enchantOrStoredEnchant.isNullOrEmpty())return
+        if (enchantOrStoredEnchant.isNullOrEmpty()) return
         val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant)
         clearEnchants(itemStack)
         val itemMeta = itemStack.itemMeta!!
@@ -109,11 +109,13 @@ object EnchantTools {
         } else
             itemMeta.enchants
     }
+
     class LoreSetter(
-        private val enchantingInventory : EnchantingInventory,
-        private val enchants: Map<Enchantment, Int>) : BukkitRunnable(){
+        private val enchantingInventory: EnchantingInventory,
+        private val enchants: Map<Enchantment, Int>
+    ) : BukkitRunnable() {
         override fun run() {
-            val itemStack = enchantingInventory.item?.clone()?:return
+            val itemStack = enchantingInventory.item?.clone() ?: return
             clearEnchants(itemStack)
             val itemMeta = itemStack.itemMeta!!
             addEnchants(itemMeta, enchants.toMutableMap())
@@ -122,6 +124,7 @@ object EnchantTools {
             enchantingInventory.item = itemStack
         }
     }
+
     fun translateEnchantByChance(enchantment: Map<Enchantment, Int>): Map<Enchantment, Int> {
         val enchants = enchantment.toMutableMap()
         val removeMap = mutableMapOf<Enchantment, Int>()

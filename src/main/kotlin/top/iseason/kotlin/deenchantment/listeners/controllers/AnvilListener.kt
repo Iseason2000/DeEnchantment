@@ -1,4 +1,4 @@
-package top.iseason.kotlin.deenchantment.listeners
+package top.iseason.kotlin.deenchantment.listeners.controllers
 
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment

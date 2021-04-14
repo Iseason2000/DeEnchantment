@@ -343,7 +343,7 @@ object DeEnchantment {
             }
         } catch (e: Exception) {
             stopRegisterEnchantment()
-            e.printStackTrace()
+//            e.printStackTrace()
             LogSender.log("${ChatColor.RED}添加附魔异常,该附魔已存在，请重启服务器!")
         }
 

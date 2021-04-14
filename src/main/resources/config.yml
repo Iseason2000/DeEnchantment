@@ -1,7 +1,22 @@
+# 应用开关 true | false
+
+# 是否能够在铁砧中使用
+Anvil: true
+# 是否在有战利品的箱子中出现
+Chest: true
+# 是否可以通过附魔台获得
+EnchantTable: true
+# 是否应用于自然生成的怪物身上
+Mobs: true
+# 是否应用于村民交易
+Villager: true
+# 是否应用于钓鱼获取
+Fishing: true
+
 #附魔:
 # Enable:开/关
 # DisplayName: 显示名称
-#
+#Chance :出现概率(0~1)
 DE_PROTECTION:
   Enable: true
   DisplayName: "&7保护不能"
