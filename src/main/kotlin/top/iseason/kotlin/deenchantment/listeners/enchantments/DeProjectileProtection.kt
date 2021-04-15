@@ -6,17 +6,25 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
-//保护不了 附魔 实现
-class DeProtection : Listener {
+//弹射物穿透
+class DeProjectileProtection : Listener {
+    //todo : 吸引箭？
     @EventHandler
     fun onEntityDamageEvent(event: EntityDamageEvent) {
         if (event.isCancelled) return
+        if (event.cause != EntityDamageEvent.DamageCause.PROJECTILE) return
         val entity = event.entity
         if (entity !is LivingEntity) return
         val equipments = entity.equipment?.armorContents ?: return
         var levelCount = 0
-        for (equipment in equipments)
-            levelCount += equipment?.enchantments?.get(DeEnchantment.DE_protection) ?: continue
-        event.damage = event.damage + event.damage * (levelCount * 4 * 0.01)
+        for (equipment in equipments) {
+            val enchantments = equipment?.enchantments ?: continue
+            for ((enchant, l) in enchantments) {
+                if (enchant == DeEnchantment.DE_projectile_protection)
+                    levelCount += l
+            }
+        }
+        if (levelCount == 0) return
+        event.damage = event.damage + event.damage * (levelCount * 8 * 0.01)
     }
 }

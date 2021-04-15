@@ -7,8 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin
 import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
 import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
 import top.iseason.kotlin.deenchantment.utils.LogSender
-import java.util.*
-import kotlin.collections.HashSet
+
 
 object ConfigManager {
     private lateinit var plugin: DeEnchantmentPlugin
