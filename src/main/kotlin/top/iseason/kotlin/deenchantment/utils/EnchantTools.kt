@@ -3,6 +3,7 @@ package top.iseason.kotlin.deenchantment.utils
 import io.github.bananapuncher714.nbteditor.NBTEditor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.EnchantingInventory
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
@@ -179,6 +180,14 @@ object EnchantTools {
 
     fun setRepairCost(item: ItemStack, cost: Int): ItemStack {
         return NBTEditor.set(item, cost, "RepairCost")
+    }
+
+    fun getLevelCount(entity: LivingEntity, deEnchantment: Enchantment): Int {
+        val equipments = entity.equipment?.armorContents ?: return 0
+        var levelCount = 0
+        for (equipment in equipments)
+            levelCount += equipment?.enchantments?.get(deEnchantment) ?: continue
+        return levelCount
     }
 
 }

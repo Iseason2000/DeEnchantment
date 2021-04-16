@@ -35,7 +35,7 @@ DE_BLAST_PROTECTION:
   Chance: 0.2
 DE_PROJECTILE_PROTECTION:
   Enable: true
-  DisplayName: "&7弹射物穿透"
+  DisplayName: "&7弹射物吸引"
   Chance: 0.2
 DE_RESPIRATION:
   Enable: true

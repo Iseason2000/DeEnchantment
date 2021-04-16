@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 //保护不了 附魔 实现
 class DeProtection : Listener {
@@ -13,10 +14,7 @@ class DeProtection : Listener {
         if (event.isCancelled) return
         val entity = event.entity
         if (entity !is LivingEntity) return
-        val equipments = entity.equipment?.armorContents ?: return
-        var levelCount = 0
-        for (equipment in equipments)
-            levelCount += equipment?.enchantments?.get(DeEnchantment.DE_protection) ?: continue
+        val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_protection)
         event.damage = event.damage + event.damage * (levelCount * 4 * 0.01)
     }
 }

@@ -6,6 +6,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import top.iseason.kotlin.deenchantment.utils.EnchantTools
+
 //火焰烧灼
 class DeFireProtection : Listener {
     //受到攻击有概率着火
@@ -15,12 +17,7 @@ class DeFireProtection : Listener {
         if (event.cause == DamageCause.FIRE && event.cause == DamageCause.FIRE_TICK) return
         val entity = event.entity
         if (entity !is LivingEntity) return
-        val equipments = entity.equipment?.armorContents ?: return
-        var levelCount = 0
-        for (equipment in equipments) {
-            val level = equipment?.enchantments?.get(DeEnchantment.DE_fire_protection) ?: continue
-            levelCount += level
-        }
+        val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_fire_protection)
         if (levelCount == 0) return
         if (Math.random() < levelCount * 0.05)
             entity.fireTicks = levelCount * 20

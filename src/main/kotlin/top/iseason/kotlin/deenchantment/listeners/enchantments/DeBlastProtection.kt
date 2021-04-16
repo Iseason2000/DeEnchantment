@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 class DeBlastProtection : Listener {
     //瞬间爆炸 受到攻击概率爆炸
@@ -16,12 +17,7 @@ class DeBlastProtection : Listener {
         ) return
         val entity = event.entity
         if (entity !is LivingEntity) return
-        val equipments = entity.equipment?.armorContents ?: return
-        var levelCount = 0
-        for (equipment in equipments) {
-            val level = equipment?.enchantments?.get(DeEnchantment.DE_blast_protection) ?: continue
-            levelCount += level
-        }
+        val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_blast_protection)
         if (levelCount == 0) return
         if (Math.random() < levelCount * 0.05)
             entity.getWorld().createExplosion(entity.getLocation(), (levelCount * 0.2).toFloat());
