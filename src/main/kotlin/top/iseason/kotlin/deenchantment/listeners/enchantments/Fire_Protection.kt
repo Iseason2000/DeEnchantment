@@ -9,7 +9,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 //火焰烧灼
-class DeFireProtection : Listener {
+class Fire_Protection : Listener {
     //受到攻击有概率着火
     @EventHandler
     fun onEntityDamageEvent(event: EntityDamageEvent) {

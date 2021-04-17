@@ -9,7 +9,7 @@ import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.utils.TargetFinder
 
 //弹射物穿透
-class DeProjectileProtection : Listener {
+class Projectile_Protection : Listener {
     private val launchMap = mutableMapOf<Projectile, TargetFinder>()
 
     @EventHandler

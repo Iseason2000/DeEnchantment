@@ -9,7 +9,7 @@ import org.bukkit.event.entity.EntityAirChangeEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
 //水下窒息
-class DeRespiration : Listener {
+class Respiration : Listener {
     // 不完美
     @EventHandler
     fun onEntityAirChangeEvent(event: EntityAirChangeEvent) {

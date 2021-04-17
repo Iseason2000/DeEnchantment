@@ -9,7 +9,7 @@ import org.bukkit.potion.PotionEffectType
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
 //摔落骨折
-class DeFeatherFalling : Listener {
+class Feather_Falling : Listener {
     //摔落事件
     @EventHandler
     fun onEntityDamageEvent(event: EntityDamageEvent) {

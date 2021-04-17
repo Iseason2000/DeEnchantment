@@ -7,7 +7,7 @@ import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
-class DeBlastProtection : Listener {
+class Blast_Protection : Listener {
     //瞬间爆炸 受到攻击概率爆炸
     @EventHandler
     fun onEntityDamageEvent(event: EntityDamageEvent) {

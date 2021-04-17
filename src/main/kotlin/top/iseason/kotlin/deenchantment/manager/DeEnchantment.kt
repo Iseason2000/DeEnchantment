@@ -307,12 +307,7 @@ object DeEnchantment {
             myMaxLevel = 3
         }
 
-    fun register() {
-        registerEnchantments()
-        stopRegisterEnchantment()
-    }
-
-    private fun registerEnchantments() {
+    fun registerEnchantments(): Boolean {
         try {
             val deEnchantments = getDeEnchantments()
             val acceptingNew = Enchantment::class.java.getDeclaredField("acceptingNew")
@@ -341,10 +336,13 @@ object DeEnchantment {
                     )
                 }
             }
+            stopRegisterEnchantment()
+            return true
         } catch (e: Exception) {
             stopRegisterEnchantment()
 //            e.printStackTrace()
             LogSender.log("${ChatColor.RED}添加附魔异常,该附魔已存在，请重启服务器!")
+            return false
         }
 
     }

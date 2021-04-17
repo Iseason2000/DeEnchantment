@@ -16,6 +16,7 @@ object ConfigManager {
     private lateinit var deEnchantmentsNameList: HashSet<String>
     private lateinit var deEnchantments: HashMap<String, Pair<String, Double>>
     private var isInit = false
+    private var registerEnsSuccess = false  //是否完全注册
     var byKey: Any? = null
     var byName: Any? = null
     fun init(plugin: JavaPlugin) {
@@ -23,24 +24,30 @@ object ConfigManager {
         reload()
         isInit = true
     }
-
     fun reload() {
         if (isInit)
             plugin.reloadConfig()
         config = plugin.config
         resetEnchantments()
-        deEnchantments = HashMap<String, Pair<String, Double>>()
-        deEnchantmentsList.clear()
+        deEnchantments = HashMap()
+        if (registerEnsSuccess)
+            deEnchantmentsList.clear()
         loadEnchantments()
-        DeEnchantment.register()
+        registerEnsSuccess = DeEnchantment.registerEnchantments()
+        ListenerManager.registerListeners()
         loadDeEnchantmentsNameList()
         plugin.saveDefaultConfig()
     }
 
     fun quit() {
-        resetEnchantments()
-        deEnchantments = HashMap<String, Pair<String, Double>>()
+        try {
+            resetEnchantments()
+        } catch (e: NoClassDefFoundError) {
+            LogSender.log("${ChatColor.RED}注销附魔异常: ${ChatColor.YELLOW}NoClassDefFoundError")
+        }
+        deEnchantments = HashMap()
         deEnchantmentsList.clear()
+        ListenerManager.unRegisterListeners()
         plugin.saveDefaultConfig()
     }
 
@@ -84,7 +91,7 @@ object ConfigManager {
         keyField.isAccessible = true
         nameField.isAccessible = true
         val keyMap = keyField[null]
-        if (keyMap is MutableMap<*, *>) {
+        if (keyMap is HashMap<*, *>) {
             var count = 1
             val totalCount = deEnchantmentsList.size
             for (en in deEnchantmentsList) {
@@ -98,7 +105,7 @@ object ConfigManager {
             }
         }
         val nameMap = nameField[null]
-        if (nameMap is MutableMap<*, *>)
+        if (nameMap is HashMap<*, *>)
             for (en in deEnchantmentsList) {
                 nameMap.remove(en.name)
             }

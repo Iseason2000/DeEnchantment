@@ -8,7 +8,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 //保护不了 附魔 实现
-class DeProtection : Listener {
+class Protection : Listener {
     @EventHandler
     fun onEntityDamageEvent(event: EntityDamageEvent) {
         if (event.isCancelled) return
