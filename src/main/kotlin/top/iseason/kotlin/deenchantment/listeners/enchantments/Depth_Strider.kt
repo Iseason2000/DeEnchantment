@@ -20,6 +20,7 @@ class Depth_Strider : Listener {
         val boots = player.equipment?.boots ?: return
         val enchantments = boots.enchantments
         val level = enchantments[DeEnchantment.DE_depth_strider] ?: return
+        if (level == 0) return
         player.addPotionEffect(PotionEffect(PotionEffectType.SLOW, 2, level * 2))
     }
 }
