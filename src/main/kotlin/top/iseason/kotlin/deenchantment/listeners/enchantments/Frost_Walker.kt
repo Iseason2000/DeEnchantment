@@ -6,6 +6,7 @@ import org.bukkit.block.Block
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
@@ -43,6 +44,12 @@ class Frost_Walker : Listener {
         event.isDropItems = false
         block.setType(Material.LAVA, true)
         event.isCancelled = true
+    }
+
+    @EventHandler//防止生物破坏
+    fun onEntityChangeBlockEvent(event: EntityChangeBlockEvent) {
+        if (event.isCancelled) return
+        if (fakeBlock.contains(event.block)) event.isCancelled = true
     }
 
     //    @EventHandler//防止烫伤
