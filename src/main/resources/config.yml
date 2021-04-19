@@ -59,7 +59,7 @@ DE_FROST_WALKER:
   Chance: 0.2
 DE_BINDING_CURSE:
   Enable: true
-  DisplayName: "&7丢盔卸甲"
+  DisplayName: "&a灵魂绑定"
   Chance: 0.2
 DE_SHARPNESS:
   Enable: true
@@ -77,7 +77,7 @@ DE_KNOCKBACK:
   Enable: true
   DisplayName: "&7退击"
   Chance: 0.2
-FIRE_ASPECT:
+DE_FIRE_ASPECT:
   Enable: true
   DisplayName: "&7引火烧身"
   Chance: 0.2

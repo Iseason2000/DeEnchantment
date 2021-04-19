@@ -13,7 +13,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.BlockTimer
 import kotlin.math.sqrt
 
-
+//熔岩行者
 class Frost_Walker : Listener {
     private val fakeBlock = HashSet<Block>()
 
@@ -49,7 +49,10 @@ class Frost_Walker : Listener {
     @EventHandler//防止生物破坏
     fun onEntityChangeBlockEvent(event: EntityChangeBlockEvent) {
         if (event.isCancelled) return
-        if (fakeBlock.contains(event.block)) event.isCancelled = true
+        val block = event.block
+        if (!fakeBlock.contains(block)) return
+        event.isCancelled = true //取消破坏
+        block.setType(Material.LAVA, true)//变回岩浆
     }
 
     //    @EventHandler//防止烫伤

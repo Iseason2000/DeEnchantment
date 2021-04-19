@@ -8,6 +8,7 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
+//todo:不支持下界合金及部分装备
 class AnvilListener : Listener {
     @EventHandler
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
@@ -17,6 +18,7 @@ class AnvilListener : Listener {
         if (item2 == null || item2.type == Material.AIR) return
         if (item1.type == Material.ENCHANTED_BOOK && item2.type != Material.ENCHANTED_BOOK) return
         val result = event.result
+//        println(DeEnchantment.DE_binding_curse.canEnchantItem(item1))
         if ((item2.type != Material.ENCHANTED_BOOK) && (result == null || result.type == Material.AIR)) {
             if (!(item2.type == item2.type && item2.enchantments.isNotEmpty()))
                 return
