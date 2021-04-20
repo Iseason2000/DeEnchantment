@@ -1,9 +1,5 @@
-# DeEnchantment
-负魔书
-增加原版附魔的反向附魔
-
 | 英文名| 中文名 | 描述 | 英文名2| 中文名2| 描述2|
-| --------------- | ---------- | :----------------------: | --------------- | ---------------- | ------------------ |
+| --------------------- | ---------- | :--------------------------: | ----------- | ---------- | -------------------------- |
 | protection| 保护 |减少多数的伤害| de_protection| 保护不了 | 增加玩家受到的伤害 |
 | fire_protection | 火焰保护 | 减少火焰伤害 | de_fire_protection | 火焰灼烧 | 增加玩家受到的火焰伤害 |
 | feather_falling | 摔落保护 | 减少跌落伤害 | de_feather_falling | 摔落骨折 | 增加玩家受到的掉落伤害 |
@@ -14,7 +10,7 @@
 | thorns| 荆棘 |给予攻击者伤害| de_thorns| 负荆请罪 | 玩家会一直受到伤害（穿反了 |
 | depth_strider | 深海探索者 | 增加水下行走速度 | de_depth_strider | 旱鸭子 | 减慢水下行走速度 |
 | frost_walker| 冰霜行者 | 允许水上行走 | de_frost_walker| 熔岩行者 | 允许在岩浆上行走 |
-| binding_curse | 绑定诅咒 |被诅咒物品穿在身上后除非玩家处于创造模式，否则无法卸下| de_binding_curse | 丢盔卸甲 | 受到攻击时有几率掉落 |
+| binding_curse | 绑定诅咒 |被诅咒物品穿在身上后除非玩家处于创造模式，否则无法卸下| de_binding_curse | 灵魂绑定 | 受到攻击时有几率掉落 |
 | sharpness | 锋利 | 增加近战攻击伤害 | de_sharpness | 磨钝 | 减少攻击伤害 |
 | smite | 亡灵杀手 |对亡灵生物造成额外伤害| de_smite | 亡灵救赎 | 对亡灵生物造成治疗 |
 | bane_of_arthropods| 截肢杀手 |对节肢生物造成额外伤害| de_bane_of_arthropods| 节肢救星 | 对截肢生物造成治疗效果 |
@@ -22,7 +18,7 @@
 | fire_aspect | 火焰附加 |使目标着火| fire_aspect| 引火烧身 | 攻击者会让自己着火 |
 | looting | 抢夺 |生物能掉落更多物品| de_looting | 知足 | 击杀生物时获得物品减少 |
 | sweeping| 横扫之刃 | 增加横扫攻击伤害 | de_sweeping| 横扫失败 | 概率攻击失败 |
-| efficiency| 效率 | 加快挖掘速度 | de_efficiency| 摸鱼 | 减慢挖掘速度 |
+| efficiency| 效率 | 加快挖掘速度 | de_efficiency| 低效 | 减慢挖掘速度 |
 | silk_touch| 精准采集 | 被开采的方块掉落本身 | de_silk_touch| 彻底粉碎 | 挖掘不会产生掉落物 |
 | unbreaking| 耐久 | 减少物品掉耐久的几率 | de_unbreaking| 易损 | 增加物品掉耐久的几率 |
 | fortune | 时运 | 增加方块掉落 | de_fortune | 时运不济 | 减少物品掉落 |
