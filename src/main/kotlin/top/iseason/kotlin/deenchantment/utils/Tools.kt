@@ -1,6 +1,10 @@
 package top.iseason.kotlin.deenchantment.utils
 
+import java.security.SecureRandom
+
 object Tools {
+    private val RANDOM = SecureRandom.getInstance("SHA1PRNG", "SUN")
+    fun getRandomDouble() = RANDOM.nextDouble()
     fun intToRome(number: Int): String {
         var num = number
         var rNumber = ""

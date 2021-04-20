@@ -7,6 +7,7 @@ import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
+import top.iseason.kotlin.deenchantment.utils.Tools
 
 //火焰烧灼
 class Fire_Protection : Listener {
@@ -19,7 +20,7 @@ class Fire_Protection : Listener {
         if (entity !is LivingEntity) return
         val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_fire_protection)
         if (levelCount == 0) return
-        if (Math.random() < levelCount * 0.05)
+        if (Tools.getRandomDouble() < levelCount * 0.05)
             entity.fireTicks = levelCount * 20
     }
 //    @EventHandler //着火事件

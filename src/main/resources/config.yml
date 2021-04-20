@@ -91,7 +91,7 @@ DE_SWEEPING:
   Chance: 0.2
 DE_EFFICIENCY:
   Enable: true
-  DisplayName: "&7摸鱼"
+  DisplayName: "&7低效"
   Chance: 0.2
 DE_SILK_TOUCH:
   Enable: true

@@ -1,23 +1,24 @@
 package top.iseason.kotlin.deenchantment.listeners.enchantments
 
-import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.Tools
 
-//引火烧身
-class Fire_Aspect : Listener {
+//横扫失败
+class Sweeping : Listener {
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         if (event.isCancelled) return
+        if (event.cause != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return
         val damager = event.damager
-        if (damager !is LivingEntity) return
-        val item = damager.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantment.DE_fire_aspect] ?: return
+        if (damager !is Player) return
+        val level = damager.inventory.itemInMainHand.enchantments[DeEnchantment.DE_sweeping] ?: return
         if (level <= 0) return
-        if (Tools.getRandomDouble() >= level * 0.2) return
-        damager.fireTicks = level * 100
+        if (Tools.getRandomDouble() >= level * 0.1) return
+        event.isCancelled = true
     }
 }
