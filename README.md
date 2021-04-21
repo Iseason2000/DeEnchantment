@@ -26,10 +26,10 @@
 | silk_touch| 精准采集 | 被开采的方块掉落本身 | de_silk_touch| 彻底粉碎 | 挖掘不会产生掉落物 |
 | unbreaking| 耐久 | 减少物品掉耐久的几率 | de_unbreaking| 易损 | 增加物品掉的耐久 |
 | fortune | 时运 | 增加方块掉落 | de_fortune | 时运不济 | 有概率不掉物品 |
-| power | 力量 | 增加弓箭伤害 | de_power | 虚弱 | 减少弓箭伤害 |
-| punch | 冲击 |增加弓箭的击退距离| de_punch | 勾引 | 将击退反转 |
-| flame | 火矢 |箭矢使目标着火| de_flame | 水矢 | 扑灭目标身上的火 |
-| infinity| 无限 | 射箭不会消耗普通箭矢 | de_infinity| 有限 | 消耗的箭矢翻倍 |
+| power | 力量 | 增加弓箭伤害 | de_power | 虚弱 | 减少弓箭伤害及箭矢速度 |
+| punch | 冲击 |增加弓箭的击退距离| de_punch | 吸引 | 将击退反转 |
+| flame | 火矢 |箭矢使目标着火| de_flame | 神速 | 箭矢速度增加 |
+| infinity| 无限 | 射箭不会消耗普通箭矢 | de_infinity| 连珠 | 连续发射多支箭 |
 | luck_of_the_sea | 海之眷顾 | 提高钓鱼时获得宝藏的几率 | de_luck_of_the_sea | 海之嫌弃 | 减少钓鱼时获得宝藏的几率 |
 | lure| 钓饵 | 提高鱼咬钩的速度 | de_lure| 过期钓饵 | 减少鱼咬钩的速度 |
 | loyalty | 忠诚 | 使掷出后的三叉戟返回，魔咒等级越高，三叉戟返回的用时越短 | de_loyalty | 背叛 | 三叉戟会跑到附近的人的背包 |

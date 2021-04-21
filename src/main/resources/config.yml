@@ -111,15 +111,15 @@ DE_POWER:
   Chance: 0.2
 DE_PUNCH:
   Enable: true
-  DisplayName: "&7勾引"
+  DisplayName: "&7吸引"
   Chance: 0.2
 DE_FLAME:
   Enable: true
-  DisplayName: "&7水矢"
+  DisplayName: "&7神速"
   Chance: 0.2
 DE_INFINITY:
   Enable: true
-  DisplayName: "&7有限"
+  DisplayName: "&7连珠"
   Chance: 0.2
 DE_LUCK_OF_THE_SEA:
   Enable: true

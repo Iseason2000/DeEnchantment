@@ -8,7 +8,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
 //退击
 class KnockBack : Listener {
-    @EventHandler//todo:待检验
+    @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         if (event.isCancelled) return
         val damager = event.damager

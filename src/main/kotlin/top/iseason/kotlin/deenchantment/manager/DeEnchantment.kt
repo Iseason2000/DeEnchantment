@@ -212,7 +212,7 @@ object DeEnchantment {
     val DE_infinity: Enchantment = DeEnchantmentWrapper(DE_INFINITY)
         .apply {
             myItemTarget = EnchantmentTarget.BOW
-            myMaxLevel = 1
+            myMaxLevel = 3
             conflictsWithEnchantment = setOf(DE_MENDING)
         }
 
