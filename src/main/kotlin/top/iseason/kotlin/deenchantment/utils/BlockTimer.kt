@@ -4,7 +4,7 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.scheduler.BukkitRunnable
 
-class BlockTimer(val block: Block, val blockSet: HashSet<Block>) : BukkitRunnable() {
+class BlockTimer(private val block: Block, private val blockSet: HashSet<Block>) : BukkitRunnable() {
     init {
         block.setType(Material.OBSIDIAN, false)
     }

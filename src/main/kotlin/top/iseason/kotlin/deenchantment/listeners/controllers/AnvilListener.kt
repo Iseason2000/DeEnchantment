@@ -19,7 +19,6 @@ class AnvilListener : Listener {
         val itemMeta2 = item2.itemMeta ?: return
         //1格为附魔书而2格不是附魔书
         if (item1.type == Material.ENCHANTED_BOOK && item2.type != Material.ENCHANTED_BOOK) return
-        val anvilView = event.inventory
         val enchantments2: Map<Enchantment, Int> =
             if (itemMeta2 is EnchantmentStorageMeta)
                 itemMeta2.storedEnchants
@@ -29,7 +28,6 @@ class AnvilListener : Listener {
         if (enchantments2.isEmpty()) return
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && itemMeta2 != itemMeta1) return
-
         val resultItem = item1.clone()
         val cost = EnchantTools.addEnchantments(resultItem, enchantments2)
         if (item1 == resultItem) return
@@ -37,6 +35,7 @@ class AnvilListener : Listener {
         val repairCost2 = EnchantTools.getRepairCost(item2)
         val finalCost = if (repairCost1 < repairCost2) repairCost2 else repairCost1
         val costItem = EnchantTools.setRepairCost(resultItem, 2 * finalCost + 1)
+        val anvilView = event.inventory
         anvilView.repairCost = 2 * finalCost + 1 + cost
         event.result = costItem
     }

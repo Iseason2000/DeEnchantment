@@ -16,7 +16,7 @@ class Infinity : Listener {
     fun onEntityShootBowEvent(event: EntityShootBowEvent) {
         if (event.isCancelled) return
         val bow = event.bow ?: return
-        var level = bow.enchantments[DeEnchantment.DE_infinity] ?: return
+        val level = bow.enchantments[DeEnchantment.DE_infinity] ?: return
         if (level <= 0) return
         val projectile = event.projectile
         if (projectile !is Projectile) return

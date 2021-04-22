@@ -3,6 +3,7 @@ package top.iseason.kotlin.deenchantment.listeners.enchantments
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
+import org.bukkit.block.data.Levelled
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.block.BlockBreakEvent
@@ -31,6 +32,7 @@ class Frost_Walker : Listener {
             if (player.eyeLocation.block.type == Material.LAVA ||
                 player.location.block.type == Material.LAVA
             ) continue
+            if ((block.blockData as Levelled).level != 0) continue
             fakeBlock.add(block)
             BlockTimer(block, fakeBlock).runTaskLater(ConfigManager.getPlugin(), 160)
         }
