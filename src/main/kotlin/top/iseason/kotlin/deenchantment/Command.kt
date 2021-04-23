@@ -18,7 +18,7 @@ class Command : CommandExecutor {
         val itemMeta = item.itemMeta!! as EnchantmentStorageMeta
 //        itemMeta.addStoredEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 10, true)
 //        itemMeta.addStoredEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 5, true)
-        itemMeta.addStoredEnchant(DeEnchantment.DE_loyalty, 3, true)
+        itemMeta.addStoredEnchant(DeEnchantment.DE_infinity, 2, true)
 //        itemMeta.addStoredEnchant(DeEnchantment.DE_protection, 10, true)
 //        itemMeta.addStoredEnchant(DeEnchantment.DE_fire_aspect, 3, true)
 //        itemMeta.addStoredEnchant(DeEnchantment.DE_impaling, 3, true)

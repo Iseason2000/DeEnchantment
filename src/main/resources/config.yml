@@ -135,7 +135,7 @@ DE_LOYALTY:
   Chance: 0.2
 DE_IMPALING:
   Enable: true
-  DisplayName: "&7过穿"
+  DisplayName: "&7刺穿"
   Chance: 0.2
 DE_RIPTIDE:
   Enable: true
