@@ -119,7 +119,7 @@ DE_FLAME:
   Chance: 0.2
 DE_INFINITY:
   Enable: true
-  DisplayName: "&7连珠"
+  DisplayName: "&7多重"
   Chance: 0.2
 DE_LUCK_OF_THE_SEA:
   Enable: true
@@ -147,7 +147,7 @@ DE_CHANNELING:
   Chance: 0.2
 DE_MULTISHOT:
   Enable: true
-  DisplayName: "&7连珠箭"
+  DisplayName: "&7连珠"
   Chance: 0.2
 DE_QUICK_CHARGE:
   Enable: true

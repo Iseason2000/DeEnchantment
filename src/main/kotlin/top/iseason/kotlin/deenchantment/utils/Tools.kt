@@ -24,6 +24,5 @@ object Tools {
         }
         return rNumber
     }
-
-
 }
+
