@@ -41,4 +41,4 @@
 | piercing| 穿透 |使箭矢穿过多个实体| de_piercing| 反弹 | 箭矢往回弹 |
 | mending | 经验修补 |损耗经验以修补工具的耐久度| de_mending | 经验反哺 | 将耐久转换为经验 |
 | vanishing_curse | 消失诅咒 | 被诅咒物品会在玩家死亡时消失 | de_vanishing_curse | 永存祝福 | 物品作为掉落物时不会消失 |
-| soul_speed| 灵魂疾行 |提高玩家在灵魂沙和灵魂土上的移动速度。| de_soul_speed| 灵魂爬行 | 玩家在灵魂沙及灵魂土上会趴下 |
+| soul_speed| 灵魂疾行 |提高玩家在灵魂沙和灵魂土上的移动速度。| de_soul_speed| 疾行 | 给予玩家永久的速度效果 |

@@ -163,9 +163,9 @@ DE_MENDING:
   Chance: 0.2
 DE_VANISHING_CURSE:
   Enable: true
-  DisplayName: "&7永存祝福"
+  DisplayName: "&a永存祝福"
   Chance: 0.2
 DE_SOUL_SPEED:
   Enable: true
-  DisplayName: "&7灵魂爬行"
+  DisplayName: "&7疾行"
   Chance: 0.2

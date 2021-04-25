@@ -16,7 +16,7 @@ class Projectile_Protection : Listener {
     fun onProjectileLaunchEvent(event: ProjectileLaunchEvent) {
         val projectile = event.entity
         val finder = TargetFinder(projectile)
-        finder.runTaskTimer(ConfigManager.getPlugin(), 8, 1)
+        finder.runTaskTimer(ConfigManager.getPlugin(), 8, 2)
         launchMap[projectile] = finder
     }
 
