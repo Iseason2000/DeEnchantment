@@ -6,7 +6,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.event.entity.ProjectileLaunchEvent
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
-import top.iseason.kotlin.deenchantment.utils.TargetFinder
+import top.iseason.kotlin.deenchantment.utils.runnables.TargetFinder
 
 //弹射物穿透
 class Projectile_Protection : Listener {

@@ -1,10 +1,11 @@
-package top.iseason.kotlin.deenchantment
+package top.iseason.kotlin.deenchantment.manager
 
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.inventory.ItemStack
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment.getDeEnum
+import top.iseason.kotlin.deenchantment.utils.DeEnum
 
 class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.toLowerCase())) {
     private val myName: String = name.name
@@ -47,9 +48,6 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     override fun isCursed(): Boolean {
         return myIsCursed
     }
-//    fun getDisplayName(level : Int): String {
-//        val levelRome = Tools.intToRome(level)
-//    }
 
     override fun conflictsWith(other: Enchantment): Boolean {
         val otherName = other.key.key
@@ -60,24 +58,4 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
         if (otherName == thisName) return true
         return conflictsWithEnchantment.contains(getDeEnum(other))
     }
-
-//    private fun registerEnchantment() {
-//        var registered = true
-//        try {
-//            val field = Enchantment::class.java.getDeclaredField("acceptingNew")
-//            field.isAccessible = true
-//            field.set(null, true)
-//            registerEnchantment(this)
-//            field.set(null, false)
-//        } catch (e: Exception) {
-//            registered = false
-//            if (e !is IllegalArgumentException) //忽略已存在的
-//                e.printStackTrace()
-//        }
-//        if (registered)
-//            LogSender.log("${ChatColor.GREEN}已添加: ${ChatColor.YELLOW} ${this.myName}")
-//
-//    }
-
-
 }

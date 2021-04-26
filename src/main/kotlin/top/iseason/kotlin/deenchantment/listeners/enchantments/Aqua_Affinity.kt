@@ -8,7 +8,7 @@ import org.bukkit.event.block.BlockDamageEvent
 import org.bukkit.potion.PotionEffectType
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
-import top.iseason.kotlin.deenchantment.utils.PotionAdder
+import top.iseason.kotlin.deenchantment.utils.runnables.PotionAdder
 
 //水下慢掘
 class Aqua_Affinity : Listener {

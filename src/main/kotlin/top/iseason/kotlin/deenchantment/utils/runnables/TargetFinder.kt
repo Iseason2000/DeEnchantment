@@ -1,9 +1,10 @@
-package top.iseason.kotlin.deenchantment.utils
+package top.iseason.kotlin.deenchantment.utils.runnables
 
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Projectile
 import org.bukkit.scheduler.BukkitRunnable
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 //弹射物追踪
 class TargetFinder(

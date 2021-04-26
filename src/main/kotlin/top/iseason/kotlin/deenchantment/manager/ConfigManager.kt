@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.plugin.java.JavaPlugin
 import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
-import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
+import top.iseason.kotlin.deenchantment.utils.DeEnum
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
 
@@ -13,37 +13,41 @@ object ConfigManager {
     private lateinit var plugin: DeEnchantmentPlugin
     private lateinit var config: FileConfiguration
     var deEnchantmentsList = HashSet<DeEnchantmentWrapper>()
-    private lateinit var deEnchantmentsNameList: HashSet<String>
+    private lateinit var deEnchantmentsNameMap: HashMap<String, DeEnum>
     private lateinit var deEnchantments: HashMap<String, Pair<String, Double>>
     private var isInit = false
-    private var registerEnsSuccess = false  //是否完全注册
     var byKey: Any? = null
     var byName: Any? = null
+
+    //特性设置
+    private var isLevelUnlimited: Boolean = false
+
     fun init(plugin: JavaPlugin) {
         this.plugin = plugin as DeEnchantmentPlugin
         reload()
         isInit = true
     }
+
     fun reload() {
         if (isInit)
             plugin.reloadConfig()
         config = plugin.config
         resetEnchantments()
         deEnchantments = HashMap()
-        if (registerEnsSuccess)
-            deEnchantmentsList.clear()
+        deEnchantmentsList.clear()
         loadEnchantments()
-        registerEnsSuccess = DeEnchantment.registerEnchantments()
+        DeEnchantment.registerEnchantments()
         ListenerManager.registerListeners()
         loadDeEnchantmentsNameList()
         plugin.saveDefaultConfig()
+        isLevelUnlimited = config.getBoolean("LevelUnlimited")
     }
 
     fun quit() {
         try {
             resetEnchantments()
         } catch (e: NoClassDefFoundError) {
-            LogSender.log("${ChatColor.RED}注销附魔异常: ${ChatColor.YELLOW}NoClassDefFoundError")
+            LogSender.consoleLog("${ChatColor.RED}注销附魔异常: ${ChatColor.YELLOW}NoClassDefFoundError")
         }
         deEnchantments = HashMap()
         deEnchantmentsList.clear()
@@ -52,10 +56,10 @@ object ConfigManager {
     }
 
     private fun loadDeEnchantmentsNameList() {
-        deEnchantmentsNameList = HashSet()
+        deEnchantmentsNameMap = HashMap()
         for (enchantment in deEnchantmentsList) {
             val enchantmentName = getEnchantmentName(enchantment.name)
-            deEnchantmentsNameList.add(ChatColor.stripColor(enchantmentName)!!)
+            deEnchantmentsNameMap[ChatColor.stripColor(enchantmentName)!!] = DeEnchantment.getDeEnum(enchantment)
         }
     }
 
@@ -75,10 +79,12 @@ object ConfigManager {
     fun getPlugin() = plugin
     fun getConfig() = config
     fun getDeEnchantments() = deEnchantments
-    fun getDeEnchantmentsNameList() = deEnchantmentsNameList
+    fun getDeEnchantmentsNameMap() = deEnchantmentsNameMap
     fun getEnchantmentName(keyName: String): String? {
         return deEnchantments[keyName]?.first
     }
+
+    fun isLevelUnlimited() = isLevelUnlimited
 
     fun getEnchantmentChance(keyName: String): Double? {
         return deEnchantments[keyName]?.second
@@ -96,7 +102,7 @@ object ConfigManager {
             val totalCount = deEnchantmentsList.size
             for (en in deEnchantmentsList) {
                 val enchantmentName = getEnchantmentName(en.name)
-                LogSender.log(
+                LogSender.consoleLog(
                     "${ChatColor.YELLOW}已注销${ChatColor.GRAY}" +
                             "(${ChatColor.GOLD}${count++}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
                             "${ChatColor.GRAY}):$enchantmentName"

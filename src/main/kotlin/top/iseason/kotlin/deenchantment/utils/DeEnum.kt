@@ -1,4 +1,4 @@
-package top.iseason.kotlin.deenchantment
+package top.iseason.kotlin.deenchantment.utils
 
 
 enum class DeEnum {

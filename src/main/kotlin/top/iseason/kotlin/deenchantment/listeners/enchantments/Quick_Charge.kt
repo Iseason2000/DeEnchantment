@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.CrossbowMeta
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
-import top.iseason.kotlin.deenchantment.utils.Runable
+import top.iseason.kotlin.deenchantment.utils.runnables.CorssBowCanceller
 
 class Quick_Charge : Listener {
     val chargeMap = HashMap<ItemStack, Int>()
@@ -30,6 +30,6 @@ class Quick_Charge : Listener {
         val hand = event.hand ?: return
         //取消拉弓
         event.player.equipment?.setItem(hand, null)
-        Runable(event.player, hand, clone).runTaskLater(ConfigManager.getPlugin(), 2)
+        CorssBowCanceller(event.player, hand, clone).runTaskLater(ConfigManager.getPlugin(), 2)
     }
 }

@@ -13,6 +13,10 @@ Villager: true
 # 是否应用于钓鱼获取
 Fishing: true
 
+# 特性设置
+# 是否突破等级上限
+LevelUnlimited: false
+
 #附魔:
 # Enable:开/关
 # DisplayName: 显示名称

@@ -7,7 +7,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityShootBowEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
-//连珠
+//多重
 class Infinity : Listener {
     @EventHandler
     fun onEntityShootBowEvent(event: EntityShootBowEvent) {

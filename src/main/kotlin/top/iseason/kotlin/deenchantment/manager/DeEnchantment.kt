@@ -4,10 +4,9 @@ import org.bukkit.ChatColor
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
-import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
-import top.iseason.kotlin.deenchantment.DeEnum
-import top.iseason.kotlin.deenchantment.DeEnum.*
 import top.iseason.kotlin.deenchantment.manager.ConfigManager.getDeEnchantments
+import top.iseason.kotlin.deenchantment.utils.DeEnum
+import top.iseason.kotlin.deenchantment.utils.DeEnum.*
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
 
@@ -212,7 +211,7 @@ object DeEnchantment {
     val DE_infinity: Enchantment = DeEnchantmentWrapper(DE_INFINITY)
         .apply {
             myItemTarget = EnchantmentTarget.BOW
-            myMaxLevel = 3
+            myMaxLevel = 1
             conflictsWithEnchantment = setOf(DE_MENDING)
         }
 
@@ -234,7 +233,7 @@ object DeEnchantment {
     val DE_loyalty: Enchantment = DeEnchantmentWrapper(DE_LOYALTY)
         .apply {
             myItemTarget = EnchantmentTarget.TRIDENT
-            myMaxLevel = 1
+            myMaxLevel = 3
             conflictsWithEnchantment = setOf(DE_RIPTIDE)
         }
 
@@ -307,45 +306,43 @@ object DeEnchantment {
             myMaxLevel = 3
         }
 
-    fun registerEnchantments(): Boolean {
-        try {
-            val deEnchantments = getDeEnchantments()
-            val acceptingNew = Enchantment::class.java.getDeclaredField("acceptingNew")
-            val byKey = Enchantment::class.java.getDeclaredField("byKey")
-            val byName = Enchantment::class.java.getDeclaredField("byName")
-            acceptingNew.isAccessible = true
-            acceptingNew.set(null, true)
-            byKey.isAccessible = true
-            byName.isAccessible = true
-            val keyMap = byKey.get(null)
-            val nameMap = byName.get(null)
-            ConfigManager.byKey = keyMap
-            ConfigManager.byName = nameMap
-            var count = 1
-            val totalCount = deEnchantments.size
-            for (field in javaClass.declaredFields) {
-                val enchantment = field.get(this)
-                if (enchantment is DeEnchantmentWrapper && deEnchantments.contains(enchantment.name)) {
+    fun registerEnchantments() {
+        val deEnchantments = getDeEnchantments()
+        val acceptingNew = Enchantment::class.java.getDeclaredField("acceptingNew")
+        val byKey = Enchantment::class.java.getDeclaredField("byKey")
+        val byName = Enchantment::class.java.getDeclaredField("byName")
+        acceptingNew.isAccessible = true
+        acceptingNew.set(null, true)
+        byKey.isAccessible = true
+        byName.isAccessible = true
+        val keyMap = byKey.get(null)
+        val nameMap = byName.get(null)
+        ConfigManager.byKey = keyMap
+        ConfigManager.byName = nameMap
+        var count = 1
+        val totalCount = deEnchantments.size
+        for (field in javaClass.declaredFields) {
+            val enchantment = field.get(this)
+            if (enchantment is DeEnchantmentWrapper && deEnchantments.contains(enchantment.name)) {
+                //如果存在，则继续
+                try {
                     Enchantment.registerEnchantment(enchantment)
+                } catch (e: IllegalArgumentException) {
+                } finally {
                     ConfigManager.deEnchantmentsList.add(enchantment)
                     val enchantmentName = ConfigManager.getEnchantmentName(enchantment.name)
-                    LogSender.log(
+                    LogSender.consoleLog(
                         "${ChatColor.GREEN}已添加${ChatColor.GRAY}" +
                                 "(${ChatColor.GOLD}${count++}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
                                 "${ChatColor.GRAY}):$enchantmentName"
                     )
                 }
-            }
-            stopRegisterEnchantment()
-            return true
-        } catch (e: Exception) {
-            stopRegisterEnchantment()
-//            e.printStackTrace()
-            LogSender.log("${ChatColor.RED}添加附魔异常,该附魔已存在，请重启服务器!")
-            return false
-        }
 
+            }
+        }
+        stopRegisterEnchantment()
     }
+
 
     private fun stopRegisterEnchantment() {
         val field = Enchantment::class.java.getDeclaredField("acceptingNew")
@@ -363,10 +360,12 @@ object DeEnchantment {
             DeEnum.valueOf("de_$name".toUpperCase())
         }
     }
-    fun getByKeyName(keyName: String) :Enchantment?{
-        return  Enchantment.getByKey(NamespacedKey.minecraft(keyName))
+
+    fun getByKeyName(keyName: String): Enchantment? {
+        return Enchantment.getByKey(NamespacedKey.minecraft(keyName))
     }
-    fun getByDeEnum(deEnum : DeEnum):Enchantment?{
+
+    fun getByDeEnum(deEnum: DeEnum): Enchantment? {
         return getByKeyName(deEnum.toString().toLowerCase())
     }
 }

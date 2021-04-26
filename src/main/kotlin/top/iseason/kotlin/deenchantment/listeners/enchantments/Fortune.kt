@@ -20,6 +20,5 @@ class Fortune : Listener {
         if (level <= 0) return
         if (Tools.getRandomDouble() > level * 0.03) return
         event.items.removeAt(0)
-        println("no!")
     }
 }

@@ -23,7 +23,7 @@ class Fire_Protection : Listener {
         if (Tools.getRandomDouble() < levelCount * 0.05)
             entity.fireTicks = levelCount * 20
     }
-//    @EventHandler //着火事件
+//    @EventHandler //着火增加伤害
 //    fun onEntityCombustByBlockEvent(event: EntityCombustEvent) {
 //        if (event.isCancelled) return
 //        val entity = event.entity

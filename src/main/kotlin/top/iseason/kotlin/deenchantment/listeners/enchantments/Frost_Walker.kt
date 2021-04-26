@@ -11,7 +11,7 @@ import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
-import top.iseason.kotlin.deenchantment.utils.BlockTimer
+import top.iseason.kotlin.deenchantment.utils.runnables.BlockTimer
 import kotlin.math.sqrt
 
 //熔岩行者

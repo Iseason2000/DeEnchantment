@@ -3,6 +3,7 @@ package top.iseason.kotlin.deenchantment.utils
 import org.bukkit.inventory.EquipmentSlot
 import org.bukkit.inventory.ItemStack
 
+@Deprecated("没用过，但是是一种思路")
 object ItemTool {
     fun getItemSlot(item: ItemStack): EquipmentSlot {
         val type = item.type.toString()

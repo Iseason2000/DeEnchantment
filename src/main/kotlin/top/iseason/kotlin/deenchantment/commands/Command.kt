@@ -1,4 +1,4 @@
-package top.iseason.kotlin.deenchantment
+package top.iseason.kotlin.deenchantment.commands
 
 import org.bukkit.Material
 import org.bukkit.command.Command

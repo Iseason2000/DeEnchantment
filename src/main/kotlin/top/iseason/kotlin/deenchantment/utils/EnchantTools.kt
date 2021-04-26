@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.scheduler.BukkitRunnable
-import top.iseason.kotlin.deenchantment.DeEnchantmentWrapper
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
@@ -50,6 +49,10 @@ object EnchantTools {
                     else -> level
                 }
             }
+            //todo:待测试
+            if (ConfigManager.isLevelUnlimited() && level > e2.maxLevel) {
+                level = e2.maxLevel
+            }
             en1[e2] = level
             cost += level
         }
@@ -67,7 +70,7 @@ object EnchantTools {
     private fun clearEnchantLore(itemMeta: ItemMeta) {
         if (!itemMeta.hasLore()) return
         var loreList = itemMeta.lore!!
-        val deEnchantmentsList = ConfigManager.getDeEnchantmentsNameList()
+        val deEnchantmentsList = ConfigManager.getDeEnchantmentsNameMap()
         for (name in deEnchantmentsList) {
             loreList = loreList.filterNot {
                 it.contains(Regex("$name \\w+?"))
@@ -150,8 +153,9 @@ object EnchantTools {
         if (enchants.isEmpty()) return
         val loreList = itemMeta.lore ?: mutableListOf<String>()
         for ((enchant, level) in enchants) {
-            if (enchant !is DeEnchantmentWrapper) continue
-            val enchantmentName = ConfigManager.getEnchantmentName(enchant.name)!!
+            //此判断在热重载时会失败
+            //if (enchant !is DeEnchantmentWrapper) continue
+            val enchantmentName = ConfigManager.getEnchantmentName(enchant.key.key.toUpperCase()) ?: continue
             val wholeName = "$enchantmentName ${Tools.intToRome(level)}"
             loreList.add(0, wholeName)
         }

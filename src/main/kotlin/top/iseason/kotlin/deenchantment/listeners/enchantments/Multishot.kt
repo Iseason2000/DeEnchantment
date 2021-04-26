@@ -8,7 +8,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityShootBowEvent
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
-import top.iseason.kotlin.deenchantment.utils.ProjectileShooter
+import top.iseason.kotlin.deenchantment.utils.runnables.ProjectileShooter
 
 //连珠
 class Multishot : Listener {

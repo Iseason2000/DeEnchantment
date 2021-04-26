@@ -1,4 +1,4 @@
-package top.iseason.kotlin.deenchantment.utils
+package top.iseason.kotlin.deenchantment.utils.runnables
 
 import org.bukkit.entity.LivingEntity
 import org.bukkit.potion.PotionEffect

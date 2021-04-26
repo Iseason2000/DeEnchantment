@@ -18,6 +18,7 @@ object ListenerManager {
     }
 
     private fun registerEnchantments() {
+        //自动注册附魔监听器
         val classGetter = ClassGetter(plugin, "top.iseason.kotlin.deenchantment.listeners.enchantments")
         for (cl in classGetter.classes) {
             val newInstance = cl.newInstance()
@@ -37,9 +38,9 @@ object ListenerManager {
             }
         } catch (e: Exception) {
             e.printStackTrace()
-            LogSender.log("${ChatColor.RED}监听器注销异常")
+            LogSender.consoleLog("${ChatColor.RED}监听器注销异常")
         }
-        LogSender.log("${ChatColor.GREEN}监听器已注销")
+        LogSender.consoleLog("${ChatColor.GREEN}监听器已注销")
     }
 
     private fun registerControllers() {
@@ -81,6 +82,6 @@ object ListenerManager {
             Bukkit.getPluginManager().registerEvents(playerFishListener, plugin)
             listeners.add(playerFishListener)
         }
-        LogSender.log("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
+        LogSender.consoleLog("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
     }
 }

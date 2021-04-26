@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.potion.PotionEffectType
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
-import top.iseason.kotlin.deenchantment.utils.PotionAdder
+import top.iseason.kotlin.deenchantment.utils.runnables.PotionAdder
 
 class Soul_Speed : Listener {
     val playerMap = HashMap<Player, PotionAdder>()

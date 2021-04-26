@@ -12,25 +12,25 @@ import java.util.*
 
 class Binding_Curse : Listener {
     //灵魂绑定
-    private val protectionMap = mutableMapOf<UUID, MutableMap<ItemStack, Int>>()
-
+    private val protectionMap = mutableMapOf<UUID, MutableMap<Int, ItemStack>>()
     @EventHandler(priority = EventPriority.LOW)
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
         val player = event.entity
         val drops = event.drops
-        if (drops.isEmpty()) return//死亡不掉落
+        if (drops.isEmpty()) return//空背包 是否死亡不掉落也是空的？
         val contents = player.inventory.contents
-        val bindings = mutableMapOf<ItemStack, Int>()
+        //位置不可能重复，故而在前
+        val bindings = mutableMapOf<Int, ItemStack>()
         for (slot in contents.indices) {
             val itemStack = contents[slot] ?: continue
             val enchantments = itemStack.enchantments
             if (enchantments.isEmpty()) continue
             if (!enchantments.containsKey(DeEnchantment.DE_binding_curse)) continue
-            bindings[itemStack] = slot
+            bindings[slot] = itemStack
         }
         if (bindings.isEmpty()) return
         protectionMap[player.uniqueId] = bindings
-        event.drops.removeAll(bindings.keys)
+        event.drops.removeAll(bindings.values)
     }
 
     @EventHandler
@@ -39,8 +39,8 @@ class Binding_Curse : Listener {
         val uuid = player.uniqueId
         val bindings = protectionMap[uuid] ?: return
         val inventory = player.inventory
-        for ((item, slot) in bindings) {
-            if (inventory.getItem(slot) != null) continue
+        for ((slot, item) in bindings) {
+            if (inventory.getItem(slot) != null) continue//由其他插件设置或者物品不掉落
             inventory.setItem(slot, item)
         }
         protectionMap.remove(uuid)
