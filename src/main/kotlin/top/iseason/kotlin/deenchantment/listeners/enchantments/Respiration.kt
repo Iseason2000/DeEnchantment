@@ -1,8 +1,7 @@
 package top.iseason.kotlin.deenchantment.listeners.enchantments
 
 import org.bukkit.Material
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.WaterMob
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityAirChangeEvent
@@ -14,8 +13,8 @@ class Respiration : Listener {
     @EventHandler
     fun onEntityAirChangeEvent(event: EntityAirChangeEvent) {
         if (event.isCancelled) return
-        val entity = event.entity as LivingEntity
-        if (entity is WaterMob) return //水生生物不会窒息
+        val entity = event.entity
+        if (entity !is Player) return //只限玩家
         if (entity.eyeLocation.block.type != Material.WATER) return
         val helmet = entity.equipment?.helmet ?: return
         val enchantments = helmet.enchantments

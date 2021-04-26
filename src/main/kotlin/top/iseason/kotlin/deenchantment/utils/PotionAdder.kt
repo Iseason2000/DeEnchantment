@@ -5,8 +5,9 @@ import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.scheduler.BukkitRunnable
 
-class SpeedUpper(val entity: LivingEntity, val level: Int) : BukkitRunnable() {
+class PotionAdder(val entity: LivingEntity, val type: PotionEffectType, val time: Int, val level: Int) :
+    BukkitRunnable() {
     override fun run() {
-        entity.addPotionEffect(PotionEffect(PotionEffectType.SPEED, 220, level - 1))
+        entity.addPotionEffect(PotionEffect(type, time, level - 1))
     }
 }
