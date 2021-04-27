@@ -2,7 +2,6 @@ package top.iseason.kotlin.deenchantment.manager
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.event.HandlerList
 import org.bukkit.event.Listener
 import org.bukkit.plugin.java.JavaPlugin
 import top.iseason.kotlin.deenchantment.listeners.controllers.*
@@ -29,18 +28,6 @@ object ListenerManager {
                 listeners.add(newInstance)
             }
         }
-    }
-
-    fun unRegisterListeners() {
-        try {
-            for (listener in listeners) {
-                HandlerList.unregisterAll(listener)
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-            LogSender.consoleLog("${ChatColor.RED}监听器注销异常")
-        }
-        LogSender.consoleLog("${ChatColor.GREEN}监听器已注销")
     }
 
     private fun registerControllers() {
@@ -81,6 +68,12 @@ object ListenerManager {
             val playerFishListener = PlayerFishListener()
             Bukkit.getPluginManager().registerEvents(playerFishListener, plugin)
             listeners.add(playerFishListener)
+        }
+        if (config.getBoolean("Reward")) {
+            str.append("给予、")
+            val entityDropItemListener = EntityDropItemListener()
+            Bukkit.getPluginManager().registerEvents(entityDropItemListener, plugin)
+            listeners.add(entityDropItemListener)
         }
         LogSender.consoleLog("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
     }

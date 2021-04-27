@@ -12,6 +12,8 @@ Mobs: true
 Villager: true
 # 是否应用于钓鱼获取
 Fishing: true
+# 是否应用于生物给予（猪灵交易、村庄英雄等生物丢物品行为）
+Reward: true
 
 # 特性设置 true | false
 # 是否突破等级上限

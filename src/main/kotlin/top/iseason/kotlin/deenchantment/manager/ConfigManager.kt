@@ -47,9 +47,9 @@ object ConfigManager {
         } catch (e: NoClassDefFoundError) {
             LogSender.consoleLog("${ChatColor.RED}注销附魔异常: ${ChatColor.YELLOW}NoClassDefFoundError")
         }
+        HandlerList.unregisterAll(plugin)
         deEnchantments = HashMap()
         deEnchantmentsList.clear()
-        ListenerManager.unRegisterListeners()
         plugin.saveDefaultConfig()
     }
 
