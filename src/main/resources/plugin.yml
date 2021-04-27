@@ -5,4 +5,4 @@ authors: [${author}]
 commands:
   DeEnchantment:
     aliases: [de]
-    description: ""
+

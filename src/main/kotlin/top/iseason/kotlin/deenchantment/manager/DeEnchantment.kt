@@ -319,7 +319,7 @@ object DeEnchantment {
         val nameMap = byName.get(null)
         ConfigManager.byKey = keyMap
         ConfigManager.byName = nameMap
-        var count = 1
+        var count = 0
         val totalCount = deEnchantments.size
         for (field in javaClass.declaredFields) {
             val enchantment = field.get(this)
@@ -331,15 +331,21 @@ object DeEnchantment {
                 } finally {
                     ConfigManager.deEnchantmentsList.add(enchantment)
                     val enchantmentName = ConfigManager.getEnchantmentName(enchantment.name)
-                    LogSender.consoleLog(
-                        "${ChatColor.GREEN}已添加${ChatColor.GRAY}" +
-                                "(${ChatColor.GOLD}${count++}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
-                                "${ChatColor.GRAY}):$enchantmentName"
-                    )
+                    count++
+                    if (!ConfigManager.getConfig().getBoolean("CleanConsole")) {
+                        LogSender.consoleLog(
+                            "${ChatColor.GREEN}已添加${ChatColor.GRAY}" +
+                                    "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
+                                    "${ChatColor.GRAY}):$enchantmentName"
+                        )
+                    }
                 }
-
             }
         }
+        LogSender.consoleLog(
+            "${ChatColor.GREEN}负魔注册完毕"
+                    + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
+        )
         stopRegisterEnchantment()
     }
 

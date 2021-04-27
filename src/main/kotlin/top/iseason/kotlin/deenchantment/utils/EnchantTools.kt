@@ -49,7 +49,7 @@ object EnchantTools {
                     else -> level
                 }
             }
-            if (!ConfigManager.isLevelUnlimited() && level > e2.maxLevel) {
+            if (!ConfigManager.getConfig().getBoolean("LevelUnlimited") && level > e2.maxLevel) {
                 level = e2.maxLevel
             }
             en1[e2] = level

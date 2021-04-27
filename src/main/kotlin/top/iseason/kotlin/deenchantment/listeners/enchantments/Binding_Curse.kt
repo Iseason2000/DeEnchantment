@@ -13,6 +13,7 @@ import java.util.*
 class Binding_Curse : Listener {
     //灵魂绑定
     private val protectionMap = mutableMapOf<UUID, MutableMap<Int, ItemStack>>()
+
     @EventHandler(priority = EventPriority.LOW)
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
         val player = event.entity

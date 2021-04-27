@@ -20,9 +20,6 @@ object ConfigManager {
     var byKey: Any? = null
     var byName: Any? = null
 
-    //特性设置
-    private var isLevelUnlimited: Boolean = false
-
     fun init(plugin: JavaPlugin) {
         this.plugin = plugin as DeEnchantmentPlugin
         reload()
@@ -42,7 +39,6 @@ object ConfigManager {
         ListenerManager.registerListeners()
         loadDeEnchantmentsNameList()
         plugin.saveDefaultConfig()
-        isLevelUnlimited = config.getBoolean("LevelUnlimited")
     }
 
     fun quit() {
@@ -86,7 +82,6 @@ object ConfigManager {
         return deEnchantments[keyName]?.first
     }
 
-    fun isLevelUnlimited() = isLevelUnlimited
 
     fun getEnchantmentChance(keyName: String): Double? {
         return deEnchantments[keyName]?.second
@@ -100,17 +95,24 @@ object ConfigManager {
         nameField.isAccessible = true
         val keyMap = keyField[null]
         if (keyMap is HashMap<*, *>) {
-            var count = 1
+            var count = 0
             val totalCount = deEnchantmentsList.size
             for (en in deEnchantmentsList) {
                 val enchantmentName = getEnchantmentName(en.name)
-                LogSender.consoleLog(
-                    "${ChatColor.YELLOW}已注销${ChatColor.GRAY}" +
-                            "(${ChatColor.GOLD}${count++}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
-                            "${ChatColor.GRAY}):$enchantmentName"
-                )
+                count++
+                if (!config.getBoolean("CleanConsole")) {
+                    LogSender.consoleLog(
+                        "${ChatColor.YELLOW}已注销${ChatColor.GRAY}" +
+                                "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
+                                "${ChatColor.GRAY}):$enchantmentName"
+                    )
+                }
                 keyMap.remove(en.key)
             }
+            LogSender.consoleLog(
+                "${ChatColor.YELLOW}负魔注销完毕"
+                        + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
+            )
         }
         val nameMap = nameField[null]
         if (nameMap is HashMap<*, *>)
