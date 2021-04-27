@@ -17,7 +17,7 @@ class TargetFinder(
             this.cancel()
             return
         }
-        val nearbyEntities = projectile.getNearbyEntities(16.0, 16.0, 16.0)//寻找范围
+        val nearbyEntities = projectile.getNearbyEntities(10.0, 10.0, 10.0)//寻找范围
         if (nearbyEntities.isEmpty()) return
         val location = projectile.location.clone()
         nearbyEntities.sortBy {
@@ -28,7 +28,7 @@ class TargetFinder(
             if (entity == projectile.shooter) continue
             val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_projectile_protection)
             if (levelCount == 0) continue
-            if (levelCount < location.distance(entity.location) - 1) continue
+            if (levelCount * 2 < location.distance(entity.location) - 1) continue
             isFind = true
             projectile.setGravity(false)
             val attract = entity.eyeLocation.toVector()

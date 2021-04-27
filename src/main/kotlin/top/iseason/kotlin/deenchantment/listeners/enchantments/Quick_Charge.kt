@@ -10,7 +10,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.runnables.CorssBowCanceller
 
 class Quick_Charge : Listener {
-    val chargeMap = HashMap<ItemStack, Int>()
+    private val chargeMap = HashMap<ItemStack, Int>()
 
     @EventHandler
     fun onPlayerInteractEvent(event: PlayerInteractEvent) {

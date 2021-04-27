@@ -1,5 +1,6 @@
 package top.iseason.kotlin.deenchantment.listeners.controllers
 
+import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
@@ -7,8 +8,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
+import top.iseason.kotlin.deenchantment.utils.LogSender
 
-//todo:不支持下界合金及部分装备
 class AnvilListener : Listener {
     @EventHandler
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
@@ -31,13 +32,22 @@ class AnvilListener : Listener {
         if (itemMeta2 !is EnchantmentStorageMeta && itemMeta2 != itemMeta1) return
         val resultItem = item1.clone()
         val cost = EnchantTools.addEnchantments(resultItem, enchantments2)
-        if (item1 == resultItem) return //不能附魔的物品
+        if (item1 == resultItem) {//不能附魔的物品
+            event.result = null
+            return
+        }
         val repairCost1 = EnchantTools.getRepairCost(item1)
         val repairCost2 = EnchantTools.getRepairCost(item2)
         val finalCost = if (repairCost1 <= repairCost2) repairCost2 else repairCost1
         val costItem = EnchantTools.setRepairCost(resultItem, 2 * finalCost + 1)
         val anvilView = event.inventory
         anvilView.repairCost = 2 * finalCost + 1 + cost
+        if (anvilView.repairCost >= 40) {
+            LogSender.log(
+                anvilView.viewers[0],
+                "${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}"
+            )
+        }
         event.result = costItem
     }
 }

@@ -8,7 +8,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.utils.runnables.TargetFinder
 
-//弹射物穿透
+//弹射物吸引
 class Projectile_Protection : Listener {
     private val launchMap = mutableMapOf<Projectile, TargetFinder>()
 

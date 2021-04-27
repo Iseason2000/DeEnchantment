@@ -18,7 +18,7 @@ class Punch : Listener {
         if (damager !is Projectile) return
         val shooter = damager.shooter
         if (shooter !is LivingEntity) return
-
+        //
         val item = shooter.equipment?.itemInMainHand ?: return
         val level = item.enchantments[DeEnchantment.DE_punch] ?: return
         if (level <= 0) return

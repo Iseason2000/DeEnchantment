@@ -25,6 +25,5 @@ class Piercing : Listener {
         ).fireTicks = entity.fireTicks
         entity.remove()
 
-
     }
 }

@@ -9,7 +9,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
 //水下窒息
 class Respiration : Listener {
-    // 不完美
+    // 资源占用较高
     @EventHandler
     fun onEntityAirChangeEvent(event: EntityAirChangeEvent) {
         if (event.isCancelled) return

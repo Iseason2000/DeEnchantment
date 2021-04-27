@@ -22,7 +22,7 @@ object EnchantTools {
 
     fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>): Int {
         var cost = 0
-        val itemMeta = target.itemMeta!!
+        val itemMeta = target.itemMeta ?: return 0
         val enchantments: Map<Enchantment, Int> =
             if (itemMeta is EnchantmentStorageMeta)
                 itemMeta.storedEnchants
@@ -34,7 +34,7 @@ object EnchantTools {
             if (target.type != Material.ENCHANTED_BOOK && !e2.canEnchantItem(target)) continue
             var isConflict = false
             for ((e1, _) in en1) {
-                if (e1 != e2 && e2.conflictsWith(e1)) {
+                if (e1 != e2 && (e2.conflictsWith(e1) || e1.conflictsWith(e2))) {
                     isConflict = true
                     break
                 }
@@ -49,11 +49,9 @@ object EnchantTools {
                     else -> level
                 }
             }
-            //todo:待测试
             if (!ConfigManager.isLevelUnlimited() && level > e2.maxLevel) {
                 level = e2.maxLevel
             }
-
             en1[e2] = level
             cost += level
         }
