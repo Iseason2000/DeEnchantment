@@ -11,6 +11,7 @@ class Mending : Listener {
         if (event.isCancelled) return
         val level = event.item.enchantments[DeEnchantment.DE_mending] ?: return
         if (level <= 0) return
+        if (event.damage < 1) return
         val player = event.player
         player.giveExp(level)
     }

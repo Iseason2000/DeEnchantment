@@ -50,9 +50,10 @@ object EnchantTools {
                 }
             }
             //todo:待测试
-            if (ConfigManager.isLevelUnlimited() && level > e2.maxLevel) {
+            if (!ConfigManager.isLevelUnlimited() && level > e2.maxLevel) {
                 level = e2.maxLevel
             }
+
             en1[e2] = level
             cost += level
         }
@@ -70,8 +71,8 @@ object EnchantTools {
     private fun clearEnchantLore(itemMeta: ItemMeta) {
         if (!itemMeta.hasLore()) return
         var loreList = itemMeta.lore!!
-        val deEnchantmentsList = ConfigManager.getDeEnchantmentsNameMap()
-        for (name in deEnchantmentsList) {
+        val deEnchantmentsMap = ConfigManager.getDeEnchantmentsNameMap()
+        for ((name, _) in deEnchantmentsMap) {
             loreList = loreList.filterNot {
                 it.contains(Regex("$name \\w+?"))
             }

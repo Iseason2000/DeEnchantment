@@ -8,7 +8,6 @@ import top.iseason.kotlin.deenchantment.utils.Tools
 
 //时运不济
 class Fortune : Listener {
-    //todo:未完成
     @EventHandler
     fun onBlockBreakEvent(event: BlockDropItemEvent) {
         if (event.isCancelled) return

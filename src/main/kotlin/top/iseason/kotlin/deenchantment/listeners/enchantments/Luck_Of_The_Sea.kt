@@ -19,7 +19,7 @@ class Luck_Of_The_Sea : Listener {
             ?: equipment.itemInOffHand.enchantments[DeEnchantment.DE_luck_of_the_sea] ?: return
         if (level <= 0) return
         if (Tools.getRandomDouble() > level * 0.1) return
+        event.caught?.remove() ?: return
         player.sendMessage("${ChatColor.YELLOW}你受到了大海的嫌弃并回收了你的东西")
-        event.caught?.remove()
     }
 }

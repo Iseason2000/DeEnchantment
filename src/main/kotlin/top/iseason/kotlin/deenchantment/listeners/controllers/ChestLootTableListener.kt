@@ -8,6 +8,7 @@ import top.iseason.kotlin.deenchantment.utils.EnchantTools
 class ChestLootTableListener : Listener {
     @EventHandler
     fun onLootGenerateEvent(event: LootGenerateEvent) {
+        if (event.isCancelled) return
         val loot = event.loot
         for (item in loot) {
             EnchantTools.translateEnchantsByChance(item)

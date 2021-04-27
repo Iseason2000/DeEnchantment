@@ -1,4 +1,4 @@
-package top.iseason.kotlin.deenchantment.commands
+package top.iseason.kotlin.deenchantment
 
 import org.bukkit.ChatColor
 import org.bukkit.Material

@@ -3,6 +3,7 @@ package top.iseason.kotlin.deenchantment.manager
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
+import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
 import top.iseason.kotlin.deenchantment.utils.DeEnum
@@ -32,6 +33,7 @@ object ConfigManager {
         if (isInit)
             plugin.reloadConfig()
         config = plugin.config
+        HandlerList.unregisterAll(plugin)
         resetEnchantments()
         deEnchantments = HashMap()
         deEnchantmentsList.clear()

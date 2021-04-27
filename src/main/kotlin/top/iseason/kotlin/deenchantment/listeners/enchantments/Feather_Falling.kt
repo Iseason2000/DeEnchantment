@@ -19,7 +19,7 @@ class Feather_Falling : Listener {
         if (entity !is LivingEntity) return
         val enchantments = entity.equipment?.boots?.enchantments ?: return
         val level = enchantments[DeEnchantment.DE_respiration] ?: return
-        if (level == 0) return
+        if (level <= 0) return
         event.damage = event.damage + event.damage * (level * 12 * 0.01)
         entity.addPotionEffect(PotionEffect(PotionEffectType.SLOW, level * 20, 3))
     }

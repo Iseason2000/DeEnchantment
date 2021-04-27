@@ -31,7 +31,7 @@ class AnvilListener : Listener {
         if (itemMeta2 !is EnchantmentStorageMeta && itemMeta2 != itemMeta1) return
         val resultItem = item1.clone()
         val cost = EnchantTools.addEnchantments(resultItem, enchantments2)
-        if (item1 == resultItem) return//todo:检查必要性
+        if (item1 == resultItem) return //不能附魔的物品
         val repairCost1 = EnchantTools.getRepairCost(item1)
         val repairCost2 = EnchantTools.getRepairCost(item2)
         val finalCost = if (repairCost1 <= repairCost2) repairCost2 else repairCost1
