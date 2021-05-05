@@ -12,7 +12,6 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 
 //刺穿
 class Impaling : Listener {
-    //todo:已修改 待测试
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         val entity = event.entity

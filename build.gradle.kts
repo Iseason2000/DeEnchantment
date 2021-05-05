@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    api("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    api("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.31")
     implementation("io.github.bananapuncher714:nbteditor:7.16.1")
 }
