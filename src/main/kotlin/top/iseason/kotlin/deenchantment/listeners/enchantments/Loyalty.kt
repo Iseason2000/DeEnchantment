@@ -8,6 +8,8 @@ import org.bukkit.entity.Trident
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.ProjectileHitEvent
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.Tools
 
@@ -39,12 +41,15 @@ class Loyalty : Listener {
                     }
                 } else {
                     nearbyEntity.location.world?.dropItem(nearbyEntity.location, itemInMainHand)
-                    try {
-                        equipment.itemInMainHandDropChance = 1.0F
-                    } catch (e: Exception) {
-                    }
                 }
+            if (entity !is Player) {
+                try {
+                    equipment.itemInMainHandDropChance = 1.0F
+                } catch (e: Exception) {
+                }
+            }
             val shooter = entity.shooter
+            nearbyEntity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 200, 0))
             if (shooter is Player)
                 shooter.sendMessage(
                     "${ChatColor.RED}您的武器已背叛！${ChatColor.YELLOW}现在属于" +
