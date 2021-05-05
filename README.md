@@ -61,10 +61,11 @@
 
 ## 部分效果截图
 
-![beipan](C:\Users\Iseason\Desktop\beipan.jpg)
-![ronyanxingzhe](C:\Users\Iseason\Desktop\ronyanxingzhe.jpg)
-![duochong](C:\Users\Iseason\Desktop\duochong.jpg)
-![tanshewuxiying](C:\Users\Iseason\Desktop\tanshewuxiying.jpg)
+![duochong](https://user-images.githubusercontent.com/65019366/117104859-72182880-adaf-11eb-8259-ed838d76ef1f.jpg)
+![beipan](https://user-images.githubusercontent.com/65019366/117104865-76444600-adaf-11eb-9536-b5c32a4b41ae.jpg)
+![ronyanxingzhe](https://user-images.githubusercontent.com/65019366/117104866-76dcdc80-adaf-11eb-93ea-fb88d13311af.jpg)
+![tanshewuxiying](https://user-images.githubusercontent.com/65019366/117104867-780e0980-adaf-11eb-8bbd-a6d2c637bbcd.jpg)
+
 
 ## 配置
 
