@@ -19,6 +19,7 @@ object ConfigManager {
     private var isInit = false
     var byKey: Any? = null
     var byName: Any? = null
+    private var prefix: String? = null
 
     fun init(plugin: JavaPlugin) {
         this.plugin = plugin as DeEnchantmentPlugin
@@ -30,6 +31,8 @@ object ConfigManager {
         if (isInit)
             plugin.reloadConfig()
         config = plugin.config
+        val pre = config.getString("Prefix") ?: ""
+        prefix = ChatColor.translateAlternateColorCodes('&', pre)
         HandlerList.unregisterAll(plugin)
         resetEnchantments()
         deEnchantments = HashMap()
@@ -81,6 +84,8 @@ object ConfigManager {
     fun getEnchantmentName(keyName: String): String? {
         return deEnchantments[keyName]?.first
     }
+
+    fun getPrefix() = prefix
 
 
     fun getEnchantmentChance(keyName: String): Double? {

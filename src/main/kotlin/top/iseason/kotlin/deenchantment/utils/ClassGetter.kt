@@ -3,7 +3,6 @@ package top.iseason.kotlin.deenchantment.utils
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.IOException
 import java.net.URL
-import java.util.*
 import java.util.jar.JarFile
 
 class ClassGetter(plugin: JavaPlugin, packageName: String) {
@@ -39,6 +38,7 @@ class ClassGetter(plugin: JavaPlugin, packageName: String) {
                 }
             }
         } catch (e: IOException) {
+            e.printStackTrace()
             throw Exception("类名获取异常!")
         }
     }

@@ -33,8 +33,6 @@ class Riptide : Listener {
         }
         val direction = shooter.location.direction.multiply(-level)
         shooter.velocity = direction
-
-
     }
 
 }

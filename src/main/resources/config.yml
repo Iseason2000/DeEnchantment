@@ -20,7 +20,8 @@ Reward: true
 LevelUnlimited: false
 # 是否开启控制台精简模式：开启后不会出现 所有附魔的名字
 CleanConsole: false
-
+# 通知消息前缀
+Prefix: "&5[&c负魔书&5]&r"
 # 负魔:
 # Enable:开/关
 # DisplayName: 显示名称

@@ -27,7 +27,5 @@ class Smite : Listener {
             return
         }
         event.damage = event.damage - 2.5 * level
-        println(entity.health)
-        println(event.damage)
     }
 }

@@ -11,6 +11,7 @@ import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import top.iseason.kotlin.deenchantment.utils.LogSender
 import top.iseason.kotlin.deenchantment.utils.Tools
 
 //背叛
@@ -51,7 +52,8 @@ class Loyalty : Listener {
             val shooter = entity.shooter
             nearbyEntity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 200, 0))
             if (shooter is Player)
-                shooter.sendMessage(
+                LogSender.log(
+                    shooter,
                     "${ChatColor.RED}您的武器已背叛！${ChatColor.YELLOW}现在属于" +
                             "${ChatColor.AQUA}${nearbyEntity.name} ${ChatColor.YELLOW}" +
                             "位于${ChatColor.GREEN}" +

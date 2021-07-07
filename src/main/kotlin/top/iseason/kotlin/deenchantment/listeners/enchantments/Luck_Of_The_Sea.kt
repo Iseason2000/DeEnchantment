@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerFishEvent
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
+import top.iseason.kotlin.deenchantment.utils.LogSender
 import top.iseason.kotlin.deenchantment.utils.Tools
 
 //海之嫌弃
@@ -20,6 +21,6 @@ class Luck_Of_The_Sea : Listener {
         if (level <= 0) return
         if (Tools.getRandomDouble() > level * 0.1) return
         event.caught?.remove() ?: return
-        player.sendMessage("${ChatColor.YELLOW}你受到了大海的嫌弃并回收了你的东西")
+        LogSender.log(player, "${ChatColor.YELLOW}你受到了大海的嫌弃并回收了你的东西")
     }
 }
