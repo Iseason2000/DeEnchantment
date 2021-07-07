@@ -5,10 +5,10 @@ plugins {
 //    kotlin("jvm") version "1.0.0"
 }
 group = "top.iseason.kotlin"
-version = "1.0.2"
+version = "1.0.3"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
-val jarOutputFile = "E:\\mc\\testserver1.16.5\\plugins"
+val jarOutputFile = "E:\\mc\\1.17 server\\plugins"
 
 repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ repositories {
 dependencies {
     api("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.31")
-    implementation("io.github.bananapuncher714:nbteditor:7.16.1")
+    implementation("io.github.bananapuncher714:nbteditor:7.17.0")
 }
 
 (tasks.getByName("processResources") as ProcessResources).apply {
@@ -38,7 +38,7 @@ dependencies {
 }
 tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     dependencies {
-        include(dependency("io.github.bananapuncher714:nbteditor:7.16.1"))
+        include(dependency("io.github.bananapuncher714:nbteditor:7.17.0"))
         include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.4.31"))
     }
     destinationDirectory.set(file(jarOutputFile))
