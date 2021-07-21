@@ -75,6 +75,12 @@ object ListenerManager {
             Bukkit.getPluginManager().registerEvents(entityDropItemListener, plugin)
             listeners.add(entityDropItemListener)
         }
+        if (config.getBoolean("Grindstone")) {
+            str.append("砂轮、")
+            val grindstoneListener = GrindstoneListener()
+            Bukkit.getPluginManager().registerEvents(grindstoneListener, plugin)
+            listeners.add(grindstoneListener)
+        }
         LogSender.consoleLog("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
     }
 }

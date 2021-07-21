@@ -66,9 +66,9 @@ object EnchantTools {
         return DeEnchantment.getByKeyName(keyName)
     }
 
-    private fun clearEnchantLore(itemMeta: ItemMeta) {
+    fun clearEnchantLore(itemMeta: ItemMeta) {
         if (!itemMeta.hasLore()) return
-        var loreList = itemMeta.lore!!
+        var loreList = itemMeta.lore ?: return
         val deEnchantmentsMap = ConfigManager.getDeEnchantmentsNameMap()
         for ((name, _) in deEnchantmentsMap) {
             loreList = loreList.filterNot {
@@ -81,20 +81,21 @@ object EnchantTools {
     fun translateEnchantsByChance(itemStack: ItemStack) {
         val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
         if (enchantOrStoredEnchant.isNullOrEmpty()) return
-        val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant)
+        val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant).toMutableMap()
         clearEnchants(itemStack)
-        val itemMeta = itemStack.itemMeta!!
-        addEnchants(itemMeta, enchantByChance.toMutableMap())
+        val itemMeta = itemStack.itemMeta ?: return
+        addEnchants(itemMeta, enchantByChance)
         setDeEnchantLore(itemMeta)
         itemStack.itemMeta = itemMeta
     }
 
     fun clearEnchants(itemStack: ItemStack) {
-        val itemMeta = itemStack.itemMeta!!
+        val itemMeta = itemStack.itemMeta ?: return
         if (itemMeta is EnchantmentStorageMeta) {
             val storedEnchants = itemMeta.storedEnchants
-            for ((storedEnchant, _) in storedEnchants)
+            for ((storedEnchant, _) in storedEnchants) {
                 itemMeta.removeStoredEnchant(storedEnchant)
+            }
         } else {
             val enchants = itemMeta.enchants
             for ((en, _) in enchants)
@@ -131,10 +132,10 @@ object EnchantTools {
         val removeMap = mutableMapOf<Enchantment, Int>()
         val addSet = mutableSetOf<Enchantment>()
         for ((en, level) in enchants) {
-            val deEnchantByEnchant = getDeEnchantByEnchant(en)
+            val deEnchantByEnchant = getDeEnchantByEnchant(en) ?: continue//剔除非原版附魔
             val enchantmentChance = ConfigManager.getEnchantmentChance("De_${en.key.key}".toUpperCase()) ?: 0.0
             val random = Tools.getRandomDouble()
-            if (deEnchantByEnchant != null && random < enchantmentChance) {//概率计算
+            if (random < enchantmentChance) {//概率计算
                 removeMap[en] = level
                 addSet.add(deEnchantByEnchant)
             }
@@ -156,7 +157,7 @@ object EnchantTools {
             //if (enchant !is DeEnchantmentWrapper) continue
             val enchantmentName = ConfigManager.getEnchantmentName(enchant.key.key.toUpperCase()) ?: continue
             val wholeName = "$enchantmentName ${Tools.intToRome(level)}"
-            loreList.add(0, wholeName)
+            loreList.add(wholeName)
         }
         itemMeta.lore = loreList
     }

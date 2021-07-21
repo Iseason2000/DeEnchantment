@@ -14,7 +14,8 @@ Villager: true
 Fishing: true
 # 是否应用于生物给予（猪灵交易、村庄英雄等生物丢物品行为）
 Reward: true
-
+# 是否应用于砂轮祛魔
+Grindstone: true
 # 特性设置 true | false
 # 是否突破等级上限
 LevelUnlimited: false

@@ -29,7 +29,7 @@ class AnvilListener : Listener {
         //第二个没有附魔跳过
         if (enchantments2.isEmpty()) return
         //不是附魔书且材质与第一格不同
-        if (itemMeta2 !is EnchantmentStorageMeta && itemMeta2 != itemMeta1) return
+        if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
         val resultItem = item1.clone()
         val cost = EnchantTools.addEnchantments(resultItem, enchantments2)
         if (item1 == resultItem) {//不能附魔的物品

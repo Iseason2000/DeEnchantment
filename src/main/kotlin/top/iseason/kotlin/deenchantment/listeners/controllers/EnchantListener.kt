@@ -11,7 +11,7 @@ import top.iseason.kotlin.deenchantment.utils.EnchantTools
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
 class EnchantListener : Listener {
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.HIGHEST)
     fun onEnchantItemEvent(event: EnchantItemEvent) {
         if (event.isCancelled) return
         val enchantsToAdd = event.enchantsToAdd
