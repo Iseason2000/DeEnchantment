@@ -11,7 +11,7 @@ import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 
 class GrindstoneListener : Listener {
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onEnchantGrindStone(event: InventoryClickEvent) {
         val player = event.whoClicked as Player
         val top = player.openInventory

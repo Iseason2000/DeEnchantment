@@ -1,13 +1,14 @@
 package top.iseason.kotlin.deenchantment.listeners.controllers
 
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.VillagerAcquireTradeEvent
 import org.bukkit.inventory.MerchantRecipe
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 class MerchantListener : Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onVillagerAcquireTradeEvent(event: VillagerAcquireTradeEvent) {
         if (event.isCancelled) return
         val recipe = event.recipe

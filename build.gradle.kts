@@ -5,10 +5,10 @@ plugins {
 //    kotlin("jvm") version "1.0.0"
 }
 group = "top.iseason.kotlin"
-version = "1.0.5"
+version = "1.0.6"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
-val jarOutputFile = "E:\\mc\\1.17.1 servers\\plugins"
+val jarOutputFile = "E:\\mc\\testserver1.16.5\\plugins"
 
 repositories {
     mavenCentral()

@@ -2,12 +2,13 @@ package top.iseason.kotlin.deenchantment.listeners.controllers
 
 import org.bukkit.entity.Mob
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.CreatureSpawnEvent
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 
 class EntitySpawnListener : Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onCreatureSpawnEvent(event: CreatureSpawnEvent) {
         if (event.isCancelled) return
         val entity = event.entity

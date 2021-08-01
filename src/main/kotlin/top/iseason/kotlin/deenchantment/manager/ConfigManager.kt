@@ -20,7 +20,7 @@ object ConfigManager {
     var byKey: Any? = null
     var byName: Any? = null
     private var prefix: String? = null
-
+    private var showLore: Boolean? = null
     fun init(plugin: JavaPlugin) {
         this.plugin = plugin as DeEnchantmentPlugin
         reload()
@@ -33,6 +33,7 @@ object ConfigManager {
         config = plugin.config
         val pre = config.getString("Prefix") ?: ""
         prefix = ChatColor.translateAlternateColorCodes('&', pre)
+        showLore = config.getBoolean("ShowLore")
         HandlerList.unregisterAll(plugin)
         resetEnchantments()
         deEnchantments = HashMap()
@@ -60,7 +61,8 @@ object ConfigManager {
         deEnchantmentsNameMap = HashMap()
         for (enchantment in deEnchantmentsList) {
             val enchantmentName = getEnchantmentName(enchantment.name)
-            deEnchantmentsNameMap[ChatColor.stripColor(enchantmentName)!!] = DeEnchantment.getDeEnum(enchantment)
+            deEnchantmentsNameMap[ChatColor.stripColor(enchantmentName)!!] =
+                DeEnchantment.getDeEnum(enchantment) ?: continue
         }
     }
 
@@ -86,7 +88,7 @@ object ConfigManager {
     }
 
     fun getPrefix() = prefix
-
+    fun getShowLore() = showLore
 
     fun getEnchantmentChance(keyName: String): Double? {
         return deEnchantments[keyName]?.second

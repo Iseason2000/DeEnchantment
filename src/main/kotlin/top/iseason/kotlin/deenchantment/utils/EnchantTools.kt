@@ -149,8 +149,10 @@ object EnchantTools {
     }
 
     private fun setLoreWithEnchants(itemMeta: ItemMeta, enchants: Map<Enchantment, Int>) {
-        clearEnchantLore(itemMeta)
+        val isShowLore = ConfigManager.getShowLore() ?: true
+        if (!isShowLore) return
         if (enchants.isEmpty()) return
+        clearEnchantLore(itemMeta)
         val loreList = itemMeta.lore ?: mutableListOf<String>()
         for ((enchant, level) in enchants) {
             //此判断在热重载时会失败

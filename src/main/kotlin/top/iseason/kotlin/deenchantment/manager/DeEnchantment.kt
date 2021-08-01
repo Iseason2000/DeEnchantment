@@ -316,7 +316,7 @@ object DeEnchantment {
         byKey.isAccessible = true
         byName.isAccessible = true
         val keyMap = byKey.get(null)
-        val nameMap = byName.get(null)
+        val nameMap = byName.get(null) as Map<*, *>
         ConfigManager.byKey = keyMap
         ConfigManager.byName = nameMap
         var count = 0
@@ -358,12 +358,16 @@ object DeEnchantment {
 
     }
 
-    fun getDeEnum(enchantment: Enchantment): DeEnum {
+    fun getDeEnum(enchantment: Enchantment): DeEnum? {
         val name = enchantment.key.key
         return try {
             DeEnum.valueOf(name.toUpperCase())
         } catch (e: IllegalArgumentException) {
-            DeEnum.valueOf("de_$name".toUpperCase())
+            try {
+                DeEnum.valueOf("de_$name".toUpperCase())
+            } catch (e: IllegalArgumentException) {
+                null
+            }
         }
     }
 

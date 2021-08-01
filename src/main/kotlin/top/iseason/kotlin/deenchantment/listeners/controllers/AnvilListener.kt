@@ -4,6 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
@@ -11,13 +12,12 @@ import top.iseason.kotlin.deenchantment.utils.EnchantTools
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
 class AnvilListener : Listener {
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
         val item2 = event.view.getItem(1) ?: return
         //空气没有ItemMeta
-        val itemMeta1 = item1.itemMeta ?: return
         val itemMeta2 = item2.itemMeta ?: return
         //1格为附魔书而2格不是附魔书
         if (item1.type == Material.ENCHANTED_BOOK && item2.type != Material.ENCHANTED_BOOK) return

@@ -23,6 +23,8 @@ LevelUnlimited: false
 CleanConsole: false
 # 通知消息前缀
 Prefix: "&5[&c负魔书&5]&r"
+# 是否显示附魔lore，如果不显示将不会有描述，适用于EcoEnchantment
+ShowLore: true
 # 负魔:
 # Enable:开/关
 # DisplayName: 显示名称
