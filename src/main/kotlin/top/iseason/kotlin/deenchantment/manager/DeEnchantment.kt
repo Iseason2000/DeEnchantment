@@ -325,6 +325,8 @@ object DeEnchantment {
             val enchantment = field.get(this)
             if (enchantment is DeEnchantmentWrapper && deEnchantments.contains(enchantment.name)) {
                 //如果存在，则继续
+                val maxLevel = ConfigManager.getConfig().getInt("${enchantment.name}.MaxLevel")
+                enchantment.myMaxLevel = maxLevel
                 try {
                     Enchantment.registerEnchantment(enchantment)
                 } catch (e: IllegalArgumentException) {

@@ -28,156 +28,195 @@ ShowLore: true
 # 负魔:
 # Enable:开/关
 # DisplayName: 显示名称
+# MaxLevel: 不突破上限的最高等级(部分附魔无效)
 # Chance :出现概率(0~1)
 DE_PROTECTION:
   Enable: true
   DisplayName: "&7保护不能"
+  MaxLevel: 4
   Chance: 0.2
 DE_FIRE_PROTECTION:
   Enable: true
   DisplayName: "&7火焰灼烧"
+  MaxLevel: 4
   Chance: 0.2
 DE_FEATHER_FALLING:
   Enable: true
   DisplayName: "&7摔落骨折"
+  MaxLevel: 4
   Chance: 0.2
 DE_BLAST_PROTECTION:
   Enable: true
   DisplayName: "&7瞬间爆炸"
+  MaxLevel: 4
   Chance: 0.2
 DE_PROJECTILE_PROTECTION:
   Enable: true
   DisplayName: "&7弹射物吸引"
+  MaxLevel: 4
   Chance: 0.2
 DE_RESPIRATION:
   Enable: true
   DisplayName: "&7水下窒息"
+  MaxLevel: 3
   Chance: 0.2
 DE_AQUA_AFFINITY:
   Enable: true
   DisplayName: "&7水下慢掘"
+  MaxLevel: 1
   Chance: 0.2
 DE_THORNS:
   Enable: true
   DisplayName: "&7负荆请罪"
+  MaxLevel: 3
   Chance: 0.2
 DE_DEPTH_STRIDER:
   Enable: true
   DisplayName: "&7旱鸭子"
+  MaxLevel: 3
   Chance: 0.2
 DE_FROST_WALKER:
   Enable: true
   DisplayName: "&7熔岩行者"
+  MaxLevel: 2
   Chance: 0.2
 DE_BINDING_CURSE:
   Enable: true
   DisplayName: "&a灵魂绑定"
+  MaxLevel: 1
   Chance: 0.2
 DE_SHARPNESS:
   Enable: true
   DisplayName: "&7磨钝"
+  MaxLevel: 5
   Chance: 0.2
 DE_SMITE:
   Enable: true
   DisplayName: "&7亡灵救赎"
+  MaxLevel: 5
   Chance: 0.2
 DE_BANE_OF_ARTHROPODS:
   Enable: true
   DisplayName: "&7节肢救星"
+  MaxLevel: 5
   Chance: 0.2
 DE_KNOCKBACK:
   Enable: true
   DisplayName: "&7退击"
+  MaxLevel: 2
   Chance: 0.2
 DE_FIRE_ASPECT:
   Enable: true
   DisplayName: "&7引火烧身"
+  MaxLevel: 2
   Chance: 0.2
 DE_LOOTING:
   Enable: true
   DisplayName: "&7知足"
+  MaxLevel: 3
   Chance: 0.2
 DE_SWEEPING:
   Enable: true
   DisplayName: "&7横扫失败"
+  MaxLevel: 3
   Chance: 0.2
 DE_EFFICIENCY:
   Enable: true
   DisplayName: "&7低效"
+  MaxLevel: 5
   Chance: 0.2
 DE_SILK_TOUCH:
   Enable: true
   DisplayName: "&7彻底粉碎"
+  MaxLevel: 1
   Chance: 0.2
 DE_UNBREAKING:
   Enable: true
   DisplayName: "&7易损"
+  MaxLevel: 3
   Chance: 0.2
 DE_FORTUNE:
   Enable: true
   DisplayName: "&7时运不济"
+  MaxLevel: 3
   Chance: 0.2
 DE_POWER:
   Enable: true
   DisplayName: "&7虚弱"
+  MaxLevel: 5
   Chance: 0.2
 DE_PUNCH:
   Enable: true
   DisplayName: "&7吸引"
+  MaxLevel: 2
   Chance: 0.2
 DE_FLAME:
   Enable: true
   DisplayName: "&7神速"
+  MaxLevel: 1
   Chance: 0.2
 DE_INFINITY:
   Enable: true
   DisplayName: "&7多重"
+  MaxLevel: 1
   Chance: 0.2
 DE_LUCK_OF_THE_SEA:
   Enable: true
   DisplayName: "&7海之嫌弃"
+  MaxLevel: 3
   Chance: 0.2
 DE_LURE:
   Enable: true
   DisplayName: "&7过期钓饵"
+  MaxLevel: 3
   Chance: 0.2
 DE_LOYALTY:
   Enable: true
   DisplayName: "&7背叛"
+  MaxLevel: 3
   Chance: 0.2
 DE_IMPALING:
   Enable: true
   DisplayName: "&7刺穿"
+  MaxLevel: 5
   Chance: 0.2
 DE_RIPTIDE:
   Enable: true
   DisplayName: "&7逆流"
+  MaxLevel: 3
   Chance: 0.2
 DE_CHANNELING:
   Enable: true
   DisplayName: "&7避雷针"
+  MaxLevel: 1
   Chance: 0.2
 DE_MULTISHOT:
   Enable: true
   DisplayName: "&7连珠"
+  MaxLevel: 1
   Chance: 0.2
 DE_QUICK_CHARGE:
   Enable: true
   DisplayName: "&7慢速填充"
+  MaxLevel: 3
   Chance: 0.2
 DE_PIERCING:
   Enable: true
   DisplayName: "&7反弹"
+  MaxLevel: 4
   Chance: 0.2
 DE_MENDING:
   Enable: true
   DisplayName: "&7经验反哺"
+  MaxLevel: 1
   Chance: 0.2
 DE_VANISHING_CURSE:
   Enable: true
   DisplayName: "&a永存祝福"
+  MaxLevel: 1
   Chance: 0.2
 DE_SOUL_SPEED:
   Enable: true
   DisplayName: "&7疾行"
+  MaxLevel: 3
   Chance: 0.2

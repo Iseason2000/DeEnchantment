@@ -16,6 +16,16 @@ class AnvilListener : Listener {
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
+        //可能是要改名
+        val renameText = event.inventory.renameText
+
+        if (renameText != null && renameText.isNotEmpty()) {
+            val clone = item1.clone()
+            val itemMeta = clone.itemMeta
+            itemMeta?.setDisplayName(renameText)
+            clone.itemMeta = itemMeta
+            event.result = clone
+        }
         val item2 = event.view.getItem(1) ?: return
         //空气没有ItemMeta
         val itemMeta2 = item2.itemMeta ?: return
@@ -47,6 +57,11 @@ class AnvilListener : Listener {
                 anvilView.viewers[0],
                 "${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}"
             )
+        }
+        if (renameText != null && renameText.isNotEmpty()) {
+            val itemMeta = costItem.itemMeta
+            itemMeta?.setDisplayName(renameText)
+            costItem.itemMeta = itemMeta
         }
         event.result = costItem
     }
