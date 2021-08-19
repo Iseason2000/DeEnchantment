@@ -6,6 +6,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
 import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
+import top.iseason.kotlin.deenchantment.listeners.enchantments.Frost_Walker
 import top.iseason.kotlin.deenchantment.utils.DeEnum
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
@@ -128,5 +129,8 @@ object ConfigManager {
             }
         keyField.isAccessible = false
         nameField.isAccessible = false
+
+        //清除熔岩行者留下的黑曜石
+        Frost_Walker.clear()
     }
 }

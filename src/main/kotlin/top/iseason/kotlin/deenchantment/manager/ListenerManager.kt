@@ -20,7 +20,9 @@ object ListenerManager {
         //自动注册附魔监听器
         val classGetter = ClassGetter(plugin, "top.iseason.kotlin.deenchantment.listeners.enchantments")
         for (cl in classGetter.classes) {
-            val newInstance = cl.newInstance()
+            val constructor = cl.getDeclaredConstructor()
+            constructor.isAccessible = true
+            val newInstance = constructor.newInstance()
             if (newInstance is Listener && ConfigManager.getConfig()
                     .getBoolean("DE_${cl.simpleName.toUpperCase()}.Enable")
             ) {

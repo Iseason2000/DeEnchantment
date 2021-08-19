@@ -16,7 +16,18 @@ import kotlin.math.sqrt
 
 //熔岩行者
 class Frost_Walker : Listener {
-    private val fakeBlock = HashSet<Block>()
+    companion object {
+        @JvmField
+        val fakeBlock = HashSet<Block>()
+
+        @JvmStatic
+        fun clear() {
+            for (block in fakeBlock) {
+                block.setType(Material.LAVA, true)
+            }
+            fakeBlock.clear()
+        }
+    }
 
     @EventHandler//检测移动
     fun onPlayerMoveEvent(event: PlayerMoveEvent) {
@@ -34,7 +45,7 @@ class Frost_Walker : Listener {
             ) continue
             if ((block.blockData as Levelled).level != 0) continue
             fakeBlock.add(block)
-            BlockTimer(block, fakeBlock).runTaskLater(ConfigManager.getPlugin(), 160)
+            BlockTimer(block).runTaskLater(ConfigManager.getPlugin(), 160)
         }
     }
 
@@ -100,5 +111,4 @@ class Frost_Walker : Listener {
             }
         return sphere
     }
-
 }
