@@ -37,7 +37,14 @@ class AnvilListener : Listener {
             else
                 item2.enchantments
         //第二个没有附魔跳过
-        if (enchantments2.isEmpty()) return
+        if (enchantments2.isEmpty()) {
+            //修复物品判断
+            val result = event.result ?: return
+            //修复物品附魔
+            result.addUnsafeEnchantments(item1.enchantments)
+            return
+        }
+
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
         val resultItem = item1.clone()
