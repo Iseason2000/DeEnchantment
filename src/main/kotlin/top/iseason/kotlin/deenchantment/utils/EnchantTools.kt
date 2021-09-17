@@ -133,7 +133,7 @@ object EnchantTools {
         val addSet = mutableSetOf<Enchantment>()
         for ((en, level) in enchants) {
             val deEnchantByEnchant = getDeEnchantByEnchant(en) ?: continue//剔除非原版附魔
-            val enchantmentChance = ConfigManager.getEnchantmentChance("De_${en.key.key}".toUpperCase()) ?: 0.0
+            val enchantmentChance = ConfigManager.getEnchantmentChance("De_${en.key.key}".uppercase()) ?: 0.0
             val random = Tools.getRandomDouble()
             if (random < enchantmentChance) {//概率计算
                 removeMap[en] = level
@@ -155,18 +155,16 @@ object EnchantTools {
         clearEnchantLore(itemMeta)
         val loreList = itemMeta.lore ?: mutableListOf<String>()
         for ((enchant, level) in enchants) {
-            //此判断在热重载时会失败
-            //if (enchant !is DeEnchantmentWrapper) continue
-            val enchantmentName = ConfigManager.getEnchantmentName(enchant.key.key.toUpperCase()) ?: continue
+            val enchantmentName = ConfigManager.getEnchantmentName(enchant.key.key.uppercase()) ?: continue
             val wholeName = "$enchantmentName ${Tools.intToRome(level)}"
-            loreList.add(wholeName)
+            loreList.add(0, wholeName)
         }
         itemMeta.lore = loreList
     }
 
 
     fun addEnchants(itemMeta: ItemMeta, ens: MutableMap<Enchantment, Int>) {
-        if (ens.isNullOrEmpty()) return
+        if (ens.isEmpty()) return
         if (itemMeta is EnchantmentStorageMeta) {
             for ((en, le) in ens)
                 itemMeta.addStoredEnchant(en, le, true)

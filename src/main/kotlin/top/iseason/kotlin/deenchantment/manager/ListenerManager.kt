@@ -24,7 +24,7 @@ object ListenerManager {
             constructor.isAccessible = true
             val newInstance = constructor.newInstance()
             if (newInstance is Listener && ConfigManager.getConfig()
-                    .getBoolean("DE_${cl.simpleName.toUpperCase()}.Enable")
+                    .getBoolean("DE_${cl.simpleName.uppercase()}.Enable")
             ) {
                 Bukkit.getPluginManager().registerEvents(newInstance, plugin)
                 listeners.add(newInstance)

@@ -363,10 +363,10 @@ object DeEnchantment {
     fun getDeEnum(enchantment: Enchantment): DeEnum? {
         val name = enchantment.key.key
         return try {
-            DeEnum.valueOf(name.toUpperCase())
+            DeEnum.valueOf(name.uppercase())
         } catch (e: IllegalArgumentException) {
             try {
-                DeEnum.valueOf("de_$name".toUpperCase())
+                DeEnum.valueOf("de_$name".uppercase())
             } catch (e: IllegalArgumentException) {
                 null
             }
@@ -378,6 +378,6 @@ object DeEnchantment {
     }
 
     fun getByDeEnum(deEnum: DeEnum): Enchantment? {
-        return getByKeyName(deEnum.toString().toLowerCase())
+        return getByKeyName(deEnum.toString().lowercase())
     }
 }

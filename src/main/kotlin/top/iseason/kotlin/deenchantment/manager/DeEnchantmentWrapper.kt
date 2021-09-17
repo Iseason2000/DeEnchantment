@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment.getDeEnum
 import top.iseason.kotlin.deenchantment.utils.DeEnum
 
-class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.toLowerCase())) {
+class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.lowercase())) {
     private val myName: String = name.name
     var myItemTarget: EnchantmentTarget = EnchantmentTarget.BREAKABLE
     var myMaxLevel: Int = 1
@@ -33,7 +33,7 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     }
 
     override fun canEnchantItem(item: ItemStack): Boolean {
-        val keyName = key.key.replace("de_", "").toLowerCase()
+        val keyName = key.key.replace("de_", "").lowercase()
         val source = getByKey(NamespacedKey.minecraft(keyName))//原附魔
         return source?.canEnchantItem(item) ?: true
     }

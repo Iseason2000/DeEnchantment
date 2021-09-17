@@ -32,17 +32,16 @@ class Loyalty : Listener {
             val equipment = nearbyEntity.equipment ?: continue
             val itemInMainHand = equipment.itemInMainHand
             equipment.setItemInMainHand(trident)
-            if (itemInMainHand.hasItemMeta())
-                if (nearbyEntity is Player && nearbyEntity.gameMode != GameMode.CREATIVE) {
-                    val addItem = nearbyEntity.inventory.addItem(itemInMainHand)
-                    if (addItem.isNotEmpty()) {
-                        for (item in addItem.values) {
-                            nearbyEntity.location.world?.dropItem(nearbyEntity.location, item)
-                        }
+            if (itemInMainHand.hasItemMeta() && nearbyEntity is Player && nearbyEntity.gameMode != GameMode.CREATIVE) {
+                val addItem = nearbyEntity.inventory.addItem(itemInMainHand)
+                if (addItem.isNotEmpty()) {
+                    for (item in addItem.values) {
+                        nearbyEntity.location.world?.dropItem(nearbyEntity.location, item)
                     }
-                } else {
-                    nearbyEntity.location.world?.dropItem(nearbyEntity.location, itemInMainHand)
                 }
+            } else {
+                nearbyEntity.location.world?.dropItem(nearbyEntity.location, itemInMainHand)
+            }
             if (entity !is Player) {
                 try {
                     equipment.itemInMainHandDropChance = 1.0F
@@ -62,6 +61,5 @@ class Loyalty : Listener {
             entity.remove()
             break
         }
-
     }
 }
