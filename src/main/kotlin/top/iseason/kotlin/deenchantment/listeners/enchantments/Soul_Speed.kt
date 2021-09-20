@@ -10,7 +10,7 @@ import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.runnables.PotionAdder
 
 class Soul_Speed : Listener {
-    val playerMap = HashMap<Player, PotionAdder>()
+    private val playerMap = HashMap<Player, PotionAdder>()
 
     @EventHandler
     fun onEntityAirChangeEvent(event: PlayerMoveEvent) {

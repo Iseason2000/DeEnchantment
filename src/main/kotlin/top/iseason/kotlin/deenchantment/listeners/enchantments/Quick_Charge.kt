@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.CrossbowMeta
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
-import top.iseason.kotlin.deenchantment.utils.runnables.CorssBowCanceller
+import top.iseason.kotlin.deenchantment.utils.runnables.CrossBowCanceller
 
 class Quick_Charge : Listener {
     private val chargeMap = HashMap<ItemStack, Int>()
@@ -21,7 +21,7 @@ class Quick_Charge : Listener {
         val itemMeta = clone.itemMeta
         if (itemMeta !is CrossbowMeta) return
         if (itemMeta.hasChargedProjectiles()) return//有箭取消
-        val count = chargeMap[clone] ?: level * 2 //检查次数，没有赋值
+        val count = chargeMap[clone] ?: (level * 2) //检查次数，没有赋值
         if (count <= 0) { //次数达到
             chargeMap.remove(clone)
             return
@@ -30,6 +30,6 @@ class Quick_Charge : Listener {
         val hand = event.hand ?: return
         //取消拉弓
         event.player.equipment?.setItem(hand, null)
-        CorssBowCanceller(event.player, hand, clone).runTaskLater(ConfigManager.getPlugin(), 2)
+        CrossBowCanceller(event.player, hand, clone).runTaskLater(ConfigManager.getPlugin(), 2)
     }
 }

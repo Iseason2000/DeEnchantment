@@ -31,7 +31,7 @@ class Binding_Curse : Listener {
         }
         if (bindings.isEmpty()) return
         protectionMap[player.uniqueId] = bindings
-        event.drops.removeAll(bindings.values)
+        event.drops.removeAll(bindings.values.toSet())
     }
 
     @EventHandler

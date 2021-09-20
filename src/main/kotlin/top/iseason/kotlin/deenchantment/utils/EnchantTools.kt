@@ -29,7 +29,7 @@ object EnchantTools {
             else
                 target.enchantments
         val en1 = enchantments.toMutableMap()
-        if (en2.isNullOrEmpty()) return 0
+        if (en2.isEmpty()) return 0
         for ((e2, l2) in en2) {
             if (target.type != Material.ENCHANTED_BOOK && !e2.canEnchantItem(target)) continue
             var isConflict = false
@@ -80,7 +80,7 @@ object EnchantTools {
 
     fun translateEnchantsByChance(itemStack: ItemStack) {
         val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
-        if (enchantOrStoredEnchant.isNullOrEmpty()) return
+        if (enchantOrStoredEnchant.isEmpty()) return
         val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant).toMutableMap()
         clearEnchants(itemStack)
         val itemMeta = itemStack.itemMeta ?: return
