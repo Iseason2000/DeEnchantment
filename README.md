@@ -2,7 +2,7 @@
 
 > 给原版增加一些对立附魔，有好有坏
 
-![https://bstats.org/signatures/bukkit/DeEnchantment.svg](https://bstats.org/signatures/bukkit/DeEnchantment.svg)
+
 
 ## 附魔突变机制
 
@@ -112,3 +112,4 @@ DE_PROTECTION:
 /deenchantment give [附魔名称] [等级] 给与自己该附魔的附魔书（仅限本插件的附魔）
 ~~~
 
+![](https://bstats.org/signatures/bukkit/DeEnchantment.svg)
