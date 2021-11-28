@@ -25,7 +25,6 @@ class Loyalty : Listener {
         if (Tools.getRandomDouble() > level * 0.1) return
         val distance = level * 5.0
         val nearbyEntities = entity.getNearbyEntities(distance, distance, distance)
-        if (nearbyEntities.isEmpty()) return
         for (nearbyEntity in nearbyEntities) {
             if (nearbyEntity !is LivingEntity || nearbyEntity == entity.shooter) continue
             val trident = entity.item
@@ -34,13 +33,10 @@ class Loyalty : Listener {
             equipment.setItemInMainHand(trident)
             if (itemInMainHand.hasItemMeta() && nearbyEntity is Player && nearbyEntity.gameMode != GameMode.CREATIVE) {
                 val addItem = nearbyEntity.inventory.addItem(itemInMainHand)
-                if (addItem.isNotEmpty()) {
-                    for (item in addItem.values) {
+                for (item in addItem.values) {
+                    if (item.hasItemMeta())
                         nearbyEntity.location.world?.dropItem(nearbyEntity.location, item)
-                    }
                 }
-            } else {
-                nearbyEntity.location.world?.dropItem(nearbyEntity.location, itemInMainHand)
             }
             if (entity !is Player) {
                 try {

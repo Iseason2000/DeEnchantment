@@ -1,10 +1,10 @@
 plugins {
     java
-    id("org.jetbrains.kotlin.jvm") version "1.5.0"
     id("com.github.johnrengelman.shadow") version "7.0.0"
+    kotlin("jvm") version "1.5.31"
 }
 group = "top.iseason.kotlin"
-version = "1.1.0"
+version = "1.1.1"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
 val jarOutputFile = "E:\\mc\\1.17.1 servers\\plugins"
@@ -21,7 +21,7 @@ repositories {
 
 dependencies {
     api("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.30")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     implementation("io.github.bananapuncher714:nbteditor:7.17.0")
 
 }
@@ -30,7 +30,7 @@ dependencies {
     val p = "${project.group}.${rootProject.name.toLowerCase()}"
     include("config.yml")
     include("plugin.yml").expand(
-        "name" to rootProject.name.apply { this.toLowerCase() },
+        "name" to rootProject.name.toLowerCase(),
         "main" to "$p.$mainClass",
         "version" to project.version,
         "author" to author
@@ -40,7 +40,7 @@ tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
     minimize()
     dependencies {
         include(dependency("io.github.bananapuncher714:nbteditor:7.17.0"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.5.30"))
+        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.5.31"))
     }
     destinationDirectory.set(file(jarOutputFile))
 }
