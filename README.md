@@ -2,7 +2,7 @@
 
 > 给原版增加一些对立附魔，有好有坏
 
-[https://bstats.org/signatures/bukkit/DeEnchantment.svg](https://bstats.org/signatures/bukkit/DeEnchantment.svg)
+![https://bstats.org/signatures/bukkit/DeEnchantment.svg](https://bstats.org/signatures/bukkit/DeEnchantment.svg)
 
 ## 附魔突变机制
 
