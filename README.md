@@ -2,6 +2,8 @@
 
 > 给原版增加一些对立附魔，有好有坏
 
+[https://bstats.org/signatures/bukkit/DeEnchantment.svg](https://bstats.org/signatures/bukkit/DeEnchantment.svg)
+
 ## 附魔突变机制
 
 附魔有概率突变，应用于 **附魔台附魔物品**、**生成的怪物身上的装备**、**村民交易**、**钓鱼**、**猪灵交易**，概率可调、每一种都可以单独开关。
