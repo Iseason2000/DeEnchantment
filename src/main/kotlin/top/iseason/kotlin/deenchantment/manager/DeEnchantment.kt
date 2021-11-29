@@ -344,6 +344,15 @@ object DeEnchantment {
                 }
             }
         }
+        if (count == 0 && count != totalCount) {
+            LogSender.consoleLog(
+                "${ChatColor.YELLOW}负魔注册异常!"
+                        + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
+            )
+            LogSender.consoleLog(
+                "${ChatColor.YELLOW}请尝试输入 ${ChatColor.GREEN}de reload ${ChatColor.YELLOW}以重新注册负魔!"
+            )
+        }
         LogSender.consoleLog(
             "${ChatColor.GREEN}负魔注册完毕"
                     + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"

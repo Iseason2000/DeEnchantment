@@ -24,26 +24,29 @@ class Loyalty : Listener {
         if (level <= 0) return
         if (Tools.getRandomDouble() > level * 0.1) return
         val distance = level * 5.0
-        val nearbyEntities = entity.getNearbyEntities(distance, distance, distance)
-        for (nearbyEntity in nearbyEntities) {
+        for (nearbyEntity in entity.getNearbyEntities(distance, distance, distance)) {
             if (nearbyEntity !is LivingEntity || nearbyEntity == entity.shooter) continue
             val trident = entity.item
             val equipment = nearbyEntity.equipment ?: continue
             val itemInMainHand = equipment.itemInMainHand
             equipment.setItemInMainHand(trident)
+            //替换玩家手上物品
             if (itemInMainHand.hasItemMeta() && nearbyEntity is Player && nearbyEntity.gameMode != GameMode.CREATIVE) {
-                val addItem = nearbyEntity.inventory.addItem(itemInMainHand)
-                for (item in addItem.values) {
-                    if (item.hasItemMeta())
+                for (item in nearbyEntity.inventory.addItem(itemInMainHand).values) {
+                    if (item.hasItemMeta()) {
                         nearbyEntity.location.world?.dropItem(nearbyEntity.location, item)
+                        break
+                    }
                 }
             }
+            //设置生物掉落几率
             if (entity !is Player) {
                 try {
                     equipment.itemInMainHandDropChance = 1.0F
                 } catch (e: Exception) {
                 }
             }
+
             val shooter = entity.shooter
             nearbyEntity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 200, 0))
             if (shooter is Player)
