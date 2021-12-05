@@ -3,6 +3,7 @@ package top.iseason.kotlin.deenchantment
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
+import top.iseason.kotlin.deenchantment.bstats.Metrics
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
@@ -13,6 +14,7 @@ class DeEnchantmentPlugin : JavaPlugin() {
 
     override fun onEnable() {
         ConfigManager.init(this)
+        Metrics(this, 13440)
         LogSender.consoleLog("${ChatColor.AQUA}██████╗ ███████╗███████╗███╗   ██╗ ██████╗██╗  ██╗ █████╗ ███╗   ██╗████████╗")
         LogSender.consoleLog("${ChatColor.AQUA}██╔══██╗██╔════╝██╔════╝████╗  ██║██╔════╝██║  ██║██╔══██╗████╗  ██║╚══██╔══╝")
         LogSender.consoleLog("${ChatColor.AQUA}██║  ██║█████╗  █████╗  ██╔██╗ ██║██║     ███████║███████║██╔██╗ ██║   ██║   ")

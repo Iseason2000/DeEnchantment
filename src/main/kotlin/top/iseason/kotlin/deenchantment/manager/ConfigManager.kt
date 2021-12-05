@@ -5,7 +5,6 @@ import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.HandlerList
 import org.bukkit.plugin.java.JavaPlugin
-import top.iseason.kotlin.deenchantment.BStats
 import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
 import top.iseason.kotlin.deenchantment.listeners.enchantments.Frost_Walker
 import top.iseason.kotlin.deenchantment.utils.DeEnum
@@ -27,7 +26,6 @@ object ConfigManager {
         this.plugin = plugin as DeEnchantmentPlugin
         reload()
         isInit = true
-        BStats(plugin, 13440)
     }
 
     fun reload() {

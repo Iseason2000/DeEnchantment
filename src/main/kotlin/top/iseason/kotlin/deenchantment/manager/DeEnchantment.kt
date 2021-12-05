@@ -329,7 +329,7 @@ object DeEnchantment {
                 enchantment.myMaxLevel = maxLevel
                 try {
                     Enchantment.registerEnchantment(enchantment)
-                } catch (e: IllegalArgumentException) {
+                } catch (_: IllegalArgumentException) {
                 } finally {
                     ConfigManager.deEnchantmentsList.add(enchantment)
                     val enchantmentName = ConfigManager.getEnchantmentName(enchantment.name)
@@ -352,11 +352,12 @@ object DeEnchantment {
             LogSender.consoleLog(
                 "${ChatColor.YELLOW}请尝试输入 ${ChatColor.GREEN}de reload ${ChatColor.YELLOW}以重新注册负魔!"
             )
+        } else {
+            LogSender.consoleLog(
+                "${ChatColor.GREEN}负魔注册完毕"
+                        + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
+            )
         }
-        LogSender.consoleLog(
-            "${ChatColor.GREEN}负魔注册完毕"
-                    + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
-        )
         stopRegisterEnchantment()
     }
 
