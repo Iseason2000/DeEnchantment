@@ -16,8 +16,8 @@ class Soul_Speed : Listener {
     fun onEntityAirChangeEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
-        val uniqueId = player.uniqueId
         val boots = player.equipment?.boots ?: return
+        val uniqueId = player.uniqueId
         val enchantments = boots.enchantments
         val level = enchantments[DeEnchantment.DE_soul_speed]
         if (level == null && playerMap.containsKey(uniqueId)) {
