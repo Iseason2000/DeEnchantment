@@ -13,7 +13,7 @@ class Soul_Speed : Listener {
     private val playerMap = HashMap<UUID, PotionAdder>()
 
     @EventHandler
-    fun onEntityAirChangeEvent(event: PlayerMoveEvent) {
+    fun onPlayerMoveEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
         val boots = player.equipment?.boots ?: return

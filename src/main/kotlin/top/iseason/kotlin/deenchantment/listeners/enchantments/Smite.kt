@@ -22,7 +22,8 @@ class Smite : Listener {
         val level = item.enchantments[DeEnchantment.DE_smite] ?: return
         if (level <= 0) return
         val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
-        if (entity.health == maxHealth) {
+        val damage = event.damage - 2.5 * level
+        if (entity.health >= maxHealth && damage < 0) {
             event.damage = 0.0
             return
         }

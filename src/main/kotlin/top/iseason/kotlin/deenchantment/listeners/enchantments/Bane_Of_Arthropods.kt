@@ -22,10 +22,11 @@ class Bane_Of_Arthropods : Listener {
         val level = item.enchantments[DeEnchantment.DE_bane_of_arthropods] ?: return
         if (level <= 0) return
         val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
-        if (entity.health == maxHealth) {
+        val damage = event.damage - 2.5 * level
+        if (entity.health >= maxHealth && damage < 0) {
             event.damage = 0.0
             return
         }
-        event.damage = event.damage - 2.5 * level
+        event.damage = damage
     }
 }
