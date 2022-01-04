@@ -1,6 +1,5 @@
 package top.iseason.kotlin.deenchantment.listeners.enchantments
 
-import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerMoveEvent
@@ -8,28 +7,29 @@ import org.bukkit.potion.PotionEffectType
 import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.manager.DeEnchantment
 import top.iseason.kotlin.deenchantment.utils.runnables.PotionAdder
+import java.util.*
 
 class Soul_Speed : Listener {
-    private val playerMap = HashMap<Player, PotionAdder>()
+    private val playerMap = HashMap<UUID, PotionAdder>()
 
     @EventHandler
     fun onEntityAirChangeEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
+        val uniqueId = player.uniqueId
         val boots = player.equipment?.boots ?: return
         val enchantments = boots.enchantments
         val level = enchantments[DeEnchantment.DE_soul_speed]
-        if (level == null && playerMap.containsKey(player)) {
-            playerMap[player]?.cancel()
-            playerMap.remove(player)
+        if (level == null && playerMap.containsKey(uniqueId)) {
+            playerMap[uniqueId]?.cancel()
+            playerMap.remove(uniqueId)
             return
         }
         if (level == null) return
         if (level <= 0) return
-        if (playerMap.containsKey(player)) return
+        if (playerMap.containsKey(uniqueId)) return
         val runTaskTimer = PotionAdder(player, PotionEffectType.SPEED, 220, level)
         runTaskTimer.runTaskTimer(ConfigManager.getPlugin(), 0L, 200L)
-        playerMap[player] = runTaskTimer
-
+        playerMap[uniqueId] = runTaskTimer
     }
 }
