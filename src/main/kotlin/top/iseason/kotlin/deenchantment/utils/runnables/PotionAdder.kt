@@ -10,4 +10,9 @@ class PotionAdder(val entity: LivingEntity, val type: PotionEffectType, private 
     override fun run() {
         entity.addPotionEffect(PotionEffect(type, time, level - 1))
     }
+
+    override fun cancel() {
+        entity.removePotionEffect(type)
+        super.cancel()
+    }
 }

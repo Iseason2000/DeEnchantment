@@ -16,16 +16,22 @@ class Soul_Speed : Listener {
     fun onPlayerMoveEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
-        val boots = player.equipment?.boots ?: return
+        val boots = player.equipment?.boots
         val uniqueId = player.uniqueId
-        val enchantments = boots.enchantments
-        val level = enchantments[DeEnchantment.DE_soul_speed]
-        if (level == null && playerMap.containsKey(uniqueId)) {
-            playerMap[uniqueId]?.cancel()
+        if (boots == null) {
+            val potionAdder = playerMap[uniqueId] ?: return
+            potionAdder.cancel()
             playerMap.remove(uniqueId)
             return
         }
-        if (level == null) return
+        val enchantments = boots.enchantments
+        val level = enchantments[DeEnchantment.DE_soul_speed]
+        if (level == null) {
+            val potionAdder = playerMap[uniqueId] ?: return
+            potionAdder.cancel()
+            playerMap.remove(uniqueId)
+            return
+        }
         if (level <= 0) return
         if (playerMap.containsKey(uniqueId)) return
         val runTaskTimer = PotionAdder(player, PotionEffectType.SPEED, 220, level)
