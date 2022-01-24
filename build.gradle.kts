@@ -1,10 +1,12 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     java
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    kotlin("jvm") version "1.5.31"
+    id("com.github.johnrengelman.shadow") version "7.1.2"
+    kotlin("jvm") version "1.6.10"
 }
 group = "top.iseason.kotlin"
-version = "1.1.4"
+version = "1.1.5"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
 val jarOutputFile = "E:\\mc\\1.18 server\\plugins"
@@ -20,8 +22,9 @@ repositories {
 }
 
 dependencies {
-    api("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
+    compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
+    implementation(kotlin("stdlib"))
+//    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
 }
@@ -36,18 +39,22 @@ dependencies {
         "author" to author
     )
 }
-tasks.withType<com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar> {
-    minimize()
-    dependencies {
-        include(dependency("io.github.bananapuncher714:nbteditor:7.18.0"))
-        include(dependency("org.jetbrains.kotlin:kotlin-stdlib:1.5.31"))
+tasks {
+    shadowJar {
+        destinationDirectory.set(file(jarOutputFile))
+        minimize()
     }
-    destinationDirectory.set(file(jarOutputFile))
+    compileJava {
+        options.encoding = "UTF-8"
+    }
 }
-val compileKotlin: org.jetbrains.kotlin.gradle.tasks.KotlinCompile by tasks
-compileKotlin.kotlinOptions.jvmTarget = "1.8"
-java.sourceCompatibility = JavaVersion.VERSION_1_8
-java.targetCompatibility = JavaVersion.VERSION_1_8
+tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+
 tasks.jar {
     destinationDirectory.set(file(jarOutputFile))
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
 }

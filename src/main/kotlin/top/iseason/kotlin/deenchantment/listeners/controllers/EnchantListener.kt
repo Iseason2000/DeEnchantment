@@ -22,6 +22,5 @@ class EnchantListener : Listener {
         if (enchantsToAdd != translateEnchantByChance) {
             LogSender.log(event.enchanter, "${ChatColor.YELLOW}你的附魔发生了某些变化！")
         }
-
     }
 }

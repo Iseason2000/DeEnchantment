@@ -9,7 +9,7 @@ import top.iseason.kotlin.deenchantment.utils.Tools
 //时运不济
 class Fortune : Listener {
     @EventHandler
-    fun onBlockBreakEvent(event: BlockDropItemEvent) {
+    fun onBlockDropItemEvent(event: BlockDropItemEvent) {
         if (event.isCancelled) return
         val items = event.items
         if (items.size != 1) return
