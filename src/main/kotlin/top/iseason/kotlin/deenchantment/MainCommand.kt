@@ -39,7 +39,10 @@ class MainCommand : CommandExecutor, TabCompleter {
 
 
     private fun getLevel(args: Array<out String>, commandSender: CommandSender): Int? {
-        if (args.size != 3) return null
+        if (args.size == 2) {
+            LogSender.log(commandSender, "${ChatColor.RED}请输入负魔等级!")
+        }
+        if (args.size < 3) return null
         if (commandSender !is Player) return null
         val level: Int
         try {

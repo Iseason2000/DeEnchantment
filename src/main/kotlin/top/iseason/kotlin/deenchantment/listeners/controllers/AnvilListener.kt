@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
+import top.iseason.kotlin.deenchantment.manager.ConfigManager
 import top.iseason.kotlin.deenchantment.utils.EnchantTools
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
@@ -60,6 +61,9 @@ class AnvilListener : Listener {
         val anvilView = event.inventory
         anvilView.repairCost = 2 * finalCost + 1 + cost
         if (anvilView.repairCost >= 40) {
+            val config = ConfigManager.getConfig()
+            if (config.contains("AllowTooExpensive") && !config.getBoolean("AllowTooExpensive"))
+                return
             LogSender.log(
                 anvilView.viewers[0],
                 "${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}"

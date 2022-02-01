@@ -19,6 +19,8 @@ Grindstone: true
 # 特性设置 true | false
 # 是否突破等级上限
 LevelUnlimited: false
+# 是否允许铁砧过于昂贵仍能附魔，如果开启突破等级上限建议开启
+AllowTooExpensive: false
 # 是否开启控制台精简模式：开启后不会出现 所有附魔的名字
 CleanConsole: false
 # 通知消息前缀

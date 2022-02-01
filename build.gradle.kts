@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
 }
 group = "top.iseason.kotlin"
-version = "1.1.5"
+version = "1.1.6"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
 val jarOutputFile = "E:\\mc\\1.18 server\\plugins"
@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
-    implementation(kotlin("stdlib"))
+    compileOnly(kotlin("stdlib"))
 //    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
