@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
-    compileOnly(kotlin("stdlib"))
+    implementation(kotlin("stdlib"))
 //    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.5.31")
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
