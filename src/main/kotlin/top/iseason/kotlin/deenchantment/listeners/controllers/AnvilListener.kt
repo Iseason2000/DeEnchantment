@@ -15,6 +15,11 @@ import top.iseason.kotlin.deenchantment.utils.LogSender
 class AnvilListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
+//        if (ConfigManager.getConfig().getBoolean("AnvilConflict")) {
+//            val itemMeta = event.result?.itemMeta ?: return
+//            EnchantTools.setDeEnchantLore(itemMeta)
+//            event.result!!.itemMeta = itemMeta
+//        }
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
         //可能是要改名
@@ -56,7 +61,7 @@ class AnvilListener : Listener {
         val repairCost1 = EnchantTools.getRepairCost(item1)
         val repairCost2 = EnchantTools.getRepairCost(item2)
         val finalCost = if (repairCost1 <= repairCost2) repairCost2 else repairCost1
-        val costItem = EnchantTools.setRepairCost(resultItem, 2 * finalCost + 1)
+        val costItem = EnchantTools.setRepairCost(resultItem, repairCost1 + 1)
         val anvilView = event.inventory
         anvilView.repairCost = 2 * finalCost + 1 + cost
         if (anvilView.repairCost >= 40) {
