@@ -15,13 +15,17 @@ import top.iseason.kotlin.deenchantment.utils.LogSender
 class AnvilListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
-//        if (ConfigManager.getConfig().getBoolean("AnvilConflict")) {
-//            val itemMeta = event.result?.itemMeta ?: return
-//            EnchantTools.setDeEnchantLore(itemMeta)
-//            event.result!!.itemMeta = itemMeta
-//        }
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
+        val item2 = event.view.getItem(1) ?: return
+        if (!(item1.hasItemMeta() && item2.hasItemMeta())) return
+        if (!(item1.type != Material.ENCHANTED_BOOK && item1.enchantments.isEmpty() && item2.type == Material.ENCHANTED_BOOK) &&
+            ConfigManager.getConfig().getBoolean("AnvilConflict")
+        ) {
+            val itemMeta = event.result?.itemMeta ?: return
+            EnchantTools.setDeEnchantLore(itemMeta)
+            event.result!!.itemMeta = itemMeta
+        }
         //可能是要改名
         val renameText = event.inventory.renameText
 
@@ -32,7 +36,6 @@ class AnvilListener : Listener {
             clone.itemMeta = itemMeta
             event.result = clone
         }
-        val item2 = event.view.getItem(1) ?: return
         //空气没有ItemMeta
         val itemMeta2 = item2.itemMeta ?: return
         //1格为附魔书而2格不是附魔书
