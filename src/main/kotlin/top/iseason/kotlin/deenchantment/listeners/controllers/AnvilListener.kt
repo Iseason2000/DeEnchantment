@@ -74,6 +74,5 @@ class AnvilListener : Listener {
             costItem.itemMeta = itemMeta
         }
         event.result = costItem
-        println(event.result?.itemMeta?.lore)
     }
 }
