@@ -45,10 +45,9 @@ class AnvilListener : Listener {
             result.addUnsafeEnchantments(item1.enchantments)
             return
         }
-
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
-        val resultItem = item1.clone()
+        val resultItem = if (event.result == null) item1.clone() else event.result!!.clone()
         val cost = EnchantTools.addEnchantments(resultItem, enchantments2)
         if (item1 == resultItem) {//不能附魔的物品
             event.result = null
@@ -75,5 +74,6 @@ class AnvilListener : Listener {
             costItem.itemMeta = itemMeta
         }
         event.result = costItem
+        println(event.result?.itemMeta?.lore)
     }
 }
