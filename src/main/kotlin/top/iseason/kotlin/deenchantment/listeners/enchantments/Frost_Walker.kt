@@ -1,5 +1,6 @@
 package top.iseason.kotlin.deenchantment.listeners.enchantments
 
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
@@ -33,6 +34,7 @@ class Frost_Walker : Listener {
     fun onPlayerMoveEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
+        if (player.gameMode == GameMode.SPECTATOR) return
         val level = player.equipment?.boots?.enchantments?.get(DeEnchantment.DE_frost_walker) ?: return
         if (level == 0) return
         val to = event.to?.clone() ?: return

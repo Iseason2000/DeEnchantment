@@ -19,7 +19,7 @@ class AnvilListener : Listener {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
         val item2 = event.view.getItem(1) ?: return
-        if (!(item1.hasItemMeta() && item2.hasItemMeta())) return
+        if (item1.type.isAir || item2.type.isAir) return
         if (!(item1.type != Material.ENCHANTED_BOOK && item1.enchantments.isEmpty() && item2.type == Material.ENCHANTED_BOOK) &&
             ConfigManager.getConfig().getBoolean("AnvilConflict")
         ) {
