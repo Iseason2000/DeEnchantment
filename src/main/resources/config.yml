@@ -5,7 +5,7 @@ Anvil: true
 # 铁砧经验公式 {level}:修改的附魔的等级之和 {repair}: 2个物品中修改次数最多的次数
 # 支持运算符: + - * / ^ E u sin() asin() sinh() log2 log10 ln log sqrt() exp() 等，三角函数都支持,不要有空格
 # 注意:如果有其他修改铁砧经验的插件可能会无效
-AnvilExpExpression: 2*{repair}+1+{level}
+AnvilExpExpression: 2*{repair}+{level}+1
 # 是否在有战利品的箱子中出现
 Chest: true
 # 是否可以通过附魔台获得
