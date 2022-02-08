@@ -19,7 +19,18 @@ class AnvilListener : Listener {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
         val item2 = event.view.getItem(1) ?: return
+        val renameText = event.inventory.renameText
+        //可能是要改名
+        if (item2.type.isAir && renameText != null && renameText.isNotEmpty()) {
+            val clone = item1.clone()
+            val itemMeta = clone.itemMeta
+            itemMeta?.setDisplayName(renameText)
+            clone.itemMeta = itemMeta
+            event.result = clone
+            return
+        }
         if (item1.type.isAir || item2.type.isAir) return
+        //其他插件使用铁砧
         if (!(item1.type != Material.ENCHANTED_BOOK && item1.enchantments.isEmpty() && item2.type == Material.ENCHANTED_BOOK) &&
             ConfigManager.getConfig().getBoolean("AnvilConflict")
         ) {
@@ -27,16 +38,6 @@ class AnvilListener : Listener {
             EnchantTools.setDeEnchantLore(itemMeta)
             event.result!!.itemMeta = itemMeta
             return
-        }
-        //可能是要改名
-        val renameText = event.inventory.renameText
-
-        if (renameText != null && renameText.isNotEmpty()) {
-            val clone = if (event.result == null) item1.clone() else event.result!!.clone()
-            val itemMeta = clone.itemMeta
-            itemMeta?.setDisplayName(renameText)
-            clone.itemMeta = itemMeta
-            event.result = clone
         }
         //空气没有ItemMeta
         val itemMeta2 = item2.itemMeta ?: return
@@ -57,8 +58,9 @@ class AnvilListener : Listener {
         }
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
-        val resultItem = if (event.result == null) item1.clone() else event.result!!.clone()
+        val resultItem = item1.clone()
         val level = EnchantTools.addEnchantments(resultItem, enchantments2)
+
         if (item1 == resultItem) {//不能附魔的物品
             event.result = null
             return
