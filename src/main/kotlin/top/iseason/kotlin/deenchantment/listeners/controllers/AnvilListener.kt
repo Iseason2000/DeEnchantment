@@ -13,6 +13,7 @@ import top.iseason.kotlin.deenchantment.utils.EnchantTools
 import top.iseason.kotlin.deenchantment.utils.LogSender
 
 class AnvilListener : Listener {
+
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         //2格为空则无响应
@@ -25,12 +26,13 @@ class AnvilListener : Listener {
             val itemMeta = event.result?.itemMeta ?: return
             EnchantTools.setDeEnchantLore(itemMeta)
             event.result!!.itemMeta = itemMeta
+            return
         }
         //可能是要改名
         val renameText = event.inventory.renameText
 
         if (renameText != null && renameText.isNotEmpty()) {
-            val clone = item1.clone()
+            val clone = if (event.result == null) item1.clone() else event.result!!.clone()
             val itemMeta = clone.itemMeta
             itemMeta?.setDisplayName(renameText)
             clone.itemMeta = itemMeta
@@ -56,7 +58,7 @@ class AnvilListener : Listener {
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
         val resultItem = if (event.result == null) item1.clone() else event.result!!.clone()
-        val cost = EnchantTools.addEnchantments(resultItem, enchantments2)
+        val level = EnchantTools.addEnchantments(resultItem, enchantments2)
         if (item1 == resultItem) {//不能附魔的物品
             event.result = null
             return
@@ -66,7 +68,11 @@ class AnvilListener : Listener {
         val finalCost = if (repairCost1 <= repairCost2) repairCost2 else repairCost1
         val costItem = EnchantTools.setRepairCost(resultItem, repairCost1 + 1)
         val anvilView = event.inventory
-        anvilView.repairCost = 2 * finalCost + 1 + cost
+        val cost = ConfigManager.expression.evaluate(
+            ConfigManager.expressionStr.replace("{repair}", finalCost.toString())
+                .replace("{level}", level.toString())
+        ).toInt()
+        anvilView.repairCost = cost
         if (anvilView.repairCost >= 40) {
             val config = ConfigManager.getConfig()
             if (config.contains("AllowTooExpensive") && !config.getBoolean("AllowTooExpensive"))

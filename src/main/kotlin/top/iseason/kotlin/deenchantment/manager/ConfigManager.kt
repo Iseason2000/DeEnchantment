@@ -9,6 +9,7 @@ import top.iseason.kotlin.deenchantment.DeEnchantmentPlugin
 import top.iseason.kotlin.deenchantment.listeners.enchantments.Frost_Walker
 import top.iseason.kotlin.deenchantment.utils.DeEnum
 import top.iseason.kotlin.deenchantment.utils.LogSender
+import top.iseason.kotlin.deenchantment.utils.kparser.ExpressionParser
 
 
 object ConfigManager {
@@ -22,6 +23,8 @@ object ConfigManager {
     var byName: Any? = null
     private var prefix: String? = null
     private var showLore: Boolean? = null
+    var expression = ExpressionParser()
+    var expressionStr = "2*{repair}+{level}+1"
     fun init(plugin: JavaPlugin) {
         this.plugin = plugin as DeEnchantmentPlugin
         reload()
@@ -43,6 +46,14 @@ object ConfigManager {
         DeEnchantment.registerEnchantments()
         ListenerManager.registerListeners()
         loadDeEnchantmentsNameList()
+        expressionStr = config.getString("AnvilExpExpression") ?: "2*{repair}+{level}+1"
+        try {
+            expression.evaluate(expressionStr.replace("{repair}", "1").replace("{level}", "1"))
+        } catch (e: Exception) {
+            expressionStr = "2*{repair}+{level}+1"
+            LogSender.consoleLog("${ChatColor.RED}铁砧经验公式异常，已恢复为: ${ChatColor.YELLOW} $expressionStr ${ChatColor.GREEN} 注意不能有空格")
+        }
+        LogSender.consoleLog("${ChatColor.GREEN}铁砧经验公式为: ${ChatColor.YELLOW} $expressionStr")
         plugin.saveDefaultConfig()
     }
 
