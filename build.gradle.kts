@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
 }
 group = "top.iseason.kotlin"
-version = "1.2.1"
+version = "1.2.2"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
 val jarOutputFile = "E:\\mc\\1.18 server\\plugins"

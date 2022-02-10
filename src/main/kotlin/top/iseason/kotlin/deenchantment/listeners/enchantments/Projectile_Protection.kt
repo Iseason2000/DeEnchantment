@@ -24,6 +24,7 @@ class Projectile_Protection : Listener {
     fun onProjectileHitEvent(event: ProjectileHitEvent) {
         val entity = event.entity
         launchMap[entity]?.cancel() ?: return
+        launchMap.remove(entity)
         entity.setGravity(true)
     }
 
