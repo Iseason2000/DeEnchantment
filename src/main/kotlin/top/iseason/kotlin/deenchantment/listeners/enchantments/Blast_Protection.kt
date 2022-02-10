@@ -21,7 +21,7 @@ class Blast_Protection : Listener {
         val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_blast_protection)
         if (levelCount == 0) return
         if (Tools.getRandomDouble() < levelCount * 0.05)
-            entity.getWorld().createExplosion(entity.getLocation(), (levelCount * 0.2).toFloat())
+            entity.getWorld().createExplosion(entity.getLocation(), (levelCount * 0.2).toFloat(), false, false, entity)
     }
 
 }

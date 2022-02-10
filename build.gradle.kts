@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
 }
 group = "top.iseason.kotlin"
-version = "1.2.0"
+version = "1.2.1"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
 val jarOutputFile = "E:\\mc\\1.18 server\\plugins"
@@ -27,17 +27,17 @@ dependencies {
     implementation("io.github.bananapuncher714:nbteditor:7.18.0")
 
 }
-
-(tasks.getByName("processResources") as ProcessResources).apply {
-    val p = "${project.group}.${rootProject.name.toLowerCase()}"
-    include("config.yml")
-    include("plugin.yml").expand(
-        "name" to rootProject.name.toLowerCase(),
-        "main" to "$p.$mainClass",
-        "version" to version,
-        "author" to author
-    )
-}
+//
+//(tasks.getByName("processResources") as ProcessResources).apply {
+//    val p = "${project.group}.${rootProject.name.toLowerCase()}"
+//    include("config.yml")
+//    include("plugin.yml").expand(
+//        "name" to rootProject.name.toLowerCase(),
+//        "main" to "$p.$mainClass",
+//        "version" to version,
+//        "author" to author
+//    )
+//}
 tasks {
     shadowJar {
         destinationDirectory.set(file(jarOutputFile))
@@ -45,6 +45,17 @@ tasks {
     }
     compileJava {
         options.encoding = "UTF-8"
+    }
+    processResources {
+        filesMatching("plugin.yml") {
+            val p = "${project.group}.${rootProject.name.toLowerCase()}"
+            expand(
+                "name" to rootProject.name.toLowerCase(),
+                "main" to "$p.$mainClass",
+                "version" to version,
+                "author" to author
+            )
+        }
     }
 }
 tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
