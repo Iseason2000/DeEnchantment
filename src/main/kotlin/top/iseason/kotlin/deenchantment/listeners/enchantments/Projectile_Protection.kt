@@ -1,6 +1,5 @@
 package top.iseason.kotlin.deenchantment.listeners.enchantments
 
-import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.ProjectileHitEvent
@@ -10,21 +9,16 @@ import top.iseason.kotlin.deenchantment.utils.runnables.TargetFinder
 
 //弹射物吸引
 class Projectile_Protection : Listener {
-    private val launchMap = mutableMapOf<Projectile, TargetFinder>()
 
     @EventHandler
     fun onProjectileLaunchEvent(event: ProjectileLaunchEvent) {
-        val projectile = event.entity
-        val finder = TargetFinder(projectile)
-        finder.runTaskTimer(ConfigManager.getPlugin(), 8, 2)
-        launchMap[projectile] = finder
+        TargetFinder(event.entity).runTaskTimer(ConfigManager.getPlugin(), 8, 2)
     }
 
     @EventHandler
     fun onProjectileHitEvent(event: ProjectileHitEvent) {
         val entity = event.entity
-        launchMap[entity]?.cancel() ?: return
-        launchMap.remove(entity)
+        TargetFinder.remove(entity)
         entity.setGravity(true)
     }
 
