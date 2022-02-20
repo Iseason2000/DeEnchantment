@@ -12,7 +12,10 @@ class Projectile_Protection : Listener {
 
     @EventHandler
     fun onProjectileLaunchEvent(event: ProjectileLaunchEvent) {
-        TargetFinder(event.entity).runTaskTimer(ConfigManager.getPlugin(), 8, 2)
+        if (event.isCancelled) return
+        //超过128个任务则不会创建，防止卡顿
+        if (!TargetFinder.isMaxPool())
+            TargetFinder(event.entity).runTaskTimer(ConfigManager.getPlugin(), 8, 2)
     }
 
     @EventHandler

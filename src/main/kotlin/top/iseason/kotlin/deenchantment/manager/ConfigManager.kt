@@ -10,6 +10,7 @@ import top.iseason.kotlin.deenchantment.listeners.enchantments.Frost_Walker
 import top.iseason.kotlin.deenchantment.utils.DeEnum
 import top.iseason.kotlin.deenchantment.utils.LogSender
 import top.iseason.kotlin.deenchantment.utils.kparser.ExpressionParser
+import top.iseason.kotlin.deenchantment.utils.runnables.TargetFinder
 
 
 object ConfigManager {
@@ -55,6 +56,7 @@ object ConfigManager {
         }
         LogSender.consoleLog("${ChatColor.GREEN}铁砧经验公式为: ${ChatColor.YELLOW} $expressionStr")
         plugin.saveDefaultConfig()
+        TargetFinder.removeAll()
     }
 
     fun quit() {
