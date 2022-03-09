@@ -2,6 +2,7 @@ package top.iseason.deenchantment.listeners.enchantments
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.potion.PotionEffectType
@@ -42,5 +43,10 @@ class Soul_Speed : Listener {
     @EventHandler
     fun onPlayerQuitEvent(event: PlayerQuitEvent) {
         playerMap.remove(event.player.uniqueId)
+    }
+
+    @EventHandler
+    fun onPlayerDeathEvent(event: PlayerDeathEvent) {
+        playerMap.remove(event.entity.uniqueId)
     }
 }
