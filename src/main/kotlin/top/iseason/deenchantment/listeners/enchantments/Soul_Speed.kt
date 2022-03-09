@@ -42,11 +42,17 @@ class Soul_Speed : Listener {
 
     @EventHandler
     fun onPlayerQuitEvent(event: PlayerQuitEvent) {
-        playerMap.remove(event.player.uniqueId)
+        val uniqueId = event.player.uniqueId
+        val potionAdder = playerMap[uniqueId] ?: return
+        potionAdder.cancel()
+        playerMap.remove(uniqueId)
     }
 
     @EventHandler
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
-        playerMap.remove(event.entity.uniqueId)
+        val uniqueId = event.entity.uniqueId
+        val potionAdder = playerMap[uniqueId] ?: return
+        potionAdder.cancel()
+        playerMap.remove(uniqueId)
     }
 }
