@@ -1,0 +1,18 @@
+package top.iseason.deenchantment.listeners.enchantments
+
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerItemDamageEvent
+import top.iseason.deenchantment.manager.DeEnchantment
+
+class Mending : Listener {
+    @EventHandler
+    fun onPlayerItemDamageEvent(event: PlayerItemDamageEvent) {
+        if (event.isCancelled) return
+        val level = event.item.enchantments[DeEnchantment.DE_mending] ?: return
+        if (level <= 0) return
+        if (event.damage < 1) return
+        val player = event.player
+        player.giveExp(level)
+    }
+}
