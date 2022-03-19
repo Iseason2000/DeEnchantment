@@ -8,6 +8,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
+import org.bukkit.inventory.meta.Repairable
 import top.iseason.deenchantment.manager.ConfigManager
 import top.iseason.deenchantment.utils.EnchantTools
 import top.iseason.deenchantment.utils.LogSender
@@ -40,6 +41,7 @@ class AnvilListener : Listener {
             return
         }
         //空气没有ItemMeta
+        val itemMeta1 = item1.itemMeta ?: return
         val itemMeta2 = item2.itemMeta ?: return
         //1格为附魔书而2格不是附魔书
         if (item1.type == Material.ENCHANTED_BOOK && item2.type != Material.ENCHANTED_BOOK) return
@@ -65,10 +67,16 @@ class AnvilListener : Listener {
             event.result = null
             return
         }
-        val repairCost1 = EnchantTools.getRepairCost(item1)
-        val repairCost2 = EnchantTools.getRepairCost(item2)
+        val repairCost1 = if (itemMeta1 is Repairable) itemMeta1.repairCost else 0
+        val repairCost2 = if (itemMeta2 is Repairable) itemMeta2.repairCost else 0
         val finalCost = if (repairCost1 <= repairCost2) repairCost2 else repairCost1
-        val costItem = EnchantTools.setRepairCost(resultItem, repairCost1 + 1)
+        with(resultItem) {
+            val meta = itemMeta
+            if (meta is Repairable) {
+                meta.repairCost = repairCost1 + 1
+                itemMeta = meta
+            }
+        }
         val anvilView = event.inventory
         val cost = ConfigManager.expression.evaluate(
             ConfigManager.expressionStr.replace("{repair}", finalCost.toString())
@@ -85,10 +93,10 @@ class AnvilListener : Listener {
             )
         }
         if (renameText != null && renameText.isNotEmpty()) {
-            val itemMeta = costItem.itemMeta
+            val itemMeta = resultItem.itemMeta
             itemMeta?.setDisplayName(renameText)
-            costItem.itemMeta = itemMeta
+            resultItem.itemMeta = itemMeta
         }
-        event.result = costItem
+        event.result = resultItem
     }
 }

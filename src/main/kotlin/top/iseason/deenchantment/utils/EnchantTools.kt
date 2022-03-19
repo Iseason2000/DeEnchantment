@@ -1,6 +1,6 @@
 package top.iseason.deenchantment.utils
 
-import io.github.bananapuncher714.nbteditor.NBTEditor
+
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
@@ -174,15 +174,6 @@ object EnchantTools {
         }
     }
 
-    fun getRepairCost(item: ItemStack): Int {
-        return if (NBTEditor.contains(item, "RepairCost")) {
-            NBTEditor.getInt(item, "RepairCost")
-        } else 0
-    }
-
-    fun setRepairCost(item: ItemStack, cost: Int): ItemStack {
-        return NBTEditor.set(item, cost, "RepairCost")
-    }
 
     fun getLevelCount(entity: LivingEntity, deEnchantment: Enchantment): Int {
         val equipments = entity.equipment?.armorContents ?: return 0

@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "1.6.10"
 }
 group = "top.iseason"
-version = "1.2.4"
+version = "1.2.5"
 val mainClass = "DeEnchantmentPlugin"
 val author = "Iseason"
 val jarOutputFile = "E:\\mc\\1.18 server\\plugins"
@@ -16,15 +16,15 @@ repositories {
     maven {
         url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
     }
-    maven {
-        url = uri("https://repo.codemc.org/repository/maven-public/")
-    }
+//    maven {
+//        url = uri("https://repo.codemc.org/repository/maven-public/")
+//    }
 }
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
     implementation(kotlin("stdlib"))
-    implementation("io.github.bananapuncher714:nbteditor:7.18.1")
+//    implementation("io.github.bananapuncher714:nbteditor:7.18.1")
 
 }
 //
@@ -42,7 +42,7 @@ tasks {
     shadowJar {
         destinationDirectory.set(file(jarOutputFile))
         minimize()
-        relocate("io.github.bananapuncher714", "top.iseason.deenchantment.libs")
+//        relocate("io.github.bananapuncher714", "top.iseason.deenchantment.libs")
     }
     compileJava {
         options.encoding = "UTF-8"
