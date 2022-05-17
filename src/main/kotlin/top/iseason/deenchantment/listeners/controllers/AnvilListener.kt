@@ -1,5 +1,6 @@
 package top.iseason.deenchantment.listeners.controllers
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -20,6 +21,18 @@ class AnvilListener : Listener {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
         val item2 = event.view.getItem(1) ?: return
+        //其他插件使用铁砧,仅更新lore
+        if (ConfigManager.getConfig().getBoolean("AnvilConflict")) {
+            Bukkit.getScheduler().runTask(ConfigManager.getPlugin(), Runnable {
+                val clone = event.inventory.getItem(2)?.clone() ?: return@Runnable
+                val itemMeta = clone.itemMeta ?: return@Runnable
+                EnchantTools.setDeEnchantLore(itemMeta)
+                clone.itemMeta = itemMeta
+                event.result = clone
+                event.inventory.setItem(2, clone)
+            })
+            return
+        }
         val renameText = event.inventory.renameText
         //可能是要改名
         if (item2.type.isAir && renameText != null && renameText.isNotEmpty()) {
@@ -31,15 +44,7 @@ class AnvilListener : Listener {
             return
         }
         if (item1.type.isAir || item2.type.isAir) return
-        //其他插件使用铁砧
-        if (!(item1.type != Material.ENCHANTED_BOOK && item1.enchantments.isEmpty() && item2.type == Material.ENCHANTED_BOOK) &&
-            ConfigManager.getConfig().getBoolean("AnvilConflict")
-        ) {
-            val itemMeta = event.result?.itemMeta ?: return
-            EnchantTools.setDeEnchantLore(itemMeta)
-            event.result!!.itemMeta = itemMeta
-            return
-        }
+
         //空气没有ItemMeta
         val itemMeta1 = item1.itemMeta ?: return
         val itemMeta2 = item2.itemMeta ?: return
@@ -60,7 +65,7 @@ class AnvilListener : Listener {
         }
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
-        val resultItem = item1.clone()
+        val resultItem = event.result ?: item1.clone()
         val level = EnchantTools.addEnchantments(resultItem, enchantments2)
 
         if (item1 == resultItem) {//不能附魔的物品
