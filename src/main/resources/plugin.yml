@@ -2,7 +2,7 @@ name: ${name}
 main: ${main}
 version: ${version}
 authors: [ ${ author } ]
-api-version: 1.13
+api-version: 1.16
 libraries:
   - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin}
 #  - org.jetbrains.kotlin:kotlin-reflect:${kotlin}

@@ -33,11 +33,11 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     }
 
     override fun canEnchantItem(item: ItemStack): Boolean {
-        val keyName = key.key.replace("de_", "").lowercase()
-        val source = getByKey(NamespacedKey.minecraft(keyName))//原附魔
-        return source?.canEnchantItem(item) ?: true
+        return myItemTarget.includes(item)
     }
 
+
+    @Deprecated("Deprecated in Java")
     override fun getName(): String {
         return myName
     }

@@ -2,6 +2,7 @@ package top.iseason.deenchantment.listeners.controllers
 
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
+import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
@@ -66,7 +67,8 @@ class AnvilListener : Listener {
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
         val resultItem = event.result ?: item1.clone()
-        val level = EnchantTools.addEnchantments(resultItem, enchantments2)
+        val level =
+            EnchantTools.addEnchantments(resultItem, enchantments2, event.view.player.gameMode == GameMode.CREATIVE)
 
         if (item1 == resultItem) {//不能附魔的物品
             event.result = null

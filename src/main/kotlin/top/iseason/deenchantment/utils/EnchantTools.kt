@@ -20,7 +20,7 @@ object EnchantTools {
             setLoreWithEnchants(itemMeta, itemMeta.enchants)
     }
 
-    fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>): Int {
+    fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>, isCreativeUse: Boolean): Int {
         var cost = 0
         val itemMeta = target.itemMeta ?: return 0
         val enchantments: Map<Enchantment, Int> =
@@ -31,10 +31,10 @@ object EnchantTools {
         val en1 = enchantments.toMutableMap()
         if (en2.isEmpty()) return 0
         for ((e2, l2) in en2) {
-            if (target.type != Material.ENCHANTED_BOOK && !e2.canEnchantItem(target)) continue
+            if (target.type != Material.ENCHANTED_BOOK && !(isCreativeUse || e2.canEnchantItem(target))) continue
             var isConflict = false
             for ((e1, _) in en1) {
-                if (e1 != e2 && (e2.conflictsWith(e1) || e1.conflictsWith(e2))) {
+                if (!isCreativeUse && e1 != e2 && (e2.conflictsWith(e1) || e1.conflictsWith(e2))) {
                     isConflict = true
                     break
                 }
