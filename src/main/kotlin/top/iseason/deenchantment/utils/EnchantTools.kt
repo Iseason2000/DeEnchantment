@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.scheduler.BukkitRunnable
 import top.iseason.deenchantment.manager.ConfigManager
 import top.iseason.deenchantment.manager.DeEnchantment
+import top.iseason.deenchantment.manager.DeEnchantmentWrapper
 
 object EnchantTools {
     fun setDeEnchantLore(itemMeta: ItemMeta) {
@@ -23,14 +24,17 @@ object EnchantTools {
     fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>, isCreativeUse: Boolean): Int {
         var cost = 0
         val itemMeta = target.itemMeta ?: return 0
+
         val enchantments: Map<Enchantment, Int> =
             if (itemMeta is EnchantmentStorageMeta)
                 itemMeta.storedEnchants
             else
                 target.enchantments
         val en1 = enchantments.toMutableMap()
+        println(en1)
         if (en2.isEmpty()) return 0
         for ((e2, l2) in en2) {
+            if (e2 !is DeEnchantmentWrapper) continue
             if (target.type != Material.ENCHANTED_BOOK && !(isCreativeUse || e2.canEnchantItem(target))) continue
             var isConflict = false
             for ((e1, _) in en1) {
@@ -55,6 +59,7 @@ object EnchantTools {
             en1[e2] = level
             cost += level
         }
+        println(en1)
         addEnchants(itemMeta, en1)
         setDeEnchantLore(itemMeta)
         target.itemMeta = itemMeta

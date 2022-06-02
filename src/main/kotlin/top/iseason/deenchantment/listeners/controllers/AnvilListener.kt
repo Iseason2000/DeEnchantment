@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
 import top.iseason.deenchantment.manager.ConfigManager
+import top.iseason.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.deenchantment.utils.EnchantTools
 import top.iseason.deenchantment.utils.LogSender
 
@@ -51,11 +52,11 @@ class AnvilListener : Listener {
         val itemMeta2 = item2.itemMeta ?: return
         //1格为附魔书而2格不是附魔书
         if (item1.type == Material.ENCHANTED_BOOK && item2.type != Material.ENCHANTED_BOOK) return
-        val enchantments2: Map<Enchantment, Int> =
-            if (itemMeta2 is EnchantmentStorageMeta)
+        val enchantments2: MutableMap<Enchantment, Int> =
+            (if (itemMeta2 is EnchantmentStorageMeta)
                 itemMeta2.storedEnchants
             else
-                item2.enchantments
+                item2.enchantments).toMutableMap()
         //第二个没有附魔跳过
         if (enchantments2.isEmpty()) {
             //修复物品判断
@@ -66,10 +67,15 @@ class AnvilListener : Listener {
         }
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
-        val resultItem = event.result ?: item1.clone()
+        if (event.result != null) {
+            item1.enchantments.forEach { (t, u) ->
+                if (t !is DeEnchantmentWrapper) return@forEach
+                enchantments2[t] = u
+            }
+        }
+        val resultItem = event.result?.clone() ?: item1.clone()
         val level =
             EnchantTools.addEnchantments(resultItem, enchantments2, event.view.player.gameMode == GameMode.CREATIVE)
-
         if (item1 == resultItem) {//不能附魔的物品
             event.result = null
             return
