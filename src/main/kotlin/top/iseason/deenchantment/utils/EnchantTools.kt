@@ -31,7 +31,6 @@ object EnchantTools {
             else
                 target.enchantments
         val en1 = enchantments.toMutableMap()
-        println(en1)
         if (en2.isEmpty()) return 0
         for ((e2, l2) in en2) {
             if (e2 !is DeEnchantmentWrapper) continue
@@ -59,7 +58,6 @@ object EnchantTools {
             en1[e2] = level
             cost += level
         }
-        println(en1)
         addEnchants(itemMeta, en1)
         setDeEnchantLore(itemMeta)
         target.itemMeta = itemMeta
