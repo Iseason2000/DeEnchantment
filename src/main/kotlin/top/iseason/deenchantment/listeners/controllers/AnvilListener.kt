@@ -45,8 +45,6 @@ class AnvilListener : Listener {
             event.result = clone
             return
         }
-        if (item1.type.isAir || item2.type.isAir) return
-
         //空气没有ItemMeta
         val itemMeta1 = item1.itemMeta ?: return
         val itemMeta2 = item2.itemMeta ?: return
@@ -70,10 +68,12 @@ class AnvilListener : Listener {
         if (event.result != null) {
             item1.enchantments.forEach { (t, u) ->
                 if (t !is DeEnchantmentWrapper) return@forEach
-                enchantments2[t] = u
+                if (enchantments2[t]!! < u)
+                    enchantments2[t] = u
             }
         }
-        val resultItem = event.result?.clone() ?: item1.clone()
+        val result = event.result
+        val resultItem = if (result == null || !result.hasItemMeta()) item1.clone() else result
         val level =
             EnchantTools.addEnchantments(resultItem, enchantments2, event.view.player.gameMode == GameMode.CREATIVE)
         if (item1 == resultItem) {//不能附魔的物品
