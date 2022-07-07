@@ -9,6 +9,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
+import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
 import top.iseason.deenchantment.manager.ConfigManager
@@ -65,20 +66,30 @@ class AnvilListener : Listener {
         }
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
-        if (event.result != null) {
+        val result = event.result
+        if (result != null) {
+            val enchants = result.getEnchants()
             item1.enchantments.forEach { (t, u) ->
                 if (t !is DeEnchantmentWrapper) return@forEach
                 if (enchantments2.containsKey(t) && enchantments2[t]!! >= u) {
                     return@forEach
                 }
+                if (event.view.player.gameMode != GameMode.CREATIVE) {
+                    for ((e, _) in enchantments2) {
+                        if (t.conflictsWith(e)) {
+                            enchants.remove(e)
+                            enchantments2.remove(e)
+                        }
+                    }
+                }
                 enchantments2[t] = u
             }
+            result.setEnchants(enchants)
         }
-        val result = event.result
         val resultItem = if (result == null || !result.hasItemMeta()) item1.clone() else result
         val level =
             EnchantTools.addEnchantments(resultItem, enchantments2, event.view.player.gameMode == GameMode.CREATIVE)
-        if (item1 == resultItem) {//不能附魔的物品
+        if (item1 == resultItem || isEnchantsEquals(item1.getEnchants(), resultItem.getEnchants())) {//不能附魔的物品
             event.result = null
             return
         }
@@ -114,4 +125,37 @@ class AnvilListener : Listener {
         }
         event.result = resultItem
     }
+
+    private fun ItemStack.getEnchants() =
+        ((itemMeta as? EnchantmentStorageMeta)?.storedEnchants ?: enchantments).toMutableMap()
+
+    fun isEnchantsEquals(en1: Map<Enchantment, Int>, en2: Map<Enchantment, Int>): Boolean {
+        if (en2.size != en1.size) return false
+        for ((e2, l2) in en2) {
+            val i = en2[e2] ?: return false
+            if (i != l2) return false
+        }
+        return true
+    }
+
+    private fun ItemStack.setEnchants(enchants: Map<Enchantment, Int>) {
+        val im = itemMeta ?: return
+        if (im is EnchantmentStorageMeta) {
+            for ((e, _) in im.storedEnchants) {
+                im.removeStoredEnchant(e)
+            }
+            for ((e, l) in enchants) {
+                im.addStoredEnchant(e, l, true)
+            }
+        } else {
+            for ((e, _) in im.enchants) {
+                im.removeEnchant(e)
+            }
+            for ((e, l) in enchants) {
+                im.addEnchant(e, l, true)
+            }
+        }
+        itemMeta = im
+    }
 }
+
