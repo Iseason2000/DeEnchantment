@@ -89,7 +89,8 @@ class AnvilListener : Listener {
         val resultItem = if (result == null || !result.hasItemMeta()) item1.clone() else result
         val level =
             EnchantTools.addEnchantments(resultItem, enchantments2, event.view.player.gameMode == GameMode.CREATIVE)
-        if (item1 == resultItem || isEnchantsEquals(item1.getEnchants(), resultItem.getEnchants())) {//不能附魔的物品
+        if (item1 == resultItem) {//不能附魔的物品
+
             event.result = null
             return
         }
@@ -128,15 +129,6 @@ class AnvilListener : Listener {
 
     private fun ItemStack.getEnchants() =
         ((itemMeta as? EnchantmentStorageMeta)?.storedEnchants ?: enchantments).toMutableMap()
-
-    fun isEnchantsEquals(en1: Map<Enchantment, Int>, en2: Map<Enchantment, Int>): Boolean {
-        if (en2.size != en1.size) return false
-        for ((e2, l2) in en2) {
-            val i = en2[e2] ?: return false
-            if (i != l2) return false
-        }
-        return true
-    }
 
     private fun ItemStack.setEnchants(enchants: Map<Enchantment, Int>) {
         val im = itemMeta ?: return

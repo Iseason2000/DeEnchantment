@@ -52,7 +52,6 @@ object EnchantTools {
                     else -> level
                 }
             }
-
             if (!isCreativeUse && !ConfigManager.getConfig().getBoolean("LevelUnlimited") && level > e2.maxLevel) {
                 level = e2.maxLevel
             }
