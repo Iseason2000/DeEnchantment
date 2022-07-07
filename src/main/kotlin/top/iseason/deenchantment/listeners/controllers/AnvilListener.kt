@@ -68,8 +68,10 @@ class AnvilListener : Listener {
         if (event.result != null) {
             item1.enchantments.forEach { (t, u) ->
                 if (t !is DeEnchantmentWrapper) return@forEach
-                if (enchantments2[t]!! < u)
-                    enchantments2[t] = u
+                if (enchantments2.containsKey(t) && enchantments2[t]!! >= u) {
+                    return@forEach
+                }
+                enchantments2[t] = u
             }
         }
         val result = event.result
