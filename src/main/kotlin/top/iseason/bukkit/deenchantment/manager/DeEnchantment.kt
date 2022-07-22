@@ -1,0 +1,393 @@
+package top.iseason.bukkit.deenchantment.manager
+
+import org.bukkit.ChatColor
+import org.bukkit.NamespacedKey
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.enchantments.EnchantmentTarget
+import top.iseason.bukkit.deenchantment.manager.ConfigManager.getDeEnchantments
+import top.iseason.bukkit.deenchantment.utils.DeEnum
+import top.iseason.bukkit.deenchantment.utils.DeEnum.*
+import top.iseason.bukkit.deenchantment.utils.LogSender
+
+
+object DeEnchantment {
+    //保护
+    val DE_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PROTECTION)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR
+            myMaxLevel = 4
+            myStartLevel = 1
+            myIsTreasure = false
+            myIsCursed = false
+            conflicts = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_FIRE_PROTECTION)
+        }
+
+    //火焰保护
+    val DE_fire_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FIRE_PROTECTION)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR
+            myMaxLevel = 4
+            conflicts = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
+
+        }
+
+    //爆炸保护
+    val DE_blast_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BLAST_PROTECTION)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR
+            myMaxLevel = 4
+            conflicts = setOf(DE_FIRE_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
+
+        }
+
+    //弹射物保护
+    val DE_projectile_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PROJECTILE_PROTECTION)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR
+            myMaxLevel = 4
+            conflicts = setOf(DE_FIRE_PROTECTION, DE_BLAST_PROTECTION, DE_PROTECTION)
+
+        }
+
+    //摔落保护
+    val DE_feather_falling: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FEATHER_FALLING)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR_FEET
+            myMaxLevel = 4
+        }
+
+    //水下呼吸
+    val DE_respiration: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_RESPIRATION)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR_HEAD
+            myMaxLevel = 3
+        }
+
+    //水下速掘
+    val DE_aqua_affinity: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_AQUA_AFFINITY)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR_HEAD
+            myMaxLevel = 1
+        }
+
+    //荆棘
+    val DE_thorns: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_THORNS)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR
+            myMaxLevel = 3
+
+        }
+
+    //深海探索者
+    val DE_depth_strider: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_DEPTH_STRIDER)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR_FEET
+            myMaxLevel = 3
+            conflicts = setOf(DE_FROST_WALKER)
+
+        }
+
+    //冰霜行者
+    val DE_frost_walker: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FROST_WALKER)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR_FEET
+            myMaxLevel = 2
+            conflicts = setOf(DE_DEPTH_STRIDER)
+
+        }
+
+    //绑定诅咒
+    val DE_binding_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BINDING_CURSE)
+        .apply {
+            myItemTarget = EnchantmentTarget.BREAKABLE
+            myMaxLevel = 1
+            conflicts = setOf(DE_VANISHING_CURSE)
+        }
+
+    //锋利
+    val DE_sharpness: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SHARPNESS)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 5
+            conflicts = setOf(DE_SMITE, DE_BANE_OF_ARTHROPODS)
+        }
+
+    //亡灵杀手
+    val DE_smite: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SMITE)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 5
+            conflicts = setOf(DE_SHARPNESS, DE_BANE_OF_ARTHROPODS)
+        }
+
+    //截肢杀手
+    val DE_bane_of_arthropods: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BANE_OF_ARTHROPODS)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 5
+            conflicts = setOf(DE_SHARPNESS, DE_SMITE)
+        }
+
+    //击退
+    val DE_knockback: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_KNOCKBACK)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 2
+        }
+
+    //火焰附加
+    val DE_fire_aspect: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FIRE_ASPECT)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 2
+        }
+
+    //抢夺
+    val DE_looting: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LOOTING)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 3
+        }
+
+    //横扫
+    val DE_sweeping: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SWEEPING)
+        .apply {
+            myItemTarget = EnchantmentTarget.WEAPON
+            myMaxLevel = 3
+        }
+
+    //效率
+    val DE_efficiency: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_EFFICIENCY)
+        .apply {
+            myItemTarget = EnchantmentTarget.TOOL
+            myMaxLevel = 5
+        }
+
+    //精准采集
+    val DE_silk_touch: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SILK_TOUCH)
+        .apply {
+            myItemTarget = EnchantmentTarget.TOOL
+            myMaxLevel = 1
+            conflicts = setOf(DE_FORTUNE)
+        }
+
+    // 耐久
+    val DE_unbreaking: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_UNBREAKING)
+        .apply {
+            myItemTarget = EnchantmentTarget.BREAKABLE
+            myMaxLevel = 3
+        }
+
+    // 时运
+    val DE_fortune: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FORTUNE)
+        .apply {
+            myItemTarget = EnchantmentTarget.TOOL
+            myMaxLevel = 3
+            conflicts = setOf(DE_SILK_TOUCH)
+        }
+
+    //力量
+    val DE_power: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_POWER)
+        .apply {
+            myItemTarget = EnchantmentTarget.BOW
+            myMaxLevel = 5
+        }
+
+    // 冲击
+    val DE_punch: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PUNCH)
+        .apply {
+            myItemTarget = EnchantmentTarget.BOW
+            myMaxLevel = 2
+        }
+
+    // 火矢
+    val DE_flame: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FLAME)
+        .apply {
+            myItemTarget = EnchantmentTarget.BOW
+            myMaxLevel = 1
+        }
+
+    // 无限
+    val DE_infinity: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_INFINITY)
+        .apply {
+            myItemTarget = EnchantmentTarget.BOW
+            myMaxLevel = 1
+            conflicts = setOf(DE_MENDING)
+        }
+
+    //海之眷顾
+    val DE_luck_of_the_sea: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LUCK_OF_THE_SEA)
+        .apply {
+            myItemTarget = EnchantmentTarget.FISHING_ROD
+            myMaxLevel = 3
+        }
+
+    // 钓饵
+    val DE_lure: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LURE)
+        .apply {
+            myItemTarget = EnchantmentTarget.FISHING_ROD
+            myMaxLevel = 3
+        }
+
+    // 忠诚
+    val DE_loyalty: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LOYALTY)
+        .apply {
+            myItemTarget = EnchantmentTarget.TRIDENT
+            myMaxLevel = 3
+            conflicts = setOf(DE_RIPTIDE)
+        }
+
+    // 穿刺
+    val DE_impaling: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_IMPALING)
+        .apply {
+            myItemTarget = EnchantmentTarget.TRIDENT
+            myMaxLevel = 5
+        }
+
+    // 激流
+    val DE_riptide: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_RIPTIDE)
+        .apply {
+            myItemTarget = EnchantmentTarget.TRIDENT
+            myMaxLevel = 3
+            conflicts = setOf(DE_LOYALTY, DE_CHANNELING)
+        }
+
+    // 引雷
+    val DE_channeling: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_CHANNELING)
+        .apply {
+            myItemTarget = EnchantmentTarget.TRIDENT
+            myMaxLevel = 1
+            conflicts = setOf(DE_RIPTIDE)
+        }
+
+    // 多重射击
+    val DE_multishot: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_MULTISHOT)
+        .apply {
+            myItemTarget = EnchantmentTarget.CROSSBOW
+            myMaxLevel = 1
+            conflicts = setOf(DE_PIERCING)
+        }
+
+    // 快速装填
+    val DE_quick_charge: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_QUICK_CHARGE)
+        .apply {
+            myItemTarget = EnchantmentTarget.CROSSBOW
+            myMaxLevel = 3
+            conflicts = setOf(DE_PIERCING)
+        }
+
+    //穿透
+    val DE_piercing: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PIERCING)
+        .apply {
+            myItemTarget = EnchantmentTarget.CROSSBOW
+            myMaxLevel = 4
+            conflicts = setOf(DE_MULTISHOT)
+        }
+
+    // 经验修补
+    val DE_mending: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_MENDING)
+        .apply {
+            myItemTarget = EnchantmentTarget.BREAKABLE
+            myMaxLevel = 1
+        }
+
+    //消失诅咒
+    val DE_vanishing_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_VANISHING_CURSE)
+        .apply {
+            myItemTarget = EnchantmentTarget.BREAKABLE
+            myMaxLevel = 1
+            conflicts = setOf(DE_BINDING_CURSE)
+        }
+
+    // 灵魂疾行
+    val DE_soul_speed: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SOUL_SPEED)
+        .apply {
+            myItemTarget = EnchantmentTarget.ARMOR_FEET
+            myMaxLevel = 3
+        }
+
+    fun registerEnchantments() {
+        val deEnchantments = getDeEnchantments()
+        val acceptingNew = Enchantment::class.java.getDeclaredField("acceptingNew")
+        val byKey = Enchantment::class.java.getDeclaredField("byKey")
+        val byName = Enchantment::class.java.getDeclaredField("byName")
+        acceptingNew.isAccessible = true
+        acceptingNew.set(null, true)
+        byKey.isAccessible = true
+        byName.isAccessible = true
+        val keyMap = byKey.get(null)
+        val nameMap = byName.get(null) as Map<*, *>
+        ConfigManager.byKey = keyMap
+        ConfigManager.byName = nameMap
+        var count = 0
+        val totalCount = deEnchantments.size
+        for (field in javaClass.declaredFields) {
+            val enchantment = field.get(this)
+            if (enchantment is DeEnchantmentWrapper && deEnchantments.contains(enchantment.name)) {
+                //如果存在，则继续
+                val maxLevel = ConfigManager.getConfig().getInt("${enchantment.name}.MaxLevel")
+                enchantment.myMaxLevel = maxLevel
+                try {
+                    Enchantment.registerEnchantment(enchantment)
+                } catch (_: IllegalArgumentException) {
+                } finally {
+                    ConfigManager.deEnchantmentsList.add(enchantment)
+                    val enchantmentName = ConfigManager.getEnchantmentName(enchantment.name)
+                    count++
+                    if (!ConfigManager.getConfig().getBoolean("CleanConsole")) {
+                        LogSender.consoleLog(
+                            "${ChatColor.GREEN}已添加${ChatColor.GRAY}" +
+                                    "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
+                                    "${ChatColor.GRAY}):$enchantmentName"
+                        )
+                    }
+                }
+            }
+        }
+        if (count == 0 && count != totalCount) {
+            LogSender.consoleLog(
+                "${ChatColor.YELLOW}负魔注册异常!"
+                        + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
+            )
+            LogSender.consoleLog(
+                "${ChatColor.YELLOW}请尝试输入 ${ChatColor.GREEN}de reload ${ChatColor.YELLOW}以重新注册负魔!"
+            )
+        } else {
+            LogSender.consoleLog(
+                "${ChatColor.GREEN}负魔注册完毕"
+                        + "(${ChatColor.GOLD}${count}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount)"
+            )
+        }
+        stopRegisterEnchantment()
+    }
+
+
+    private fun stopRegisterEnchantment() {
+        val field = Enchantment::class.java.getDeclaredField("acceptingNew")
+        field.isAccessible = true
+        field.set(null, false)
+        field.isAccessible = false
+
+    }
+
+    fun getDeEnum(enchantment: Enchantment): DeEnum? {
+        val name = enchantment.key.key
+        return try {
+            DeEnum.valueOf(name.uppercase())
+        } catch (e: IllegalArgumentException) {
+            try {
+                DeEnum.valueOf("de_$name".uppercase())
+            } catch (e: IllegalArgumentException) {
+                null
+            }
+        }
+    }
+
+    fun getByKeyName(keyName: String): Enchantment? {
+        return Enchantment.getByKey(NamespacedKey.minecraft(keyName))
+    }
+
+    fun getByDeEnum(deEnum: DeEnum): Enchantment? {
+        return getByKeyName(deEnum.toString().lowercase())
+    }
+}

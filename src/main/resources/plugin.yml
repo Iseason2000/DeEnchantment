@@ -2,10 +2,18 @@ name: ${name}
 main: ${main}
 version: ${version}
 authors: [ ${ author } ]
-api-version: 1.16
-libraries:
-  - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlin}
-#  - org.jetbrains.kotlin:kotlin-reflect:${kotlin}
+api-version: 1.13
+runtime-libraries:
+  # If not defined, it will be 'libraries'
+  # when start with @Plugin: will start with plugin data folder
+  libraries-folder: 'libraries'
+  repositories:
+    - https://maven.aliyun.com/repository/public/
+    - https://repo.maven.apache.org/maven2/
+
+  libraries:
+    - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
+
 commands:
   DeEnchantment:
     aliases: [ de ]
