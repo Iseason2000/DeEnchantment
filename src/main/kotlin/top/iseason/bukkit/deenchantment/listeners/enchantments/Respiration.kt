@@ -5,10 +5,10 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityAirChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //水下窒息
-class Respiration : BaseEnchant(DeEnchantment.DE_respiration) {
+object Respiration : BaseEnchant(DeEnchantments.DE_respiration) {
     // 资源占用较高
     @EventHandler
     fun onEntityAirChangeEvent(event: EntityAirChangeEvent) {
@@ -18,7 +18,7 @@ class Respiration : BaseEnchant(DeEnchantment.DE_respiration) {
         if (entity.eyeLocation.block.type != Material.WATER) return
         val helmet = entity.equipment?.helmet ?: return
         val enchantments = helmet.enchantments
-        val level = enchantments[DeEnchantment.DE_respiration] ?: return
+        val level = enchantments[DeEnchantments.DE_respiration] ?: return
         val amount = event.amount
         if (amount <= -20 - level * 20) {
             event.amount = 0

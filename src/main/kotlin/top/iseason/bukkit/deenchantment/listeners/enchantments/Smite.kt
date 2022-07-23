@@ -5,11 +5,11 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.EntityTools
 
 //亡灵救赎
-class Smite : BaseEnchant(DeEnchantment.DE_smite) {
+object Smite : BaseEnchant(DeEnchantments.DE_smite) {
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         if (event.isCancelled) return
@@ -19,7 +19,7 @@ class Smite : BaseEnchant(DeEnchantment.DE_smite) {
         val damager = event.damager
         if (damager !is LivingEntity) return
         val item = damager.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantment.DE_smite] ?: return
+        val level = item.enchantments[DeEnchantments.DE_smite] ?: return
         if (level <= 0) return
         val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
         val damage = event.damage - 2.5 * level

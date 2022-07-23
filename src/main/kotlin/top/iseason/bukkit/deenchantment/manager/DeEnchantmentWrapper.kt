@@ -4,12 +4,14 @@ import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.inventory.ItemStack
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment.getDeEnum
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments.getDeEnum
 import top.iseason.bukkit.deenchantment.utils.DeEnum
 
 class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.lowercase())) {
-    private val myName: String = name.name
+    var enable = true
+    private val myName: String = name.name.lowercase()
     var translateName: String = name.name
+    var description: String = ""
     var chance: Double = 0.2
     var myItemTarget: EnchantmentTarget = EnchantmentTarget.BREAKABLE
     var myMaxLevel: Int = 1

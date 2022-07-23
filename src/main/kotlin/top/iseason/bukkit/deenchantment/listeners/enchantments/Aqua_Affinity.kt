@@ -4,14 +4,14 @@ import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockDamageEvent
 import org.bukkit.potion.PotionEffectType
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.runnables.PotionAdder
 import java.util.*
 
 //水下慢掘
-class Aqua_Affinity : BaseEnchant(DeEnchantment.DE_aqua_affinity) {
+object Aqua_Affinity : BaseEnchant(DeEnchantments.DE_aqua_affinity) {
     private val playerMap = HashMap<UUID, PotionAdder>()
 
     @EventHandler
@@ -39,7 +39,7 @@ class Aqua_Affinity : BaseEnchant(DeEnchantment.DE_aqua_affinity) {
             return
         }
         val enchantments = helmet.enchantments
-        val level = enchantments[DeEnchantment.DE_aqua_affinity]
+        val level = enchantments[DeEnchantments.DE_aqua_affinity]
         if (level == null) {
             val potionAdder = playerMap[uniqueId] ?: return
             potionAdder.cancel()
@@ -48,7 +48,7 @@ class Aqua_Affinity : BaseEnchant(DeEnchantment.DE_aqua_affinity) {
             return
         }
         val potionAdder = PotionAdder(player, PotionEffectType.SLOW_DIGGING, 120, level)
-        potionAdder.runTaskTimer(ConfigManager.getPlugin(), 0L, 100L)
+        submit(delay = 100L, task = PotionAdder(player, PotionEffectType.SLOW_DIGGING, 120, level))
         playerMap[uniqueId] = potionAdder
     }
 }

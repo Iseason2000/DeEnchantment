@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
-class Punch : BaseEnchant(DeEnchantment.DE_punch) {
+object Punch : BaseEnchant(DeEnchantments.DE_punch) {
     @EventHandler(priority = EventPriority.HIGHEST)
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         if (event.isCancelled) return
@@ -21,7 +21,7 @@ class Punch : BaseEnchant(DeEnchantment.DE_punch) {
         if (shooter !is LivingEntity) return
         //
         val item = shooter.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantment.DE_punch] ?: return
+        val level = item.enchantments[DeEnchantments.DE_punch] ?: return
         if (level <= 0) return
         val direction = damager.velocity.normalize().multiply(-1)
         entity.velocity = direction.multiply(level * 0.8)

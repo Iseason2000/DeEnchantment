@@ -4,14 +4,14 @@ import org.bukkit.entity.AbstractArrow
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityShootBowEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //虚弱
-class Power : BaseEnchant(DeEnchantment.DE_power) {
+object Power : BaseEnchant(DeEnchantments.DE_power) {
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityShootBowEvent) {
         if (event.isCancelled) return
-        val level = event.bow?.enchantments?.get(DeEnchantment.DE_power) ?: return
+        val level = event.bow?.enchantments?.get(DeEnchantments.DE_power) ?: return
         if (level <= 0) return
         val projectile = event.projectile
         if (projectile !is AbstractArrow) return

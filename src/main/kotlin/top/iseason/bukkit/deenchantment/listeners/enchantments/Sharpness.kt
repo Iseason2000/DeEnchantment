@@ -4,10 +4,10 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //磨钝
-class Sharpness : BaseEnchant(DeEnchantment.DE_sharpness) {
+object Sharpness : BaseEnchant(DeEnchantments.DE_sharpness) {
 
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
@@ -17,7 +17,7 @@ class Sharpness : BaseEnchant(DeEnchantment.DE_sharpness) {
         val entity = event.entity
         if (entity !is LivingEntity) return
         val item = damager.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantment.DE_sharpness] ?: return
+        val level = item.enchantments[DeEnchantments.DE_sharpness] ?: return
         if (level <= 0) return
         var damage = event.damage - 0.5 * level
         if (damage < 0) damage = 0.0

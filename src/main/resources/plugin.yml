@@ -13,8 +13,3 @@ runtime-libraries:
 
   libraries:
     - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
-
-commands:
-  DeEnchantment:
-    aliases: [ de ]
-

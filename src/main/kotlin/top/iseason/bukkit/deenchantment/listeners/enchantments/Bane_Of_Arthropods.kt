@@ -5,10 +5,10 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.EntityTools
 
-class Bane_Of_Arthropods : BaseEnchant(DeEnchantment.DE_bane_of_arthropods) {
+object Bane_Of_Arthropods : BaseEnchant(DeEnchantments.DE_bane_of_arthropods) {
     //截肢救星
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
@@ -19,7 +19,7 @@ class Bane_Of_Arthropods : BaseEnchant(DeEnchantment.DE_bane_of_arthropods) {
         val damager = event.damager
         if (damager !is LivingEntity) return
         val item = damager.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantment.DE_bane_of_arthropods] ?: return
+        val level = item.enchantments[DeEnchantments.DE_bane_of_arthropods] ?: return
         if (level <= 0) return
         val maxHealth = entity.getAttribute(Attribute.GENERIC_MAX_HEALTH)?.value ?: return
         val damage = event.damage - 2.5 * level

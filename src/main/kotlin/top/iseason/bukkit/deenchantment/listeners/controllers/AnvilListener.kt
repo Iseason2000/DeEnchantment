@@ -11,12 +11,14 @@ import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
+import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.bukkittemplate.utils.submit
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
+import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
-import top.iseason.bukkit.deenchantment.utils.LogSender
 
+//TODO:重写
 class AnvilListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -25,7 +27,7 @@ class AnvilListener : Listener {
         val item1 = event.view.getItem(0) ?: return
         val item2 = event.view.getItem(1) ?: return
         //其他插件使用铁砧,仅更新lore
-        if (ConfigManager.getConfig().getBoolean("AnvilConflict")) {
+        if (false) {
             submit {
                 val clone = event.inventory.getItem(2)?.clone() ?: return@submit
                 val itemMeta = clone.itemMeta ?: return@submit
@@ -105,19 +107,16 @@ class AnvilListener : Listener {
             }
         }
         val anvilView = event.inventory
-        val cost = ConfigManager.expression.evaluate(
-            ConfigManager.expressionStr.replace("{repair}", finalCost.toString())
+        val cost = Config.exprParser.evaluate(
+            Config.expression.replace("{repair}", finalCost.toString())
                 .replace("{level}", level.toString())
         ).toInt()
         anvilView.repairCost = cost
         if (anvilView.repairCost >= 40) {
-            val config = ConfigManager.getConfig()
-            if (config.contains("AllowTooExpensive") && !config.getBoolean("AllowTooExpensive"))
+            if (Config.tooExpensive)
                 return
-            LogSender.log(
-                anvilView.viewers[0],
-                "${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}"
-            )
+            anvilView.viewers.firstOrNull()
+                ?.sendColorMessage("${SimpleLogger.prefix}${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}")
         }
         if (renameText != null && renameText.isNotEmpty()) {
             val itemMeta = resultItem.itemMeta

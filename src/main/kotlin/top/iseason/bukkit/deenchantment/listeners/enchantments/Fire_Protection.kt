@@ -5,12 +5,12 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 import top.iseason.bukkit.deenchantment.utils.Tools
 
 //火焰烧灼
-class Fire_Protection : BaseEnchant(DeEnchantment.DE_fire_protection) {
+object Fire_Protection : BaseEnchant(DeEnchantments.DE_fire_protection) {
     //受到攻击有概率着火
     @EventHandler
     fun onEntityDamageEvent(event: EntityDamageEvent) {
@@ -18,7 +18,7 @@ class Fire_Protection : BaseEnchant(DeEnchantment.DE_fire_protection) {
         if (event.cause == DamageCause.FIRE && event.cause == DamageCause.FIRE_TICK) return
         val entity = event.entity
         if (entity !is LivingEntity) return
-        val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_fire_protection)
+        val levelCount = EnchantTools.getLevelCount(entity, DeEnchantments.DE_fire_protection)
         if (levelCount == 0) return
         if (Tools.getRandomDouble() < levelCount * 0.05)
             entity.fireTicks = levelCount * 20
@@ -31,7 +31,7 @@ class Fire_Protection : BaseEnchant(DeEnchantment.DE_fire_protection) {
 //        val equipments = entity.equipment?.armorContents ?: return
 //        var maxLevel = 0
 //        for (equipment in equipments) {
-//            val level = equipment?.enchantments?.get(DeEnchantment.DE_fire_protection) ?: continue
+//            val level = equipment?.enchantments?.get(DeEnchantments.DE_fire_protection) ?: continue
 //            if (level > maxLevel) maxLevel = level
 //        }
 //        if (maxLevel == 0) return

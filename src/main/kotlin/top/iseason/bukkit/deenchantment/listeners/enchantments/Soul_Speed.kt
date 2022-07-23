@@ -5,13 +5,13 @@ import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.potion.PotionEffectType
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.runnables.PotionAdder
 import java.util.*
 
-class Soul_Speed : BaseEnchant(DeEnchantment.DE_soul_speed) {
+object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
     private val playerMap = HashMap<UUID, PotionAdder>()
 
     @EventHandler
@@ -27,7 +27,7 @@ class Soul_Speed : BaseEnchant(DeEnchantment.DE_soul_speed) {
             return
         }
         val enchantments = boots.enchantments
-        val level = enchantments[DeEnchantment.DE_soul_speed]
+        val level = enchantments[DeEnchantments.DE_soul_speed]
         if (level == null || level <= 0) {
             val potionAdder = playerMap[uniqueId] ?: return
             potionAdder.cancel()
@@ -36,7 +36,7 @@ class Soul_Speed : BaseEnchant(DeEnchantment.DE_soul_speed) {
         }
         if (playerMap.containsKey(uniqueId)) return
         val runTaskTimer = PotionAdder(player, PotionEffectType.SPEED, 220, level)
-        runTaskTimer.runTaskTimer(ConfigManager.getPlugin(), 0L, 200L)
+        submit(period = 200, task = runTaskTimer)
         playerMap[uniqueId] = runTaskTimer
     }
 

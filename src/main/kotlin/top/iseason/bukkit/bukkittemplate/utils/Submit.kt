@@ -34,6 +34,29 @@ fun submit(
     }
 }
 
+fun submit(
+    delay: Long = 0,
+    period: Long = 0,
+    async: Boolean = false,
+    task: BukkitRunnable
+) {
+    check(delay >= 0) { "delay must grater than 0" }
+    check(period >= 0) { "period must grater than 0" }
+    if (async) {
+        if (period > 0) {
+            task.runTaskTimerAsynchronously(TemplatePlugin.getPlugin(), delay, period)
+        } else {
+            task.runTaskLaterAsynchronously(TemplatePlugin.getPlugin(), delay)
+        }
+    } else {
+        if (period > 0) {
+            task.runTaskTimer(TemplatePlugin.getPlugin(), delay, period)
+        } else {
+            task.runTaskLater(TemplatePlugin.getPlugin(), delay)
+        }
+    }
+}
+
 class Submitter(
     val delay: Long,
     val period: Long,

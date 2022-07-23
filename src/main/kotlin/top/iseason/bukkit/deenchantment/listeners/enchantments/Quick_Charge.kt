@@ -4,18 +4,18 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.CrossbowMeta
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.runnables.CrossBowCanceller
 
-class Quick_Charge : BaseEnchant(DeEnchantment.DE_quick_charge) {
+object Quick_Charge : BaseEnchant(DeEnchantments.DE_quick_charge) {
     private val chargeMap = HashMap<ItemStack, Int>()
 
     @EventHandler
     fun onPlayerInteractEvent(event: PlayerInteractEvent) {
         val item = event.item ?: return
-        val level = item.enchantments[DeEnchantment.DE_quick_charge] ?: return//检查附魔
+        val level = item.enchantments[DeEnchantments.DE_quick_charge] ?: return//检查附魔
         if (level <= 0) return
         val clone = item.clone()
         val itemMeta = clone.itemMeta
@@ -30,6 +30,6 @@ class Quick_Charge : BaseEnchant(DeEnchantment.DE_quick_charge) {
         val hand = event.hand ?: return
         //取消拉弓
         event.player.equipment?.setItem(hand, null)
-        CrossBowCanceller(event.player, hand, clone).runTaskLater(ConfigManager.getPlugin(), 2)
+        submit(2, task = CrossBowCanceller(event.player, hand, clone))
     }
 }

@@ -1,88 +1,83 @@
 package top.iseason.bukkit.deenchantment.manager
 
-import org.bukkit.Bukkit
 import org.bukkit.ChatColor
-import org.bukkit.event.Listener
-import org.bukkit.plugin.java.JavaPlugin
+import org.bukkit.event.HandlerList
+import top.iseason.bukkit.bukkittemplate.debug.info
+import top.iseason.bukkit.deenchantment.DeEnchantment
+import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.listeners.controllers.*
+import top.iseason.bukkit.deenchantment.listeners.enchantments.Aqua_Affinity
+import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.utils.ClassGetter
-import top.iseason.bukkit.deenchantment.utils.LogSender
+import java.lang.reflect.Field
 
 object ListenerManager {
-    val listeners = HashSet<Listener>()
-    private val plugin = ConfigManager.getPlugin() as JavaPlugin
+
     fun registerListeners() {
         registerControllers()
         registerEnchantments()
     }
 
+    fun unRegisterAll() {
+        HandlerList.unregisterAll(DeEnchantment.javaPlugin)
+    }
+
     private fun registerEnchantments() {
         //自动注册附魔监听器
-        val classGetter = ClassGetter(plugin, "top.iseason.bukkit.deenchantment.listeners.enchantments")
+        val classGetter =
+            ClassGetter(
+                DeEnchantment.javaPlugin,
+                Aqua_Affinity::class.java.name.replace("." + Aqua_Affinity::class.java.simpleName, "")
+            )
         for (cl in classGetter.classes) {
-            val constructor = cl.getDeclaredConstructor()
-            constructor.isAccessible = true
-            val newInstance = constructor.newInstance()
-            if (newInstance is Listener && ConfigManager.getConfig()
-                    .getBoolean("DE_${cl.simpleName.uppercase()}.Enable")
-            ) {
-                Bukkit.getPluginManager().registerEvents(newInstance, plugin)
-                listeners.add(newInstance)
+            if (!BaseEnchant::class.java.isAssignableFrom(cl)) continue
+            val instance: Field = try {
+                cl.getDeclaredField("INSTANCE")
+            } catch (e: Exception) {
+                continue
+            }
+            instance.isAccessible = true
+            val newInstance = instance.get(null) as BaseEnchant
+            if (newInstance.enable) {
+                DeEnchantment.registerListeners(newInstance)
             }
         }
     }
 
     private fun registerControllers() {
-        val config = ConfigManager.getConfig()
         val str = StringBuilder()
-        if (config.getBoolean("Anvil")) {
+        if (Config.anvil) {
             str.append("铁砧、")
-            val anvilListener = AnvilListener()
-            Bukkit.getPluginManager().registerEvents(anvilListener, plugin)
-            listeners.add(anvilListener)
+            DeEnchantment.registerListeners(AnvilListener())
         }
-        if (config.getBoolean("Chest")) {
+        if (Config.chestLoot) {
             str.append("箱子、")
-            val chestLootTableListener = ChestLootTableListener()
-            Bukkit.getPluginManager().registerEvents(chestLootTableListener, plugin)
-            listeners.add(chestLootTableListener)
+            DeEnchantment.registerListeners(ChestLootTableListener())
         }
-        if (config.getBoolean("EnchantTable")) {
+        if (Config.enchant) {
             str.append("附魔台、")
-            val enchantListener = EnchantListener()
-            Bukkit.getPluginManager().registerEvents(enchantListener, plugin)
-            listeners.add(enchantListener)
+            DeEnchantment.registerListeners(EnchantListener())
         }
-        if (config.getBoolean("Mobs")) {
-            str.append("怪物、")
-            val entitySpawnListener = EntitySpawnListener()
-            Bukkit.getPluginManager().registerEvents(entitySpawnListener, plugin)
-            listeners.add(entitySpawnListener)
+        if (Config.spawn) {
+            str.append("生物、")
+            DeEnchantment.registerListeners(EntitySpawnListener())
         }
-        if (config.getBoolean("Villager")) {
-            str.append("村民、")
-            val merchantListener = MerchantListener()
-            Bukkit.getPluginManager().registerEvents(merchantListener, plugin)
-            listeners.add(merchantListener)
+        if (Config.trade) {
+            str.append("交易、")
+            DeEnchantment.registerListeners(MerchantListener())
         }
-        if (config.getBoolean("Fishing")) {
+        if (Config.fishing) {
             str.append("钓鱼、")
-            val playerFishListener = PlayerFishListener()
-            Bukkit.getPluginManager().registerEvents(playerFishListener, plugin)
-            listeners.add(playerFishListener)
+            DeEnchantment.registerListeners(PlayerFishListener())
         }
-        if (config.getBoolean("Reward")) {
+        if (Config.reward) {
             str.append("给予、")
-            val entityDropItemListener = EntityDropItemListener()
-            Bukkit.getPluginManager().registerEvents(entityDropItemListener, plugin)
-            listeners.add(entityDropItemListener)
+            DeEnchantment.registerListeners(EntityDropItemListener())
         }
-        if (config.getBoolean("Grindstone")) {
+        if (Config.grindstone) {
             str.append("砂轮、")
-            val grindstoneListener = GrindstoneListener()
-            Bukkit.getPluginManager().registerEvents(grindstoneListener, plugin)
-            listeners.add(grindstoneListener)
+            DeEnchantment.registerListeners(GrindstoneListener())
         }
-        LogSender.consoleLog("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
+        info("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
     }
 }

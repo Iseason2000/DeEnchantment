@@ -8,10 +8,10 @@ import org.bukkit.event.entity.ProjectileLaunchEvent
 import org.bukkit.inventory.meta.Damageable
 import org.bukkit.inventory.meta.ItemMeta
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //逆流
-class Riptide : BaseEnchant(DeEnchantment.DE_riptide) {
+object Riptide : BaseEnchant(DeEnchantments.DE_riptide) {
     @EventHandler
     fun onProjectileLaunchEvent(event: ProjectileLaunchEvent) {
         if (event.isCancelled) return
@@ -19,7 +19,7 @@ class Riptide : BaseEnchant(DeEnchantment.DE_riptide) {
         val shooter = entity.shooter
         if (shooter !is Player) return
         if (entity !is Trident) return
-        val level = entity.item.enchantments[DeEnchantment.DE_riptide] ?: return
+        val level = entity.item.enchantments[DeEnchantments.DE_riptide] ?: return
         if (level <= 0) return
         event.isCancelled = true
         if (!shooter.isInWater && !shooter.world.hasStorm()) return//不考虑下雨，判断太麻烦

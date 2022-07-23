@@ -9,33 +9,31 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.player.PlayerMoveEvent
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.runnables.BlockTimer
 import kotlin.math.sqrt
 
 //熔岩行者
-class Frost_Walker : BaseEnchant(DeEnchantment.DE_frost_walker) {
-    companion object {
-        @JvmField
-        val fakeBlock = HashSet<Block>()
+object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
 
-        @JvmStatic
-        fun clear() {
-            for (block in fakeBlock) {
-                block.setType(Material.LAVA, true)
-            }
-            fakeBlock.clear()
+    val fakeBlock = HashSet<Block>()
+
+    fun clear() {
+        for (block in fakeBlock) {
+            block.setType(Material.LAVA, true)
         }
+        fakeBlock.clear()
     }
+
 
     @EventHandler//检测移动
     fun onPlayerMoveEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
         if (player.gameMode == GameMode.SPECTATOR) return
-        val level = player.equipment?.boots?.enchantments?.get(DeEnchantment.DE_frost_walker) ?: return
+        val level = player.equipment?.boots?.enchantments?.get(DeEnchantments.DE_frost_walker) ?: return
         if (level == 0) return
         val to = event.to?.clone() ?: return
         to.y = to.y - 1
@@ -47,7 +45,7 @@ class Frost_Walker : BaseEnchant(DeEnchantment.DE_frost_walker) {
             ) continue
             if ((block.blockData as Levelled).level != 0) continue
             fakeBlock.add(block)
-            BlockTimer(block).runTaskLater(ConfigManager.getPlugin(), 160)
+            submit(delay = 160, task = BlockTimer(block))
         }
     }
 
@@ -76,7 +74,7 @@ class Frost_Walker : BaseEnchant(DeEnchantment.DE_frost_walker) {
 //        if(event.cause != EntityDamageEvent.DamageCause.HOT_FLOOR)return
 //        val entity = event.entity
 //        if(entity !is Player)return
-//        val level = entity.equipment?.boots?.enchantments?.get(DeEnchantment.DE_frost_walker) ?:return
+//        val level = entity.equipment?.boots?.enchantments?.get(DeEnchantments.DE_frost_walker) ?:return
 //        if(level == 0)return
 //        event.isCancelled = true
 //

@@ -6,9 +6,10 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.inventory.EnchantingInventory
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
+import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
+import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
-import top.iseason.bukkit.deenchantment.utils.LogSender
 
 class EnchantListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
@@ -18,9 +19,9 @@ class EnchantListener : Listener {
         val translateEnchantByChance = EnchantTools.translateEnchantByChance(enchantsToAdd)
         val inventory = event.inventory as EnchantingInventory
         EnchantTools.LoreSetter(inventory, translateEnchantByChance)
-            .runTaskLater(ConfigManager.getPlugin(), 1)
+            .runTaskLater(DeEnchantment.javaPlugin, 1)
         if (enchantsToAdd != translateEnchantByChance) {
-            LogSender.log(event.enchanter, "${ChatColor.YELLOW}你的附魔发生了某些变化！")
+            event.enchanter.sendColorMessage("${SimpleLogger.prefix}${ChatColor.YELLOW}你的附魔发生了某些变化！")
         }
     }
 }

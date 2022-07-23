@@ -6,14 +6,14 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.ItemDespawnEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //永存祝福
-class Vanishing_Curse : BaseEnchant(DeEnchantment.DE_vanishing_curse) {
+object Vanishing_Curse : BaseEnchant(DeEnchantments.DE_vanishing_curse) {
     @EventHandler
     fun onItemDeSpawnEvent(event: ItemDespawnEvent) {
         if (event.isCancelled) return
-        val level = event.entity.itemStack.enchantments[DeEnchantment.DE_vanishing_curse] ?: return
+        val level = event.entity.itemStack.enchantments[DeEnchantments.DE_vanishing_curse] ?: return
         if (level <= 0) return
         event.isCancelled = true
     }
@@ -23,7 +23,7 @@ class Vanishing_Curse : BaseEnchant(DeEnchantment.DE_vanishing_curse) {
         val entity = event.entity
         if (entity !is Item) return
         val itemStack = entity.itemStack
-        val level = itemStack.enchantments[DeEnchantment.DE_vanishing_curse] ?: return
+        val level = itemStack.enchantments[DeEnchantments.DE_vanishing_curse] ?: return
         if (level <= 0) return
         event.isCancelled = true
         val uuid = entity.thrower ?: return

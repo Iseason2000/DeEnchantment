@@ -8,10 +8,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.inventory.ItemStack
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //刺穿
-class Impaling : BaseEnchant(DeEnchantment.DE_impaling) {
+object Impaling : BaseEnchant(DeEnchantments.DE_impaling) {
     @EventHandler
     fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
         val entity = event.entity
@@ -24,7 +24,7 @@ class Impaling : BaseEnchant(DeEnchantment.DE_impaling) {
             item = damager.equipment?.itemInMainHand ?: return
         }
         if (item == null) return
-        val level = item.enchantments[DeEnchantment.DE_impaling] ?: return
+        val level = item.enchantments[DeEnchantments.DE_impaling] ?: return
         if (level <= 0) return
         event.damage = event.damage * (1 + 0.25 * level)
 

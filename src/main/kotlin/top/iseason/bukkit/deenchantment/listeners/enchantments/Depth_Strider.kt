@@ -3,14 +3,14 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerMoveEvent
 import org.bukkit.potion.PotionEffectType
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.runnables.PotionAdder
 import java.util.*
 
 //旱鸭子 只能改变视野
-class Depth_Strider : BaseEnchant(DeEnchantment.DE_depth_strider) {
+object Depth_Strider : BaseEnchant(DeEnchantments.DE_depth_strider) {
     private val playerMap = HashMap<UUID, PotionAdder>()
 
     @EventHandler
@@ -27,10 +27,10 @@ class Depth_Strider : BaseEnchant(DeEnchantment.DE_depth_strider) {
             return
         val boots = player.equipment?.boots ?: return
         val enchantments = boots.enchantments
-        val level = enchantments[DeEnchantment.DE_depth_strider] ?: return
+        val level = enchantments[DeEnchantments.DE_depth_strider] ?: return
         if (level == 0) return
         potionAdder = PotionAdder(player, PotionEffectType.SLOW, 220, level)
-        potionAdder.runTaskTimer(ConfigManager.getPlugin(), 0L, 200L)
+        submit(period = 200L, task = potionAdder)
         playerMap[uniqueId] = potionAdder
     }
 }

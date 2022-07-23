@@ -9,18 +9,19 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
-import top.iseason.bukkit.deenchantment.utils.LogSender
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.Tools
 
 //背叛
-class Loyalty : BaseEnchant(DeEnchantment.DE_loyalty) {
+object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
     @EventHandler
     fun onProjectileLaunchEvent(event: ProjectileHitEvent) {
         val entity = event.entity
         if (entity !is Trident) return
-        val level = entity.item.enchantments[DeEnchantment.DE_loyalty] ?: return
+        val level = entity.item.enchantments[DeEnchantments.DE_loyalty] ?: return
         if (level <= 0) return
         if (Tools.getRandomDouble() > level * 0.1) return
         val distance = level * 5.0
@@ -50,9 +51,9 @@ class Loyalty : BaseEnchant(DeEnchantment.DE_loyalty) {
             val shooter = entity.shooter
             nearbyEntity.addPotionEffect(PotionEffect(PotionEffectType.GLOWING, 200, 0))
             if (shooter is Player)
-                LogSender.log(
-                    shooter,
-                    "${ChatColor.RED}您的武器已背叛！${ChatColor.YELLOW}现在属于" +
+                shooter.sendColorMessage(
+                    SimpleLogger.prefix +
+                            "${ChatColor.RED}您的武器已背叛！${ChatColor.YELLOW}现在属于" +
                             "${ChatColor.AQUA}${nearbyEntity.name} ${ChatColor.YELLOW}" +
                             "位于${ChatColor.GREEN}" +
                             "${nearbyEntity.location.blockX},${nearbyEntity.location.blockY},${nearbyEntity.location.blockZ}"

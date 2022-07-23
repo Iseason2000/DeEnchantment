@@ -3,7 +3,7 @@ package top.iseason.bukkit.deenchantment.utils.runnables
 import org.bukkit.entity.LivingEntity
 import org.bukkit.entity.Projectile
 import org.bukkit.scheduler.BukkitRunnable
-import top.iseason.bukkit.deenchantment.manager.DeEnchantment
+import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 /**
@@ -50,7 +50,7 @@ class TargetFinder(private val projectile: Projectile) : BukkitRunnable() {
         val sortedBy = nearbyLivingEntities.sortedBy { it.location.distance(location) }
         for (entity in sortedBy) {
             if (entity == projectile.shooter) continue
-            val levelCount = EnchantTools.getLevelCount(entity, DeEnchantment.DE_projectile_protection) * 2
+            val levelCount = EnchantTools.getLevelCount(entity, DeEnchantments.DE_projectile_protection) * 2
             if (levelCount == 0) continue
             if (levelCount < location.distance(entity.location) - 1) continue
             //找到目标了

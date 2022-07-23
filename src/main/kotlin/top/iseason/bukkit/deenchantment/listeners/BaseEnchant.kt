@@ -14,9 +14,17 @@ abstract class BaseEnchant(
     private val enchant: DeEnchantmentWrapper
 ) : SimpleYAMLConfig("enchantments/${enchant.name.lowercase()}.yml"), Listener {
 
+    @Comment("", "是否启用")
+    @Key
+    var enable: Boolean = true
+
     @Comment("", "负魔名称")
     @Key
     var translate_name: String = enchant.translateName
+
+    @Comment("", "负魔描述")
+    @Key
+    var description: String = enchant.description
 
     @Comment("", "负魔目标,在此挑选: https://bukkit.windit.net/javadoc/org/bukkit/enchantments/EnchantmentTarget.html")
     @Key
@@ -37,7 +45,9 @@ abstract class BaseEnchant(
     fun checkEnchantment(e: Enchantment) = enchant == e
 
     override val onLoaded: (FileConfiguration.() -> Unit) = {
+        enchant.enable = enable
         enchant.translateName = translate_name
+        enchant.description = description
         enchant.chance = chance
         enchant.myMaxLevel = max_level
         try {
@@ -53,5 +63,13 @@ abstract class BaseEnchant(
             enchant.conflicts = mutableSetOf
         } catch (_: Exception) {
         }
+    }
+
+    companion object {
+        val enchants = mutableSetOf<DeEnchantmentWrapper>()
+    }
+
+    init {
+        enchants.add(enchant)
     }
 }

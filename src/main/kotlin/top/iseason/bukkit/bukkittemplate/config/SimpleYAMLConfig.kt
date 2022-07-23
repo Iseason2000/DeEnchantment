@@ -64,7 +64,7 @@ abstract class SimpleYAMLConfig(
     private val keys = mutableListOf<ConfigKey>().also { list ->
         //判断是否全为键值
         if (this@SimpleYAMLConfig.javaClass.getAnnotation(Key::class.java) != null) {
-            getAllFields().forEach {
+            this.javaClass.declaredFields.forEach {
 //                if ("INSTANCE" == it.name) return@forEach
                 if (Modifier.isFinal(it.modifiers)) {
                     return@forEach

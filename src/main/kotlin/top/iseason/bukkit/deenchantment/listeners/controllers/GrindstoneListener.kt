@@ -6,7 +6,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
-import top.iseason.bukkit.deenchantment.manager.ConfigManager
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 
@@ -16,14 +16,13 @@ class GrindstoneListener : Listener {
         val player = event.whoClicked as Player
         val top = player.openInventory
         if (top.type != InventoryType.GRINDSTONE) return
-        val plugin = ConfigManager.getPlugin()
-        plugin.server.scheduler.runTask(plugin, Runnable {
+        submit {
             val result = top.getItem(2)
-            if (result == null || !result.hasItemMeta()) return@Runnable
-            val itemMeta = result.itemMeta ?: return@Runnable
+            if (result == null || !result.hasItemMeta()) return@submit
+            val itemMeta = result.itemMeta ?: return@submit
             EnchantTools.clearEnchantLore(itemMeta)
             result.itemMeta = itemMeta
-        })
+        }
     }
 }
 
