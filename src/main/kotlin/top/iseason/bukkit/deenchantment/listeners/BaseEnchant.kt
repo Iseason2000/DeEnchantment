@@ -7,6 +7,7 @@ import org.bukkit.event.Listener
 import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.utils.DeEnum
 
@@ -46,8 +47,8 @@ abstract class BaseEnchant(
 
     override val onLoaded: (FileConfiguration.() -> Unit) = {
         enchant.enable = enable
-        enchant.translateName = translate_name
-        enchant.description = description
+        enchant.translateName = translate_name.toColor()
+        enchant.description = description.toColor()
         enchant.chance = chance
         enchant.myMaxLevel = max_level
         try {

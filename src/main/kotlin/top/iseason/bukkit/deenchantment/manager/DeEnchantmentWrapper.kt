@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.manager
 
+import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
@@ -7,10 +8,10 @@ import org.bukkit.inventory.ItemStack
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments.getDeEnum
 import top.iseason.bukkit.deenchantment.utils.DeEnum
 
-class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(name.name.lowercase())) {
+class DeEnchantmentWrapper(val enum: DeEnum) : Enchantment(NamespacedKey.minecraft(enum.name.lowercase())) {
     var enable = true
-    private val myName: String = name.name.lowercase()
-    var translateName: String = name.name
+    private val myName: String = enum.name.lowercase()
+    var translateName: String = enum.name
     var description: String = ""
     var chance: Double = 0.2
     var myItemTarget: EnchantmentTarget = EnchantmentTarget.BREAKABLE
@@ -37,6 +38,7 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     }
 
     override fun canEnchantItem(item: ItemStack): Boolean {
+        if (item.type == Material.ENCHANTED_BOOK) return true
         return myItemTarget.includes(item)
     }
 
@@ -55,12 +57,11 @@ class DeEnchantmentWrapper(name: DeEnum) : Enchantment(NamespacedKey.minecraft(n
     }
 
     override fun conflictsWith(other: Enchantment): Boolean {
-        val otherName = other.key.key
-        val thisName: String = if (key.key.contains("de_"))
-            key.key.replace("de_", "")
-        else
-            key.key
-        if (otherName == thisName) return true
-        return conflicts.contains(getDeEnum(other))
+        if (other is DeEnchantmentWrapper) {
+            return conflicts.contains(other.enum)
+        }
+        val deEnum = getDeEnum(other)
+        if (enum == deEnum) return true
+        return conflicts.contains(deEnum)
     }
 }

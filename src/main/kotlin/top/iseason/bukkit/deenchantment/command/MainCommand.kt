@@ -9,6 +9,7 @@ import top.iseason.bukkit.bukkittemplate.command.Param
 import top.iseason.bukkit.bukkittemplate.command.ParmaException
 import top.iseason.bukkit.bukkittemplate.command.commandRoot
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
+import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.giveItems
 import top.iseason.bukkit.bukkittemplate.utils.noColor
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
@@ -36,7 +37,7 @@ fun mainCommand() {
                 val item = ItemStack(Material.ENCHANTED_BOOK).applyMeta {
                     val m = this as EnchantmentStorageMeta
                     m.addStoredEnchant(en, level, false)
-                    EnchantTools.setDeEnchantLore(m)
+                    EnchantTools.updateLore(m)
                 }
                 player.giveItems(item)
                 onSuccess("&a负魔书 &6${en.translateName.noColor()} &a已获得!")
@@ -58,11 +59,11 @@ fun mainCommand() {
                 val en = getParam<DeEnchantmentWrapper>(0)
                 val level = getOptionalParam<Int>(1) ?: 1
                 val itemInMainHand = player.inventory.itemInMainHand
-                if (!itemInMainHand.hasItemMeta()) throw ParmaException("&c请拿着有效的物品!")
+                if (itemInMainHand.type.checkAir()) throw ParmaException("&c请拿着有效的物品!")
                 itemInMainHand.applyMeta {
-                    if (this is EnchantmentStorageMeta) addStoredEnchant(en, level, false)
-                    else addEnchant(en, level, false)
-                    EnchantTools.setDeEnchantLore(this)
+                    if (this is EnchantmentStorageMeta) addStoredEnchant(en, level, true)
+                    else addEnchant(en, level, true)
+                    EnchantTools.updateLore(this)
                 }
                 true
             }

@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
 import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
@@ -31,7 +32,7 @@ class AnvilListener : Listener {
             submit {
                 val clone = event.inventory.getItem(2)?.clone() ?: return@submit
                 val itemMeta = clone.itemMeta ?: return@submit
-                EnchantTools.setDeEnchantLore(itemMeta)
+                EnchantTools.updateLore(itemMeta)
                 clone.itemMeta = itemMeta
                 event.result = clone
                 event.inventory.setItem(2, clone)
@@ -40,7 +41,7 @@ class AnvilListener : Listener {
         }
         val renameText = event.inventory.renameText
         //可能是要改名
-        if (item2.type.isAir && renameText != null && renameText.isNotEmpty()) {
+        if (item2.type.checkAir() && renameText != null && renameText.isNotEmpty()) {
             val clone = item1.clone()
             val itemMeta = clone.itemMeta
             itemMeta?.setDisplayName(renameText)

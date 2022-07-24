@@ -60,6 +60,10 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     var cleanConsole: Boolean = false
 
     @Key
+    @Comment("", "是否显示负魔描述")
+    var allowDescription: Boolean = false
+
+    @Key
     @Comment(
         "",
         "铁砧经验公式 {level}:修改的附魔的等级之和 {repair}: 2个物品中修改次数最多的次数",

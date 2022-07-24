@@ -16,7 +16,7 @@ object DeEnchantments {
     val DE_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PROTECTION)
         .apply {
             translateName = "§7保护不了"
-            description = "§7增加受到的伤害"
+            description = "§8 - 增加受到的伤害"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
             myStartLevel = 1
@@ -27,7 +27,7 @@ object DeEnchantments {
     val DE_fire_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FIRE_PROTECTION)
         .apply {
             translateName = "§7易燃"
-            description = "§7增加受到的火焰伤害"
+            description = "§8 - 增加受到的火焰伤害"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
             conflicts = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
@@ -38,7 +38,7 @@ object DeEnchantments {
     val DE_blast_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BLAST_PROTECTION)
         .apply {
             translateName = "§7瞬间爆炸"
-            description = "§7受到伤害时有概率爆炸"
+            description = "§8 - 受到伤害时有概率爆炸"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
             conflicts = setOf(DE_FIRE_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
@@ -49,7 +49,7 @@ object DeEnchantments {
     val DE_projectile_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PROJECTILE_PROTECTION)
         .apply {
             translateName = "§7弹射物吸引"
-            description = "§7吸引附近的弹射物"
+            description = "§8 - 吸引附近的弹射物"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
             conflicts = setOf(DE_FIRE_PROTECTION, DE_BLAST_PROTECTION, DE_PROTECTION)
@@ -60,7 +60,7 @@ object DeEnchantments {
     val DE_feather_falling: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FEATHER_FALLING)
         .apply {
             translateName = "§7摔落骨折"
-            description = "§7增加受到的摔落伤害"
+            description = "§8 - 增加受到的摔落伤害"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
             myMaxLevel = 4
         }
@@ -69,7 +69,7 @@ object DeEnchantments {
     val DE_respiration: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_RESPIRATION)
         .apply {
             translateName = "§7水下窒息"
-            description = "§7消耗氧气的速度增加"
+            description = "§8 - 消耗氧气的速度增加"
             myItemTarget = EnchantmentTarget.ARMOR_HEAD
             myMaxLevel = 3
         }
@@ -78,7 +78,7 @@ object DeEnchantments {
     val DE_aqua_affinity: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_AQUA_AFFINITY)
         .apply {
             translateName = "§7水下慢掘"
-            description = "§7增加受到的伤害"
+            description = "§8 - 增加受到的伤害"
             myItemTarget = EnchantmentTarget.ARMOR_HEAD
             myMaxLevel = 1
         }
@@ -87,7 +87,7 @@ object DeEnchantments {
     val DE_thorns: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_THORNS)
         .apply {
             translateName = "§7负荆请罪"
-            description = "§7行走时有概率受伤"
+            description = "§8 - 行走时有概率受伤"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 3
 
@@ -97,7 +97,7 @@ object DeEnchantments {
     val DE_depth_strider: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_DEPTH_STRIDER)
         .apply {
             translateName = "§7旱鸭子"
-            description = "§7水下视野减少"
+            description = "§8 - 水下视野减少"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
             myMaxLevel = 3
             conflicts = setOf(DE_FROST_WALKER)
@@ -108,7 +108,7 @@ object DeEnchantments {
     val DE_frost_walker: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FROST_WALKER)
         .apply {
             translateName = "§7熔岩行者"
-            description = "§7在岩浆上行走"
+            description = "§8 - 在岩浆上行走"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
             myMaxLevel = 2
             conflicts = setOf(DE_DEPTH_STRIDER)
@@ -119,7 +119,7 @@ object DeEnchantments {
     val DE_binding_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BINDING_CURSE)
         .apply {
             translateName = "§a灵魂绑定"
-            description = "§7不随着死亡掉落"
+            description = "§8 - 不随着死亡掉落"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_VANISHING_CURSE)
@@ -129,7 +129,7 @@ object DeEnchantments {
     val DE_sharpness: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SHARPNESS)
         .apply {
             translateName = "§7磨钝"
-            description = "§7攻击伤害减少"
+            description = "§8 - 攻击伤害减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 5
             conflicts = setOf(DE_SMITE, DE_BANE_OF_ARTHROPODS)
@@ -139,7 +139,7 @@ object DeEnchantments {
     val DE_smite: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SMITE)
         .apply {
             translateName = "§7亡灵之友"
-            description = "§7对亡灵生物伤害减少"
+            description = "§8 - 对亡灵生物伤害减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 5
             conflicts = setOf(DE_SHARPNESS, DE_BANE_OF_ARTHROPODS)
@@ -149,7 +149,7 @@ object DeEnchantments {
     val DE_bane_of_arthropods: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BANE_OF_ARTHROPODS)
         .apply {
             translateName = "§7截肢之友"
-            description = "§7对截肢生物伤害减少"
+            description = "§8 - 对截肢生物伤害减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 5
             conflicts = setOf(DE_SHARPNESS, DE_SMITE)
@@ -159,7 +159,7 @@ object DeEnchantments {
     val DE_knockback: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_KNOCKBACK)
         .apply {
             translateName = "§7退击"
-            description = "§7攻击时后跳一段距离"
+            description = "§8 - 攻击时后跳一段距离"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 2
         }
@@ -168,7 +168,7 @@ object DeEnchantments {
     val DE_fire_aspect: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FIRE_ASPECT)
         .apply {
             translateName = "§7引火烧身"
-            description = "§7攻击时有概率烧伤自己"
+            description = "§8 - 攻击时有概率烧伤自己"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 2
         }
@@ -177,7 +177,7 @@ object DeEnchantments {
     val DE_looting: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LOOTING)
         .apply {
             translateName = "§7知足"
-            description = "§7击杀生物掉落物减少"
+            description = "§8 - 击杀生物掉落物减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 3
         }
@@ -186,7 +186,7 @@ object DeEnchantments {
     val DE_sweeping: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SWEEPING)
         .apply {
             translateName = "§7横扫失败"
-            description = "§7将范围内的敌人吸引过来"
+            description = "§8 - 将范围内的敌人吸引过来"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 3
         }
@@ -195,7 +195,7 @@ object DeEnchantments {
     val DE_efficiency: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_EFFICIENCY)
         .apply {
             translateName = "§7低效"
-            description = "§7有概率挖掘失败"
+            description = "§8 - 有概率挖掘失败"
             myItemTarget = EnchantmentTarget.TOOL
             myMaxLevel = 5
         }
@@ -204,7 +204,7 @@ object DeEnchantments {
     val DE_silk_touch: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SILK_TOUCH)
         .apply {
             translateName = "§7彻底粉碎"
-            description = "§7挖掘方块不会有掉落物"
+            description = "§8 - 挖掘方块不会有掉落物"
             myItemTarget = EnchantmentTarget.TOOL
             myMaxLevel = 1
             conflicts = setOf(DE_FORTUNE)
@@ -214,7 +214,7 @@ object DeEnchantments {
     val DE_unbreaking: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_UNBREAKING)
         .apply {
             translateName = "§7易损"
-            description = "§7增加耐久消耗"
+            description = "§8 - 增加耐久消耗"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 3
         }
@@ -223,7 +223,7 @@ object DeEnchantments {
     val DE_fortune: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FORTUNE)
         .apply {
             translateName = "§7霉运"
-            description = "§7挖掘方块掉落物减少"
+            description = "§8 - 挖掘方块掉落物减少"
             myItemTarget = EnchantmentTarget.TOOL
             myMaxLevel = 3
             conflicts = setOf(DE_SILK_TOUCH)
@@ -233,7 +233,7 @@ object DeEnchantments {
     val DE_power: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_POWER)
         .apply {
             translateName = "§7虚弱"
-            description = "§7箭矢伤害和速度减少"
+            description = "§8 - 箭矢伤害和速度减少"
             myItemTarget = EnchantmentTarget.BOW
             myMaxLevel = 5
         }
@@ -242,7 +242,7 @@ object DeEnchantments {
     val DE_punch: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PUNCH)
         .apply {
             translateName = "§7拉扯"
-            description = "§7将目标拉扯过来"
+            description = "§8 - 将目标拉扯过来"
             myItemTarget = EnchantmentTarget.BOW
             myMaxLevel = 2
         }
@@ -251,7 +251,7 @@ object DeEnchantments {
     val DE_flame: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FLAME)
         .apply {
             translateName = "§7神速"
-            description = "§7箭矢速度增加"
+            description = "§8 - 箭矢速度增加"
             myItemTarget = EnchantmentTarget.BOW
             myMaxLevel = 1
         }
@@ -260,7 +260,7 @@ object DeEnchantments {
     val DE_infinity: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_INFINITY)
         .apply {
             translateName = "§7多重"
-            description = "§7消耗一根箭射出多支箭"
+            description = "§8 - 消耗一根箭射出多支箭"
             myItemTarget = EnchantmentTarget.BOW
             myMaxLevel = 1
             conflicts = setOf(DE_MENDING)
@@ -270,7 +270,7 @@ object DeEnchantments {
     val DE_luck_of_the_sea: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LUCK_OF_THE_SEA)
         .apply {
             translateName = "§7海之嫌弃"
-            description = "§7钓到的东西有概率脱钩"
+            description = "§8 - 钓到的东西有概率脱钩"
             myItemTarget = EnchantmentTarget.FISHING_ROD
             myMaxLevel = 3
         }
@@ -279,7 +279,7 @@ object DeEnchantments {
     val DE_lure: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LURE)
         .apply {
             translateName = "§7过期钓饵"
-            description = "§7增加鱼上钩的时间"
+            description = "§8 - 增加鱼上钩的时间"
             myItemTarget = EnchantmentTarget.FISHING_ROD
             myMaxLevel = 3
         }
@@ -288,7 +288,7 @@ object DeEnchantments {
     val DE_loyalty: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LOYALTY)
         .apply {
             translateName = "§7背叛"
-            description = "§7三叉戟有概率叛逃他人"
+            description = "§8 - 三叉戟有概率叛逃他人"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 3
             conflicts = setOf(DE_RIPTIDE)
@@ -298,7 +298,7 @@ object DeEnchantments {
     val DE_impaling: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_IMPALING)
         .apply {
             translateName = "§7刺穿"
-            description = "§7增加对非水生生物的伤害"
+            description = "§8 - 增加对非水生生物的伤害"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 5
         }
@@ -307,7 +307,7 @@ object DeEnchantments {
     val DE_riptide: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_RIPTIDE)
         .apply {
             translateName = "§7焰流"
-            description = "§7在燃烧时快速移动"
+            description = "§8 - 在燃烧时快速移动"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 3
             conflicts = setOf(DE_LOYALTY, DE_CHANNELING)
@@ -317,7 +317,7 @@ object DeEnchantments {
     val DE_channeling: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_CHANNELING)
         .apply {
             translateName = "§7引雷针"
-            description = "§7在雷雨天时会遭天谴"
+            description = "§8 - 在雷雨天时会遭天谴"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 1
             conflicts = setOf(DE_RIPTIDE)
@@ -327,7 +327,7 @@ object DeEnchantments {
     val DE_multishot: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_MULTISHOT)
         .apply {
             translateName = "§7连珠"
-            description = "§7连续射出多支箭"
+            description = "§8 - 连续射出多支箭"
             myItemTarget = EnchantmentTarget.CROSSBOW
             myMaxLevel = 1
             conflicts = setOf(DE_PIERCING)
@@ -337,7 +337,7 @@ object DeEnchantments {
     val DE_quick_charge: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_QUICK_CHARGE)
         .apply {
             translateName = "§7慢速装填"
-            description = "§7填充速度减慢"
+            description = "§8 - 填充速度减慢"
             myItemTarget = EnchantmentTarget.CROSSBOW
             myMaxLevel = 3
             conflicts = setOf(DE_PIERCING)
@@ -347,7 +347,7 @@ object DeEnchantments {
     val DE_piercing: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_PIERCING)
         .apply {
             translateName = "§7反弹"
-            description = "§7击中生物时反弹"
+            description = "§8 - 击中生物时反弹"
             myItemTarget = EnchantmentTarget.CROSSBOW
             myMaxLevel = 4
             conflicts = setOf(DE_MULTISHOT)
@@ -357,7 +357,7 @@ object DeEnchantments {
     val DE_mending: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_MENDING)
         .apply {
             translateName = "§7经验反哺"
-            description = "§7消耗耐久增加经验"
+            description = "§8 - 消耗耐久增加经验"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
         }
@@ -366,7 +366,7 @@ object DeEnchantments {
     val DE_vanishing_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_VANISHING_CURSE)
         .apply {
             translateName = "§a永存祝福"
-            description = "§7通常情况下不会消失或销毁"
+            description = "§8 - 通常情况下不会消失或销毁"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_BINDING_CURSE)
@@ -376,7 +376,7 @@ object DeEnchantments {
     val DE_soul_speed: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SOUL_SPEED)
         .apply {
             translateName = "§7大地疾行"
-            description = "§7在土地上疾行"
+            description = "§8 - 在土地上疾行"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
             myMaxLevel = 3
         }
@@ -385,22 +385,16 @@ object DeEnchantments {
      * 注册负魔
      */
     fun registerEnchantments() {
+
         val acceptingNew = Enchantment::class.java.getDeclaredField("acceptingNew")
-        val byKey = Enchantment::class.java.getDeclaredField("byKey")
-        val byName = Enchantment::class.java.getDeclaredField("byName")
         acceptingNew.isAccessible = true
         acceptingNew.set(null, true)
-        byKey.isAccessible = true
-        byName.isAccessible = true
-        val keyMap = byKey.get(null) as HashMap<NamespacedKey, Enchantment>
-        val nameMap = byName.get(null) as HashMap<String, Enchantment>
         var count = 0
         val enchants = BaseEnchant.enchants
         val totalCount = enchants.filter { it.enable }.size
         enchants.forEach { deEnchant ->
             if (!deEnchant.enable) return
-            keyMap[deEnchant.key] = deEnchant
-            nameMap[deEnchant.name]
+            Enchantment.registerEnchantment(deEnchant)
             count++
             if (!Config.cleanConsole) {
                 info(
@@ -464,13 +458,9 @@ object DeEnchantments {
     fun getDeEnum(enchantment: Enchantment): DeEnum? {
         val name = enchantment.key.key
         return try {
-            DeEnum.valueOf(name.uppercase())
+            DeEnum.valueOf("de_$name".uppercase())
         } catch (e: IllegalArgumentException) {
-            try {
-                DeEnum.valueOf("de_$name".uppercase())
-            } catch (e: IllegalArgumentException) {
-                null
-            }
+            null
         }
     }
 

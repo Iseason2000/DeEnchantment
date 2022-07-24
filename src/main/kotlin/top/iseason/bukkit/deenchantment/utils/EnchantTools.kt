@@ -1,7 +1,7 @@
 package top.iseason.bukkit.deenchantment.utils
 
 
-import org.bukkit.Material
+import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
 import org.bukkit.inventory.EnchantingInventory
@@ -9,59 +9,64 @@ import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
+import org.bukkit.persistence.PersistentDataType
 import org.bukkit.scheduler.BukkitRunnable
-import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
+import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.settings.Config
 
 object EnchantTools {
-    fun setDeEnchantLore(itemMeta: ItemMeta) {
-        if (itemMeta is EnchantmentStorageMeta)
-            setLoreWithEnchants(itemMeta, itemMeta.storedEnchants)
-        else
-            setLoreWithEnchants(itemMeta, itemMeta.enchants)
-    }
+    private val EN_NAMES: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_name")
+    private val EN_DESCRIPTIONS: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_description")
 
-    fun addEnchantments(target: ItemStack, en2: Map<Enchantment, Int>, isCreativeUse: Boolean): Int {
+    /**
+     * 向物品加入负魔
+     * @return 花费消耗
+     */
+    fun addEnchantments(
+        target: ItemStack,
+        en2: Map<DeEnchantmentWrapper, Int>,
+        ignoreConflicts: Boolean
+    ): Int {
         var cost = 0
         val itemMeta = target.itemMeta ?: return 0
-
-        val enchantments: Map<Enchantment, Int> =
-            if (itemMeta is EnchantmentStorageMeta)
+        //已有的附魔
+        val enchantments: MutableMap<Enchantment, Int> =
+            (if (itemMeta is EnchantmentStorageMeta)
                 itemMeta.storedEnchants
             else
-                target.enchantments
-        val en1 = enchantments.toMutableMap()
+                target.enchantments).toMutableMap()
         if (en2.isEmpty()) return 0
-        for ((e2, l2) in en2) {
-            if (e2 !is DeEnchantmentWrapper) continue
-            if (target.type != Material.ENCHANTED_BOOK && !(isCreativeUse || e2.canEnchantItem(target))) continue
-            var isConflict = false
-            for ((e1, _) in en1) {
-                if (!isCreativeUse && e1 != e2 && (e2.conflictsWith(e1) || e1.conflictsWith(e2))) {
-                    isConflict = true
-                    break
+        en2.forEach { (e2, l2) ->
+            //冲突判断
+            if (!ignoreConflicts) {
+                if (!e2.canEnchantItem(target)) return@forEach
+                for ((e1, _) in enchantments) {
+                    if (e2.conflictsWith(e1)) {
+                        return@forEach
+                    }
                 }
             }
-            if (isConflict) continue
+            //等级合并计算
             var level = l2
-            if (en1.containsKey(e2)) {
-                val nl2 = en1[e2]!!
+            if (enchantments.containsKey(e2)) {
+                val nl2 = enchantments[e2]!!
                 level = when {
-                    nl2 == level -> level + 1
                     nl2 > level -> nl2
+                    nl2 == level -> level + 1
                     else -> level
                 }
             }
-            if (!isCreativeUse && !Config.levelUnlimited && level > e2.maxLevel) {
+            //最高等级限制
+            if (!ignoreConflicts && !Config.levelUnlimited && level > e2.maxLevel) {
                 level = e2.maxLevel
             }
-            en1[e2] = level
+            enchantments[e2] = level
             cost += level
         }
-        addEnchants(itemMeta, en1)
-        setDeEnchantLore(itemMeta)
+        addEnchants(itemMeta, enchantments)
+        updateLore(itemMeta)
         target.itemMeta = itemMeta
         return cost
     }
@@ -71,19 +76,26 @@ object EnchantTools {
         return DeEnchantments.getByKeyName(keyName)
     }
 
+    /**
+     * 清楚负魔的lore
+     */
     fun clearEnchantLore(itemMeta: ItemMeta) {
         if (!itemMeta.hasLore()) return
-        var loreList = itemMeta.lore ?: return
-        if (itemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) return
-        BaseEnchant.enchants.forEach { it ->
-            val name = it.translateName
-            val description = it.description
-            loreList = loreList.filterNot { str ->
-                str.matches(Regex("$name \\w+?")) || str.equals(description)
-            }
+        val loreSet = itemMeta.lore?.toHashSet() ?: return
+        val pdc = itemMeta.persistentDataContainer
+        val names = pdc.get(EN_NAMES, PersistentDataType.TAG_CONTAINER)
+        val descriptions = pdc.get(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER)
+        names?.keys?.forEach {
+            val str = names.get(it, PersistentDataType.STRING)
+            loreSet.remove(str)
         }
-
-        itemMeta.lore = loreList
+        descriptions?.keys?.forEach {
+            val str = descriptions.get(it, PersistentDataType.STRING)
+            loreSet.remove(str)
+        }
+        pdc.remove(EN_NAMES)
+        pdc.remove(EN_DESCRIPTIONS)
+        itemMeta.lore = loreSet.toMutableList()
     }
 
     fun translateEnchantsByChance(itemStack: ItemStack) {
@@ -93,7 +105,7 @@ object EnchantTools {
         clearEnchants(itemStack)
         val itemMeta = itemStack.itemMeta ?: return
         addEnchants(itemMeta, enchantByChance)
-        setDeEnchantLore(itemMeta)
+        updateLore(itemMeta)
         itemStack.itemMeta = itemMeta
     }
 
@@ -129,7 +141,7 @@ object EnchantTools {
             clearEnchants(itemStack)
             val itemMeta = itemStack.itemMeta!!
             addEnchants(itemMeta, enchants.toMutableMap())
-            setDeEnchantLore(itemMeta)
+            updateLore(itemMeta)
             itemStack.itemMeta = itemMeta
             enchantingInventory.item = itemStack
         }
@@ -155,21 +167,34 @@ object EnchantTools {
         return enchants
     }
 
-    private fun setLoreWithEnchants(itemMeta: ItemMeta, enchants: Map<Enchantment, Int>) {
-//        val isShowLore = ConfigManager.getShowLore() ?: true
-//        if (!isShowLore) return
-        if (enchants.isEmpty()) return
+    /**
+     * 根据负魔设置lore
+     */
+    fun updateLore(itemMeta: ItemMeta) {
         clearEnchantLore(itemMeta)
+        val enchants = if (itemMeta is EnchantmentStorageMeta) itemMeta.storedEnchants else itemMeta.enchants
+        if (enchants.isEmpty()) return
+        if (itemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) return
         val loreList = itemMeta.lore ?: mutableListOf<String>()
+        val pdc = itemMeta.persistentDataContainer
+        val names = pdc.adapterContext.newPersistentDataContainer()
+        val description = pdc.adapterContext.newPersistentDataContainer()
         for ((enchant, level) in enchants) {
             if (enchant !is DeEnchantmentWrapper) continue
+            if (Config.allowDescription) {
+                loreList.add(0, enchant.description)
+                description.set(enchant.key, PersistentDataType.STRING, enchant.description)
+            }
             val wholeName = "${enchant.translateName} ${Tools.intToRome(level)}"
-            loreList.add(0, wholeName)
+            loreList.add(0, "${enchant.translateName} ${Tools.intToRome(level)}")
+            names.set(enchant.key, PersistentDataType.STRING, wholeName)
         }
+        pdc.set(EN_NAMES, PersistentDataType.TAG_CONTAINER, names)
+        pdc.set(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER, description)
         itemMeta.lore = loreList
     }
 
-
+    //向物品Meta添加负魔
     fun addEnchants(itemMeta: ItemMeta, ens: MutableMap<Enchantment, Int>) {
         if (ens.isEmpty()) return
         if (itemMeta is EnchantmentStorageMeta) {
@@ -181,7 +206,7 @@ object EnchantTools {
         }
     }
 
-
+    //获取身上装备某种负魔的等级之和
     fun getLevelCount(entity: LivingEntity, deEnchantment: Enchantment): Int {
         val equipments = entity.equipment?.armorContents ?: return 0
         var levelCount = 0
