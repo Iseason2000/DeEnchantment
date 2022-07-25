@@ -6,7 +6,7 @@ import org.bukkit.event.entity.EntityShootBowEvent
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.runnables.MultiShot
+import top.iseason.bukkit.deenchantment.runnables.MultiShot
 
 //多重
 object Infinity : BaseEnchant(DeEnchantments.DE_infinity) {

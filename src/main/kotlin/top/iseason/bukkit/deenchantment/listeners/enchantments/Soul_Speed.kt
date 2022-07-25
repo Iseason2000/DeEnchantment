@@ -8,7 +8,7 @@ import org.bukkit.potion.PotionEffectType
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.runnables.PotionAdder
+import top.iseason.bukkit.deenchantment.runnables.PotionAdder
 import java.util.*
 
 object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {

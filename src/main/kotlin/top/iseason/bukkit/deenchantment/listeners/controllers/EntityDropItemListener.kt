@@ -7,9 +7,8 @@ import org.bukkit.event.entity.EntityDropItemEvent
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 class EntityDropItemListener : Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onEntityDropItemEvent(event: EntityDropItemEvent) {
-        if (event.isCancelled) return
         val itemDrop = event.itemDrop
         val itemStack = itemDrop.itemStack
         EnchantTools.translateEnchantsByChance(itemStack)

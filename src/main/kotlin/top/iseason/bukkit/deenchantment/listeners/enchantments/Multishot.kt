@@ -8,7 +8,7 @@ import org.bukkit.event.entity.EntityShootBowEvent
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.runnables.ProjectileShooter
+import top.iseason.bukkit.deenchantment.runnables.ProjectileShooter
 
 //连珠
 object Multishot : BaseEnchant(DeEnchantments.DE_multishot) {

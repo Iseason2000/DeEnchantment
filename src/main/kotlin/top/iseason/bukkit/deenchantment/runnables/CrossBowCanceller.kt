@@ -1,4 +1,4 @@
-package top.iseason.bukkit.deenchantment.utils.runnables
+package top.iseason.bukkit.deenchantment.runnables
 
 import org.bukkit.entity.Player
 import org.bukkit.inventory.EquipmentSlot

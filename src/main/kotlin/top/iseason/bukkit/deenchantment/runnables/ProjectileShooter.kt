@@ -1,4 +1,4 @@
-package top.iseason.bukkit.deenchantment.utils.runnables
+package top.iseason.bukkit.deenchantment.runnables
 
 import org.bukkit.Material
 import org.bukkit.entity.LivingEntity

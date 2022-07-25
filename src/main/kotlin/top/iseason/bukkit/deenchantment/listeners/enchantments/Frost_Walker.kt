@@ -12,7 +12,7 @@ import org.bukkit.event.player.PlayerMoveEvent
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.runnables.BlockTimer
+import top.iseason.bukkit.deenchantment.runnables.BlockTimer
 import kotlin.math.sqrt
 
 //熔岩行者

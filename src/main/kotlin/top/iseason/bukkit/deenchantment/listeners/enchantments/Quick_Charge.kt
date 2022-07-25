@@ -7,7 +7,7 @@ import org.bukkit.inventory.meta.CrossbowMeta
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.runnables.CrossBowCanceller
+import top.iseason.bukkit.deenchantment.runnables.CrossBowCanceller
 
 object Quick_Charge : BaseEnchant(DeEnchantments.DE_quick_charge) {
     private val chargeMap = HashMap<ItemStack, Int>()

@@ -10,9 +10,11 @@ import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
 import top.iseason.bukkit.bukkittemplate.debug.info
 import top.iseason.bukkit.bukkittemplate.utils.noColor
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
+import top.iseason.bukkit.deenchantment.runnables.EquipmentScanner
 import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.settings.Message
 
@@ -38,6 +40,7 @@ object DeEnchantment : KotlinPlugin() {
         mainCommand()
         CommandBuilder.onEnable()
         info("${ChatColor.GREEN}插件已启用！${ChatColor.DARK_PURPLE}DeEnchantments v${ChatColor.GOLD}${javaPlugin.description.version}")
+        submit(period = 10, async = true, task = EquipmentScanner)
     }
 
     override fun onDisable() {

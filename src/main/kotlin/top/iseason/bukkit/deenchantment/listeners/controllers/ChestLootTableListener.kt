@@ -7,9 +7,8 @@ import org.bukkit.event.world.LootGenerateEvent
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 class ChestLootTableListener : Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onLootGenerateEvent(event: LootGenerateEvent) {
-        if (event.isCancelled) return
         val loot = event.loot
         for (item in loot) {
             EnchantTools.translateEnchantsByChance(item)

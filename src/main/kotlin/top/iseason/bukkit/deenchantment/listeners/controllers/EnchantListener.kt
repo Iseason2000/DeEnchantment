@@ -1,27 +1,35 @@
 package top.iseason.bukkit.deenchantment.listeners.controllers
 
 import org.bukkit.ChatColor
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.inventory.EnchantingInventory
 import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
-import top.iseason.bukkit.deenchantment.DeEnchantment
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 class EnchantListener : Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onEnchantItemEvent(event: EnchantItemEvent) {
-        if (event.isCancelled) return
         val enchantsToAdd = event.enchantsToAdd
-        val translateEnchantByChance = EnchantTools.translateEnchantByChance(enchantsToAdd)
         val inventory = event.inventory as EnchantingInventory
-        EnchantTools.LoreSetter(inventory, translateEnchantByChance)
-            .runTaskLater(DeEnchantment.javaPlugin, 1)
-        if (enchantsToAdd != translateEnchantByChance) {
-            event.enchanter.sendColorMessage("${SimpleLogger.prefix}${ChatColor.YELLOW}你的附魔发生了某些变化！")
+        submit {
+            val translateEnchantByChance = EnchantTools.translateEnchantByChance(enchantsToAdd)
+            val itemStack = inventory.item?.clone() ?: return@submit
+            EnchantTools.clearEnchants(itemStack)
+            itemStack.applyMeta {
+                EnchantTools.addEnchants(this, translateEnchantByChance as MutableMap<Enchantment, Int>)
+                EnchantTools.updateLore(this)
+            }
+            inventory.item = itemStack
+            if (enchantsToAdd != translateEnchantByChance) {
+                event.enchanter.sendColorMessage("${SimpleLogger.prefix}${ChatColor.YELLOW}你的附魔发生了某些变化！")
+            }
         }
     }
 }

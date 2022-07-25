@@ -6,7 +6,7 @@ import org.bukkit.event.entity.ProjectileLaunchEvent
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.runnables.TargetFinder
+import top.iseason.bukkit.deenchantment.runnables.TargetFinder
 
 //弹射物吸引
 object Projectile_Protection : BaseEnchant(DeEnchantments.DE_projectile_protection) {

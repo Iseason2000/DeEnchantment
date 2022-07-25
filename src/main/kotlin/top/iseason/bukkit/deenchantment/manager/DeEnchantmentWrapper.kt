@@ -10,7 +10,7 @@ import top.iseason.bukkit.deenchantment.utils.DeEnum
 
 class DeEnchantmentWrapper(val enum: DeEnum) : Enchantment(NamespacedKey.minecraft(enum.name.lowercase())) {
     var enable = true
-    private val myName: String = enum.name.lowercase()
+    private val myName: String = enum.name
     var translateName: String = enum.name
     var description: String = ""
     var chance: Double = 0.2

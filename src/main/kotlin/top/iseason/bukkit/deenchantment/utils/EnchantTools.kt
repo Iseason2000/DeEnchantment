@@ -4,13 +4,13 @@ package top.iseason.bukkit.deenchantment.utils
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
-import org.bukkit.inventory.EnchantingInventory
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.scheduler.BukkitRunnable
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
+import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
@@ -98,30 +98,33 @@ object EnchantTools {
         itemMeta.lore = loreSet.toMutableList()
     }
 
+    /**
+     * 计算物品负魔突变
+     */
     fun translateEnchantsByChance(itemStack: ItemStack) {
         val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
         if (enchantOrStoredEnchant.isEmpty()) return
         val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant).toMutableMap()
         clearEnchants(itemStack)
-        val itemMeta = itemStack.itemMeta ?: return
-        addEnchants(itemMeta, enchantByChance)
-        updateLore(itemMeta)
-        itemStack.itemMeta = itemMeta
+        itemStack.applyMeta {
+            addEnchants(this, enchantByChance)
+            updateLore(this)
+        }
     }
 
     fun clearEnchants(itemStack: ItemStack) {
-        val itemMeta = itemStack.itemMeta ?: return
-        if (itemMeta is EnchantmentStorageMeta) {
-            val storedEnchants = itemMeta.storedEnchants
-            for ((storedEnchant, _) in storedEnchants) {
-                itemMeta.removeStoredEnchant(storedEnchant)
+        itemStack.applyMeta {
+            if (this is EnchantmentStorageMeta) {
+                val storedEnchants = storedEnchants
+                for ((storedEnchant, _) in storedEnchants) {
+                    removeStoredEnchant(storedEnchant)
+                }
+            } else {
+                val enchants = enchants
+                for ((en, _) in enchants)
+                    removeEnchant(en)
             }
-        } else {
-            val enchants = itemMeta.enchants
-            for ((en, _) in enchants)
-                itemMeta.removeEnchant(en)
         }
-        itemStack.itemMeta = itemMeta
     }
 
     fun getEnchantOrStoredEnchant(itemStack: ItemStack): Map<Enchantment, Int> {
@@ -132,32 +135,18 @@ object EnchantTools {
             itemMeta.enchants
     }
 
-    class LoreSetter(
-        private val enchantingInventory: EnchantingInventory,
-        private val enchants: Map<Enchantment, Int>
-    ) : BukkitRunnable() {
-        override fun run() {
-            val itemStack = enchantingInventory.item?.clone() ?: return
-            clearEnchants(itemStack)
-            val itemMeta = itemStack.itemMeta!!
-            addEnchants(itemMeta, enchants.toMutableMap())
-            updateLore(itemMeta)
-            itemStack.itemMeta = itemMeta
-            enchantingInventory.item = itemStack
-        }
-    }
-
+    //将附魔以其概率转换为负魔
     fun translateEnchantByChance(enchantment: Map<Enchantment, Int>): Map<Enchantment, Int> {
         val enchants = enchantment.toMutableMap()
         val removeMap = mutableMapOf<Enchantment, Int>()
         val addSet = mutableSetOf<Enchantment>()
         for ((en, level) in enchants) {
-            val deEnchantByEnchant = getDeEnchantByEnchant(en) as? DeEnchantmentWrapper ?: continue//剔除非原版附魔
-            val random = Tools.getRandomDouble()
-            if (random < deEnchantByEnchant.chance) {//概率计算
-                removeMap[en] = level
-                addSet.add(deEnchantByEnchant)
+            val de = getDeEnchantByEnchant(en) as? DeEnchantmentWrapper ?: continue//剔除非原版附魔
+            if (RandomUtils.checkPercentage(de.chance * 100)) {
+                continue
             }
+            removeMap[en] = level
+            addSet.add(de)
         }
         val iterator = addSet.iterator()
         for ((en, l) in removeMap) {

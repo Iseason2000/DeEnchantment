@@ -20,7 +20,7 @@ import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 class AnvilListener : Listener {
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
@@ -69,7 +69,7 @@ class AnvilListener : Listener {
             return
         }
         val ignoreConflicts = event.view.player.gameMode == GameMode.CREATIVE
-//        //不是附魔书且材质与第一格不同
+        //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
         val itemClone = item1.clone()
         val cost =
