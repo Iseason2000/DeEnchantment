@@ -8,146 +8,108 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
-import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
 import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
-import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
-//TODO:重写
 class AnvilListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
         //2格为空则无响应
         val item1 = event.view.getItem(0) ?: return
+        if (item1.type.checkAir()) return
         val item2 = event.view.getItem(1) ?: return
         //其他插件使用铁砧,仅更新lore
-        if (false) {
-            submit {
-                val clone = event.inventory.getItem(2)?.clone() ?: return@submit
-                val itemMeta = clone.itemMeta ?: return@submit
-                EnchantTools.updateLore(itemMeta)
-                clone.itemMeta = itemMeta
-                event.result = clone
-                event.inventory.setItem(2, clone)
-            }
-            return
-        }
         val renameText = event.inventory.renameText
         //可能是要改名
         if (item2.type.checkAir() && renameText != null && renameText.isNotEmpty()) {
-            val clone = item1.clone()
-            val itemMeta = clone.itemMeta
-            itemMeta?.setDisplayName(renameText)
-            clone.itemMeta = itemMeta
-            event.result = clone
+            val clone = item1.itemMeta
+            clone?.setDisplayName(renameText)
+            event.result?.itemMeta = clone
             return
         }
-        //空气没有ItemMeta
+        if (item2.type.checkAir()) return
         val itemMeta1 = item1.itemMeta ?: return
         val itemMeta2 = item2.itemMeta ?: return
-        //1格为附魔书而2格不是附魔书
+//        //1格为附魔书而2格不是附魔书
         if (item1.type == Material.ENCHANTED_BOOK && item2.type != Material.ENCHANTED_BOOK) return
-        val enchantments2: MutableMap<Enchantment, Int> =
-            (if (itemMeta2 is EnchantmentStorageMeta)
+        val en2: MutableMap<Enchantment, Int> =
+            if (itemMeta2 is EnchantmentStorageMeta)
                 itemMeta2.storedEnchants
             else
-                item2.enchantments).toMutableMap()
-        //第二个没有附魔跳过
-        if (enchantments2.isEmpty()) {
+                item2.enchantments
+        val deEns = mutableMapOf<DeEnchantmentWrapper, Int>()
+        en2.forEach { (k, v) ->
+            if (k !is DeEnchantmentWrapper) return@forEach
+            deEns[k] = v
+        }
+//        //第二个没有附魔跳过
+        if (deEns.isEmpty()) {
             //修复物品判断
             val result = event.result ?: return
             //修复物品附魔
-            result.addUnsafeEnchantments(item1.enchantments)
+            //补回附魔
+            result.applyMeta {
+                itemMeta1.enchants.forEach { (t, u) ->
+                    if (t !is DeEnchantmentWrapper) return@forEach
+                    if (this is EnchantmentStorageMeta)
+                        addStoredEnchant(t, u, true)
+                    else
+                        addEnchant(t, u, true)
+                }
+                EnchantTools.updateLore(this)
+            }
             return
         }
-        //不是附魔书且材质与第一格不同
+        val ignoreConflicts = event.view.player.gameMode == GameMode.CREATIVE
+//        //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
-        val result = event.result
-        if (result != null) {
-            val enchants = result.getEnchants()
-            item1.enchantments.forEach { (t, u) ->
-                if (t !is DeEnchantmentWrapper) return@forEach
-                if (enchantments2.containsKey(t) && enchantments2[t]!! >= u) {
-                    return@forEach
-                }
-                if (event.view.player.gameMode != GameMode.CREATIVE) {
-                    for ((e, _) in enchantments2) {
-                        if (t.conflictsWith(e)) {
-                            enchants.remove(e)
-                            enchantments2.remove(e)
-                        }
-                    }
-                }
-                enchantments2[t] = u
-            }
-            result.setEnchants(enchants)
-        }
-        val resultItem = if (result == null || !result.hasItemMeta()) item1.clone() else result
-        val level =
-            EnchantTools.addEnchantments(resultItem, enchantments2, event.view.player.gameMode == GameMode.CREATIVE)
-        if (item1 == resultItem) {//不能附魔的物品
-
+        val itemClone = item1.clone()
+        val cost =
+            EnchantTools.addEnchantments(itemClone, deEns, ignoreConflicts)
+        var result = event.result
+        val anvilView = event.inventory
+        //不能附魔的物品
+        if (item1 == result) {
             event.result = null
             return
         }
-        val repairCost1 = if (itemMeta1 is Repairable) itemMeta1.repairCost else 0
-        val repairCost2 = if (itemMeta2 is Repairable) itemMeta2.repairCost else 0
-        val finalCost = if (repairCost1 <= repairCost2) repairCost2 else repairCost1
-        with(resultItem) {
-            val meta = itemMeta
-            if (meta is Repairable) {
-                meta.repairCost = repairCost1 + 1
-                itemMeta = meta
-            }
-        }
-        val anvilView = event.inventory
-        val cost = Config.exprParser.evaluate(
-            Config.expression.replace("{repair}", finalCost.toString())
-                .replace("{level}", level.toString())
-        ).toInt()
-        anvilView.repairCost = cost
-        if (anvilView.repairCost >= 40) {
-            if (Config.tooExpensive)
-                return
-            anvilView.viewers.firstOrNull()
-                ?.sendColorMessage("${SimpleLogger.prefix}${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}")
-        }
-        if (renameText != null && renameText.isNotEmpty()) {
-            val itemMeta = resultItem.itemMeta
-            itemMeta?.setDisplayName(renameText)
-            resultItem.itemMeta = itemMeta
-        }
-        event.result = resultItem
-    }
-
-    private fun ItemStack.getEnchants() =
-        ((itemMeta as? EnchantmentStorageMeta)?.storedEnchants ?: enchantments).toMutableMap()
-
-    private fun ItemStack.setEnchants(enchants: Map<Enchantment, Int>) {
-        val im = itemMeta ?: return
-        if (im is EnchantmentStorageMeta) {
-            for ((e, _) in im.storedEnchants) {
-                im.removeStoredEnchant(e)
-            }
-            for ((e, l) in enchants) {
-                im.addStoredEnchant(e, l, true)
+        if (result == null) {
+            result = itemClone.applyMeta {
+                if (this !is Repairable) return
+                repairCost += 1
+                if (renameText != null && renameText.isNotEmpty()) setDisplayName(renameText)
             }
         } else {
-            for ((e, _) in im.enchants) {
-                im.removeEnchant(e)
-            }
-            for ((e, l) in enchants) {
-                im.addEnchant(e, l, true)
+            result = result.applyMeta {
+                itemClone.enchantments.forEach { (t, u) ->
+                    if (t !is DeEnchantmentWrapper) return@forEach
+                    if (this is EnchantmentStorageMeta)
+                        addStoredEnchant(t, u, true)
+                    else
+                        addEnchant(t, u, true)
+                }
+                EnchantTools.updateLore(this)
+                if (renameText != null && renameText.isNotEmpty()) setDisplayName(renameText)
             }
         }
-        itemMeta = im
+        anvilView.repairCost += cost.coerceAtLeast(1)
+        if (anvilView.repairCost >= 40) {
+            if (!Config.tooExpensive && !ignoreConflicts) {
+                event.result = null
+                return
+            }
+            anvilView.viewers.firstOrNull()
+                ?.sendColorMessage("${SimpleLogger.prefix}${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}")
+        } else
+            event.result = result
     }
 }
 
