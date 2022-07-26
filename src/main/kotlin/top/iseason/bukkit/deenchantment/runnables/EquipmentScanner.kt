@@ -3,7 +3,7 @@ package top.iseason.bukkit.deenchantment.runnables
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitRunnable
-import top.iseason.bukkit.deenchantment.events.PlayerEquipmentChangeEvent
+import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import java.util.*
 
 /**
@@ -20,7 +20,7 @@ object EquipmentScanner : BukkitRunnable() {
                 return
             }
             playerEquipments[uniqueId] = armorContents
-            Bukkit.getPluginManager().callEvent(PlayerEquipmentChangeEvent(it))
+            Bukkit.getPluginManager().callEvent(DePlayerEquipmentChangeEvent(it))
         }
     }
 

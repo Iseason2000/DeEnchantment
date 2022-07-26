@@ -78,7 +78,7 @@ object DeEnchantments {
     val DE_aqua_affinity: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_AQUA_AFFINITY)
         .apply {
             translateName = "§7水下慢掘"
-            description = "§8 - 增加受到的伤害"
+            description = "§8 - 水下挖掘有概率失败"
             myItemTarget = EnchantmentTarget.ARMOR_HEAD
             myMaxLevel = 1
         }
@@ -119,7 +119,7 @@ object DeEnchantments {
     val DE_binding_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_BINDING_CURSE)
         .apply {
             translateName = "§a灵魂绑定"
-            description = "§8 - 不随着死亡掉落"
+            description = "§8 - 绑定玩家的灵魂仅允许使用"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_VANISHING_CURSE)

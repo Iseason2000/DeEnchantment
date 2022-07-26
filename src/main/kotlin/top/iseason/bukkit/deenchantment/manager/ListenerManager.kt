@@ -7,6 +7,7 @@ import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.listeners.controllers.*
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Aqua_Affinity
+import top.iseason.bukkit.deenchantment.listeners.triggers.EntityDeEnchantCaller
 import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.utils.ClassGetter
 import java.lang.reflect.Field
@@ -16,6 +17,7 @@ object ListenerManager {
     fun registerListeners() {
         registerControllers()
         registerEnchantments()
+        DeEnchantment.registerListeners(EntityDeEnchantCaller)
     }
 
     fun unRegisterAll() {

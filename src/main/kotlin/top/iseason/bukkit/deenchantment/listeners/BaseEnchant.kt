@@ -3,6 +3,7 @@ package top.iseason.bukkit.deenchantment.listeners
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
+import org.bukkit.entity.LivingEntity
 import org.bukkit.event.Listener
 import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -12,7 +13,7 @@ import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.utils.DeEnum
 
 abstract class BaseEnchant(
-    private val enchant: DeEnchantmentWrapper
+    protected val enchant: DeEnchantmentWrapper
 ) : SimpleYAMLConfig("enchantments/${enchant.name.lowercase()}.yml"), Listener {
 
     @Comment("", "是否启用")
@@ -73,4 +74,32 @@ abstract class BaseEnchant(
     init {
         enchants.add(enchant)
     }
+
+    /**
+     * 获取装备某种负魔等级之和
+     */
+    fun <T : LivingEntity> T.getArmorDeEnchant(): Int {
+        var count = 0
+        equipment?.armorContents?.forEach {
+            if (it == null) return@forEach
+            for ((enchantment, level) in it.enchantments) {
+                if (enchantment != enchant) continue
+                count += level
+            }
+        } ?: return 0
+        return count
+    }
+
+    /**
+     * 获取手上物品的某种负魔等级
+     */
+    fun <T : LivingEntity> T.getHandDeEnchant(): Int {
+        var count = 0
+        equipment?.itemInMainHand?.enchantments?.forEach { (e, l) ->
+            if (e != enchant) return@forEach
+            count += l
+        } ?: return 0
+        return count
+    }
+
 }

@@ -1,16 +1,49 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.NamespacedKey
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.entity.PlayerDeathEvent
+import org.bukkit.event.player.PlayerItemDamageEvent
 import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.ItemStack
+import org.bukkit.persistence.PersistentDataType
+import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
+import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
+import top.iseason.bukkit.deenchantment.utils.EnchantTools
 import java.util.*
 
 
 object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
+    private val EN_BINDING: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_binding")
+
+    //绑定玩家
+    @EventHandler(ignoreCancelled = true)
+    fun onItemDamage(event: PlayerItemDamageEvent) {
+        val item = event.item
+        if (!item.containsEnchantment(enchant)) return
+        item.applyMeta {
+            val pdc = persistentDataContainer
+            val hasBind = pdc.get(EN_BINDING, PersistentDataType.STRING)
+            //已经绑定
+            if (hasBind != null) return@applyMeta
+            val player = event.player
+            pdc.set(EN_BINDING, PersistentDataType.STRING, player.uniqueId.toString())
+            val descriptions =
+                pdc.get(EnchantTools.EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER) ?: return@applyMeta
+            val description = descriptions.get(enchant.key, PersistentDataType.STRING) ?: return@applyMeta
+            val replace = description.replace("玩家", player.name)
+            descriptions.set(enchant.key, PersistentDataType.STRING, replace)
+            val lo = lore ?: return@applyMeta
+            val indexOf = lo.indexOf(description)
+            if (indexOf < 0) return@applyMeta
+            lo[indexOf] = replace
+            lore = lo
+        }
+    }
+
     //灵魂绑定
     private val protectionMap = mutableMapOf<UUID, MutableMap<Int, ItemStack>>()
 
@@ -18,7 +51,7 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
         val player = event.entity
         val drops = event.drops
-        if (drops.isEmpty()) return//空背包 是否死亡不掉落也是空的？
+        if (drops.isEmpty()) return
         val contents = player.inventory.contents
         //位置不可能重复，故而在前
         val bindings = mutableMapOf<Int, ItemStack>()

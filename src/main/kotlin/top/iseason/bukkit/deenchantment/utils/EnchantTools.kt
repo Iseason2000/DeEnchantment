@@ -17,8 +17,8 @@ import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.settings.Config
 
 object EnchantTools {
-    private val EN_NAMES: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_name")
-    private val EN_DESCRIPTIONS: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_description")
+    val EN_NAMES: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_name")
+    val EN_DESCRIPTIONS: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_description")
 
     /**
      * 向物品加入负魔

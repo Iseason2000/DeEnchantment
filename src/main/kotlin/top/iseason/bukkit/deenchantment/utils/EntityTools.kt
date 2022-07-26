@@ -18,7 +18,7 @@ object EntityTools {
     }
 
     //截肢生物
-    fun isArthropods(entity: LivingEntity): Boolean {
+    fun isArthropods(entity: Entity): Boolean {
         return when (entity) {
             is Spider,
             is Silverfish,
