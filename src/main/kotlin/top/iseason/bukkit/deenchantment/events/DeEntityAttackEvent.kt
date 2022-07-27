@@ -4,7 +4,7 @@ import org.bukkit.entity.LivingEntity
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 
-class DeEntityMainHandEvent(entity: LivingEntity, val event: EntityDamageByEntityEvent) :
+class DeEntityAttackEvent(entity: LivingEntity, val event: EntityDamageByEntityEvent) :
     DeEnchantmentEvent(entity, false) {
 
     private var deEnchantments: MutableMap<DeEnchantmentWrapper, Int>? = null

@@ -45,6 +45,7 @@ object DeEnchantment : KotlinPlugin() {
 
     override fun onDisable() {
         Config.onDisable()
+        EquipmentScanner.cancel()
         ConfigWatcher.onDisable()
         CommandBuilder.onDisable()
         info("${ChatColor.GREEN}插件已注销！")

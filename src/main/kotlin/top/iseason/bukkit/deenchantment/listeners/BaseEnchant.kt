@@ -5,6 +5,7 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.Listener
+import org.bukkit.inventory.ItemStack
 import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
@@ -101,5 +102,8 @@ abstract class BaseEnchant(
         } ?: return 0
         return count
     }
+
+    fun ItemStack.getDeLevel() = getEnchantmentLevel(enchant)
+
 
 }
