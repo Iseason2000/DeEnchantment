@@ -1,7 +1,6 @@
 package top.iseason.bukkit.deenchantment.utils
 
 
-import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
@@ -17,7 +16,6 @@ import top.iseason.bukkit.deenchantment.listeners.enchantments.Binding_Curse
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.settings.Config
-import java.util.*
 
 object EnchantTools {
     val EN_NAMES: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_name")
@@ -181,11 +179,9 @@ object EnchantTools {
                 var description = enchant.description
                 //特殊处理灵魂绑定
                 if (enchant == DeEnchantments.DE_binding_curse) {
-                    val uid = pdc.get(Binding_Curse.EN_BINDING, PersistentDataType.STRING)
-                    try {
-                        val name = Bukkit.getOfflinePlayer(UUID.fromString(uid)).name!!
-                        description = description.replace(Binding_Curse.placeHolder, name)
-                    } catch (_: Exception) {
+                    val get = pdc.get(Binding_Curse.EN_BINDING, PersistentDataType.STRING)
+                    if (get != null) {
+                        description = description.replace(Binding_Curse.placeHolder, get.split(";").last())
                     }
                 }
                 loreList.add(0, description)

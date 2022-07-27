@@ -65,7 +65,7 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
             //已经绑定
             if (hasBind != null) return@applyMeta
             val player = event.player
-            pdc.set(EN_BINDING, PersistentDataType.STRING, player.uniqueId.toString())
+            pdc.set(EN_BINDING, PersistentDataType.STRING, "${player.uniqueId};${player.name}")
             player.sendColorMessage(bindMessage)
             val descriptions =
                 pdc.get(EnchantTools.EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER) ?: return@applyMeta
@@ -244,6 +244,6 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     }
 
     private fun ItemStack.getSoulBindOwner(): String? {
-        return itemMeta?.persistentDataContainer?.get(EN_BINDING, PersistentDataType.STRING)
+        return itemMeta?.persistentDataContainer?.get(EN_BINDING, PersistentDataType.STRING)?.split(";")?.first()
     }
 }
