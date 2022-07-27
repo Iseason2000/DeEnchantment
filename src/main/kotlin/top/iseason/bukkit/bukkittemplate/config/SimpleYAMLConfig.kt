@@ -290,7 +290,7 @@ abstract class SimpleYAMLConfig(
         var superClass: Class<*> = this::class.java
         while (true) {
             if (superClass == SimpleYAMLConfig::class.java) break
-            fields.addAll(superClass.declaredFields)
+            fields.addAll(0, superClass.declaredFields.toList())
             superClass = superClass.superclass
         }
         return fields

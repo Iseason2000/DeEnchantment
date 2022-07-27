@@ -1,6 +1,7 @@
 package top.iseason.bukkit.deenchantment.utils
 
 
+import org.bukkit.Bukkit
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.LivingEntity
@@ -12,9 +13,11 @@ import org.bukkit.persistence.PersistentDataType
 import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.deenchantment.DeEnchantment
+import top.iseason.bukkit.deenchantment.listeners.enchantments.Binding_Curse
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.settings.Config
+import java.util.*
 
 object EnchantTools {
     val EN_NAMES: NamespacedKey = NamespacedKey(DeEnchantment.javaPlugin, "deenchantment_name")
@@ -85,6 +88,10 @@ object EnchantTools {
         val pdc = itemMeta.persistentDataContainer
         val names = pdc.get(EN_NAMES, PersistentDataType.TAG_CONTAINER)
         val descriptions = pdc.get(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER)
+        //删除灵魂绑定
+        if (names?.keys?.contains(DeEnchantments.DE_binding_curse.key) == false) {
+            pdc.remove(Binding_Curse.EN_BINDING)
+        }
         names?.keys?.forEach {
             val str = names.get(it, PersistentDataType.STRING)
             loreSet.remove(str)
@@ -167,19 +174,32 @@ object EnchantTools {
         val loreList = itemMeta.lore ?: mutableListOf<String>()
         val pdc = itemMeta.persistentDataContainer
         val names = pdc.adapterContext.newPersistentDataContainer()
-        val description = pdc.adapterContext.newPersistentDataContainer()
+        val descriptions = pdc.adapterContext.newPersistentDataContainer()
         for ((enchant, level) in enchants) {
             if (enchant !is DeEnchantmentWrapper) continue
             if (Config.allowDescription) {
-                loreList.add(0, enchant.description)
-                description.set(enchant.key, PersistentDataType.STRING, enchant.description)
+                var description = enchant.description
+                //特殊处理灵魂绑定
+                if (enchant == DeEnchantments.DE_binding_curse) {
+                    val uid = pdc.get(Binding_Curse.EN_BINDING, PersistentDataType.STRING)
+                    try {
+                        val name = Bukkit.getOfflinePlayer(UUID.fromString(uid)).name!!
+                        description = description.replace(Binding_Curse.placeHolder, name)
+                    } catch (_: Exception) {
+                    }
+                }
+                loreList.add(0, description)
+                descriptions.set(enchant.key, PersistentDataType.STRING, description)
             }
-            val wholeName = "${enchant.translateName} ${Tools.intToRome(level)}"
-            loreList.add(0, "${enchant.translateName} ${Tools.intToRome(level)}")
+            val wholeName =
+                if (enchant.maxLevel == 1 && level == 1) "${enchant.translateName}  " else "${enchant.translateName} ${
+                    Tools.intToRome(level)
+                }"
+            loreList.add(0, wholeName)
             names.set(enchant.key, PersistentDataType.STRING, wholeName)
         }
         pdc.set(EN_NAMES, PersistentDataType.TAG_CONTAINER, names)
-        pdc.set(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER, description)
+        pdc.set(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER, descriptions)
         itemMeta.lore = loreList
     }
 

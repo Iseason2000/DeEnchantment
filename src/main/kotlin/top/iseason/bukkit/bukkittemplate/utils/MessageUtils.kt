@@ -9,47 +9,54 @@ import java.util.regex.Pattern
 /**
  * 发送带颜色转换的消息,不输出null与空string
  */
-fun CommandSender.sendColorMessage(message: Any?) {
+fun CommandSender.sendColorMessage(message: Any?, prefix: String = MessageUtils.defaultPrefix) {
     if (message == null || message.toString().isEmpty()) return
-    sendMessage(message.toString().toColor())
+    sendMessage("$prefix$message".toColor())
 }
 
 /**
  * 发送带颜色转换的消息
  */
-fun CommandSender.sendColorMessages(vararg messages: String) = messages.forEach { sendColorMessage(it) }
+fun CommandSender.sendColorMessages(vararg messages: String, prefix: String = MessageUtils.defaultPrefix) =
+    messages.forEach { sendColorMessage(it, prefix) }
 
 /**
  * 发送带颜色转换的消息
  */
-fun CommandSender.sendColorMessages(messages: Collection<String>?) = messages?.forEach { sendColorMessage(it) }
+fun CommandSender.sendColorMessages(messages: Collection<String>?, prefix: String = MessageUtils.defaultPrefix) =
+    messages?.forEach { sendColorMessage(it, prefix) }
 
-fun CommandSender.sendMessage(message: Any?) {
+fun CommandSender.sendMessage(message: Any?, prefix: String = MessageUtils.defaultPrefix) {
     if (message == null || message.toString().isEmpty()) return
-    sendMessage(message.toString())
+    sendMessage(message.toString(), prefix)
 }
 
 /**
  * 进行颜色转换并发送给所有人
  */
-fun broadcast(message: Any?) = Bukkit.getOnlinePlayers().forEach { it.sendColorMessage(message) }
+fun broadcast(message: Any?, prefix: String = MessageUtils.defaultPrefix) =
+    Bukkit.getOnlinePlayers().forEach { it.sendColorMessage(message, prefix) }
 
 /**
  * 进行颜色转换并发送给控制台
  */
-fun sendConsole(message: Any?) = Bukkit.getConsoleSender().sendColorMessage(message)
+fun sendConsole(message: Any?, prefix: String = MessageUtils.defaultPrefix) =
+    Bukkit.getConsoleSender().sendColorMessage(message, prefix)
 
 /**
  * 进行颜色转换并发送给控制台
  */
-fun sendConsole(messages: Collection<String>?) = messages?.forEach { sendConsole(it) }
+fun sendConsole(messages: Collection<String>?, prefix: String = MessageUtils.defaultPrefix) =
+    messages?.forEach { sendConsole(it, prefix) }
 
 /**
  * 进行颜色转换并发送给控制台
  */
-fun sendConsole(messages: Array<String>?) = messages?.forEach { sendConsole(it) }
+fun sendConsole(messages: Array<String>?, prefix: String = MessageUtils.defaultPrefix) =
+    messages?.forEach { sendConsole(it, prefix) }
 
-object Message {
+object MessageUtils {
+    var defaultPrefix = ""
     val colorPattern: Pattern = Pattern.compile("#[A-F|\\d]{6}", Pattern.CASE_INSENSITIVE)
     var rgbColorMethod: Method? = null
         private set
@@ -68,11 +75,11 @@ object Message {
 fun String.toColor(): String {
     var temp = this
     //如果支持16进制
-    if (Message.rgbColorMethod != null) {
-        val matcher = Message.colorPattern.matcher(temp)
+    if (MessageUtils.rgbColorMethod != null) {
+        val matcher = MessageUtils.colorPattern.matcher(temp)
         while (matcher.find()) {
             val rgbColor = matcher.group()
-            val chatColor = Message.rgbColorMethod!!.invoke(null, rgbColor)
+            val chatColor = MessageUtils.rgbColorMethod!!.invoke(null, rgbColor)
             temp = temp.replace(rgbColor, chatColor.toString())
         }
     }

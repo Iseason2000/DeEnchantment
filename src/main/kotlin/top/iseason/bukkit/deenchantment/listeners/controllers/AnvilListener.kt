@@ -10,7 +10,6 @@ import org.bukkit.event.Listener
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
-import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
@@ -107,7 +106,7 @@ class AnvilListener : Listener {
                 return
             }
             anvilView.viewers.firstOrNull()
-                ?.sendColorMessage("${SimpleLogger.prefix}${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}")
+                ?.sendColorMessage("${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}")
         } else
             event.result = result
     }

@@ -5,7 +5,6 @@ import org.bukkit.Material
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.potion.PotionEffectType
-import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -49,7 +48,7 @@ open class TypeParam<T : Any>(
 }
 
 private fun setDefaultParams() {
-    TypeParam(Player::class, errorMessage = { "${SimpleLogger.prefix}&7玩家 &c${it} &7不存在!" }) {
+    TypeParam(Player::class, errorMessage = { "&7玩家 &c${it} &7不存在!" }) {
         var player = Bukkit.getPlayerExact(it)
         if (player == null && it.length == 36) {
             player = try {
@@ -60,7 +59,7 @@ private fun setDefaultParams() {
         }
         player
     }
-    TypeParam(OfflinePlayer::class, errorMessage = { "${SimpleLogger.prefix}&7玩家 &c${it} &7不存在!" }) {
+    TypeParam(OfflinePlayer::class, errorMessage = { "&7玩家 &c${it} &7不存在!" }) {
         var player: OfflinePlayer? = Bukkit.getOfflinePlayer(it)
         if (!player!!.hasPlayedBefore()) {
             player = try {
@@ -72,14 +71,14 @@ private fun setDefaultParams() {
         }
         player
     }
-    TypeParam(Int::class, errorMessage = { "${SimpleLogger.prefix}&c${it} &7不是一个有效的整数" }) {
+    TypeParam(Int::class, errorMessage = { "&c${it} &7不是一个有效的整数" }) {
         try {
             it.toInt()
         } catch (e: NumberFormatException) {
             null
         }
     }
-    TypeParam(Double::class, errorMessage = { "${SimpleLogger.prefix}&c${it} &7不是一个有效的小数" }) {
+    TypeParam(Double::class, errorMessage = { "&c${it} &7不是一个有效的小数" }) {
         try {
             it.toDouble()
         } catch (e: NumberFormatException) {
@@ -89,7 +88,7 @@ private fun setDefaultParams() {
     TypeParam(String::class) { it }
     TypeParam(
         PotionEffectType::class,
-        { "${SimpleLogger.prefix}&c${it} &7不是一个有效的药水种类" }
+        { "&c${it} &7不是一个有效的药水种类" }
     ) {
         PotionEffectType.getByName(it)
     }

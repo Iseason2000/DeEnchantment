@@ -5,6 +5,7 @@ import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.FilePath
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.MessageUtils
 import top.iseason.bukkit.bukkittemplate.utils.toColor
 
 
@@ -15,5 +16,6 @@ object Message : SimpleYAMLConfig() {
 
     override val onLoaded: (FileConfiguration.() -> Unit) = {
         SimpleLogger.prefix = prefix.toColor()
+        MessageUtils.defaultPrefix = SimpleLogger.prefix
     }
 }

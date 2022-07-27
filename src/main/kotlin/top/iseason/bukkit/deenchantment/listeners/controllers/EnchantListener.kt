@@ -7,7 +7,6 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.enchantment.EnchantItemEvent
 import org.bukkit.inventory.EnchantingInventory
-import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.bukkittemplate.utils.submit
@@ -28,7 +27,7 @@ class EnchantListener : Listener {
             }
             inventory.item = itemStack
             if (enchantsToAdd != translateEnchantByChance) {
-                event.enchanter.sendColorMessage("${SimpleLogger.prefix}${ChatColor.YELLOW}你的附魔发生了某些变化！")
+                event.enchanter.sendColorMessage("${ChatColor.YELLOW}你的附魔发生了某些变化！")
             }
         }
     }

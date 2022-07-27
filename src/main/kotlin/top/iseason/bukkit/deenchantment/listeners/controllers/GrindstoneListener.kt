@@ -8,7 +8,6 @@ import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
-import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 
@@ -18,12 +17,10 @@ class GrindstoneListener : Listener {
         val player = event.whoClicked as Player
         val top = player.openInventory
         if (top.type != InventoryType.GRINDSTONE) return
-        submit(async = true) {
-            val result = top.getItem(2)
-            if (result == null || result.type.checkAir()) return@submit
-            result.applyMeta {
-                EnchantTools.clearEnchantLore(this)
-            }
+        val result = top.getItem(2)
+        if (result == null || result.type.checkAir()) return
+        result.applyMeta {
+            EnchantTools.clearEnchantLore(this)
         }
     }
 }

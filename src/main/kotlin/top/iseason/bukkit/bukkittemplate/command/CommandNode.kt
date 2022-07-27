@@ -200,7 +200,10 @@ open class CommandNode(
         for (arg in args) {
             node = node.getSubNode(arg)?.apply {
                 if (!canUse(sender)) {
-                    sender.sendColorMessage(noPermissionMessage?.replace("%permission%", permission.name))
+                    sender.sendColorMessage(
+                        noPermissionMessage?.replace("%permission%", permission.name),
+                        SimpleLogger.prefix
+                    )
                     return true
                 }
             } ?: break
@@ -213,22 +216,25 @@ open class CommandNode(
         val params = args.copyOfRange(deep, args.size)
         if (node.onExecute == null) return true
         if (node.isPlayerOnly && sender !is Player) {
-            sender.sendColorMessage("${SimpleLogger.prefix}&c该命令仅限制玩家使用!")
+            sender.sendColorMessage("&c该命令仅限制玩家使用!")
             return true
         }
         submit(async = node.async) {
             try {
                 if (node.onExecute!!.invoke((Params(params, node)), sender)) {
                     if (node.successMessage != null)
-                        sender.sendColorMessage("${SimpleLogger.prefix}${node.successMessage}")
-                } else if (node.failureMessage != null) sender.sendColorMessage("${SimpleLogger.prefix}${node.failureMessage}")
+                        sender.sendColorMessage(node.successMessage)
+                } else if (node.failureMessage != null) sender.sendColorMessage(
+                    node.failureMessage,
+                    SimpleLogger.prefix
+                )
             } catch (e: ParmaException) {
                 //参数错误的提示
-                if (e.typeParam != null) sender.sendColorMessage("${SimpleLogger.prefix}${e.typeParam.errorMessage(e.arg)}")
+                if (e.typeParam != null) sender.sendColorMessage(e.typeParam.errorMessage(e.arg))
                 else {
                     node.showUsage(sender)
                     val message = e.message ?: return@submit
-                    sender.sendColorMessage("${SimpleLogger.prefix}$message")
+                    sender.sendColorMessage(message)
                 }
             }
         }
@@ -290,7 +296,7 @@ open class CommandNode(
         var failureMessage: String? = null
 
         // 没有权限的消息
-        var noPermissionMessage: String? = "${SimpleLogger.prefix}&c你没有该命令的权限: &7%permission%"
+        var noPermissionMessage: String? = "&c你没有该命令的权限: &7%permission%"
 
         // 使用提示消息头
         var usageHeader: String? = "  &7======> &d${TemplatePlugin.getPlugin().name} &7<======"

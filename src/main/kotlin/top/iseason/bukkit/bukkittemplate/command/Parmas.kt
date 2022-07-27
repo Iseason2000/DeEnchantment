@@ -4,7 +4,6 @@ import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.command.CommandSender
 import org.bukkit.potion.PotionEffectType
-import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
 
 class Params(val params: Array<String>, val node: CommandNode) {
     /**
@@ -22,7 +21,7 @@ class Params(val params: Array<String>, val node: CommandNode) {
      */
     inline fun <reified T> getParam(index: Int): T {
         val param = params.getOrNull(index) ?: throw ParmaException(
-            "${SimpleLogger.prefix}&c参数 &6${
+            "&c参数 &6${
                 node.params.getOrNull(index)?.placeholder ?: "位置 $index"
             } &c不存在!"
         )

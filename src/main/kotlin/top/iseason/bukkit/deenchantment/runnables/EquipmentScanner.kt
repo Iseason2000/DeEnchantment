@@ -11,17 +11,24 @@ import java.util.*
  */
 object EquipmentScanner : BukkitRunnable() {
 
-    private val playerEquipments = mutableMapOf<UUID, Array<ItemStack?>?>()
+    private val playerEquipments = mutableMapOf<UUID, Array<ItemStack?>>()
+
     override fun run() {
         Bukkit.getOnlinePlayers().forEach {
             val uniqueId = it.uniqueId
-            val armorContents = it.equipment?.armorContents
+            val armorContents = it.equipment!!.armorContents
             if (Arrays.equals(armorContents, playerEquipments[uniqueId])) {
                 return
             }
-            playerEquipments[uniqueId] = armorContents
-            Bukkit.getPluginManager().callEvent(DePlayerEquipmentChangeEvent(it))
+            val dePlayerEquipmentChangeEvent = DePlayerEquipmentChangeEvent(it, armorContents)
+            try {
+                Bukkit.getPluginManager().callEvent(dePlayerEquipmentChangeEvent)
+            } catch (_: Exception) {
+            }
+            val now = dePlayerEquipmentChangeEvent.armors
+            playerEquipments[uniqueId] = now
+            it.equipment!!.armorContents = now
+//            it.updateInventory()
         }
     }
-
 }
