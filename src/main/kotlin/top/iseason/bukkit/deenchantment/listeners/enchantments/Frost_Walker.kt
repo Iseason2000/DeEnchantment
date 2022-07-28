@@ -6,18 +6,25 @@ import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.data.Levelled
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityChangeBlockEvent
 import org.bukkit.event.player.PlayerMoveEvent
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.utils.submit
+import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.BlockTimer
+import java.util.*
 import kotlin.math.sqrt
 
 //熔岩行者
 object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
-
+    @Key
+    @Comment("", "半径等级乘数，最终半径 = radiusRate * level +1")
+    var radiusRate = 1
     val fakeBlock = HashSet<Block>()
 
     fun clear() {
@@ -27,17 +34,30 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
         fakeBlock.clear()
     }
 
+    private val hasLevel = HashMap<UUID, Int>()
+
+    @EventHandler
+    fun onEquipmentChange(event: DePlayerEquipmentChangeEvent) {
+        val deEnchantLevel = event.getDeLevel()
+        val uniqueId = event.player.uniqueId
+        if (deEnchantLevel > 0) {
+            hasLevel[uniqueId] = deEnchantLevel
+        } else {
+            hasLevel.remove(uniqueId)
+        }
+    }
 
     @EventHandler//检测移动
     fun onPlayerMoveEvent(event: PlayerMoveEvent) {
         if (event.isCancelled) return
         val player = event.player
         if (player.gameMode == GameMode.SPECTATOR) return
-        val level = player.equipment?.boots?.enchantments?.get(DeEnchantments.DE_frost_walker) ?: return
-        if (level == 0) return
+        val uniqueId = player.uniqueId
+        val level = hasLevel[uniqueId] ?: return
         val to = event.to?.clone() ?: return
+        //脚下
         to.y = to.y - 1
-        val round = getRound(to, level + 1)
+        val round = getRound(to, level * radiusRate + 1)
         for (block in round) {
             if (block.type != Material.LAVA) continue
             if (player.eyeLocation.block.type == Material.LAVA ||
@@ -49,7 +69,8 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
         }
     }
 
-    @EventHandler//防止破坏
+    //防止破坏
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     fun onBlockBreakEvent(event: BlockBreakEvent) {
         if (event.isCancelled) return
         val block = event.block
@@ -59,7 +80,8 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
         event.isCancelled = true
     }
 
-    @EventHandler//防止生物破坏
+    //防止生物破坏
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     fun onEntityChangeBlockEvent(event: EntityChangeBlockEvent) {
         if (event.isCancelled) return
         val block = event.block

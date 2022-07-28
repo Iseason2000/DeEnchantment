@@ -1,15 +1,11 @@
 package top.iseason.bukkit.deenchantment.events
 
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Projectile
-import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.entity.Player
+import org.bukkit.event.block.BlockBreakEvent
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 
-class DeEntityProjectileEvent(
-    val projectile: Projectile,
-    val attacker: LivingEntity,
-    val event: EntityDamageByEntityEvent
-) : DeEnchantmentEvent(attacker, false) {
+class DeBreakBlockEvent(val player: Player, val event: BlockBreakEvent) : DeEnchantmentEvent(player, false) {
+
     override fun setCancelled(cancel: Boolean) {
         super.setCancelled(cancel)
         event.isCancelled = cancel
@@ -18,7 +14,7 @@ class DeEntityProjectileEvent(
     override fun getDeEnchantLevel(en: DeEnchantmentWrapper): Int {
         if (deEnchantments == null) {
             deEnchantments = mutableMapOf()
-            attacker.equipment?.itemInMainHand?.enchantments?.forEach { (t, u) ->
+            entity.equipment?.itemInMainHand?.enchantments?.forEach { (t, u) ->
                 if (t !is DeEnchantmentWrapper) return@forEach
                 deEnchantments!![t] = u
             }

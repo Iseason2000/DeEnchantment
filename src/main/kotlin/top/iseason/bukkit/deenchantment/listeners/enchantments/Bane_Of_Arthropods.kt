@@ -15,11 +15,11 @@ object Bane_Of_Arthropods : BaseEnchant(DeEnchantments.DE_bane_of_arthropods) {
     @Comment("", "每级减少的伤害")
     var reduce = 2.5
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onDeEntityMainHandEvent(event: DeEntityAttackEvent) {
         val entity = event.event.entity as? LivingEntity ?: return
         if (!EntityTools.isArthropods(entity)) return
-        val level = event.getDeEnchantLevel(enchant)
+        val level = event.getDeLevel()
         event.event.damage -= reduce * level
     }
 }

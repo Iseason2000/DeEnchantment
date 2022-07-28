@@ -195,6 +195,7 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
         val player = event.entity
         val drops = event.drops
         if (drops.isEmpty()) return
+        if (event.keepInventory) return
         val contents = player.inventory.contents
         //位置不可能重复，故而在前
         val bindings = mutableMapOf<Int, ItemStack>()
@@ -209,7 +210,6 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
         protectionMap[player.uniqueId] = bindings
         event.drops.removeAll(bindings.values.toSet())
     }
-
 
     @EventHandler
     fun onPlayerRespawnEvent(event: PlayerRespawnEvent) {

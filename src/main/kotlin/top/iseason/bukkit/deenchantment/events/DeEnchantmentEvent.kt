@@ -2,14 +2,15 @@ package top.iseason.bukkit.deenchantment.events
 
 import org.bukkit.Bukkit
 import org.bukkit.entity.LivingEntity
+import org.bukkit.event.Cancellable
 import org.bukkit.event.Event
 import org.bukkit.event.HandlerList
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 
 
-open class DeEnchantmentEvent(val entity: LivingEntity, async: Boolean) : Event(async) {
+open class DeEnchantmentEvent(val entity: LivingEntity, async: Boolean) : Event(async), Cancellable {
 
-    private var deEnchantments: MutableMap<DeEnchantmentWrapper, Int>? = null
+    protected var deEnchantments: MutableMap<DeEnchantmentWrapper, Int>? = null
 
     /**
      * 获取某个负魔的等级
@@ -39,6 +40,13 @@ open class DeEnchantmentEvent(val entity: LivingEntity, async: Boolean) : Event(
 
     override fun getHandlers(): HandlerList {
         return Companion.handlers
+    }
+
+    private var cancel = false
+    override fun isCancelled() = cancel
+
+    override fun setCancelled(cancel: Boolean) {
+        this.cancel = cancel
     }
 }
 

@@ -223,7 +223,7 @@ object DeEnchantments {
     val DE_fortune: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FORTUNE)
         .apply {
             translateName = "§7霉运"
-            description = "§8 - 挖掘方块掉落物减少"
+            description = "§8 - 挖掘方块掉落物有概率消失"
             myItemTarget = EnchantmentTarget.TOOL
             myMaxLevel = 3
             conflicts = setOf(DE_SILK_TOUCH)

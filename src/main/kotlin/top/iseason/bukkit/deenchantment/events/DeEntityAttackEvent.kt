@@ -6,8 +6,10 @@ import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 
 class DeEntityAttackEvent(entity: LivingEntity, val event: EntityDamageByEntityEvent) :
     DeEnchantmentEvent(entity, false) {
-
-    private var deEnchantments: MutableMap<DeEnchantmentWrapper, Int>? = null
+    override fun setCancelled(cancel: Boolean) {
+        super.setCancelled(cancel)
+        event.isCancelled = cancel
+    }
 
     override fun getDeEnchantLevel(en: DeEnchantmentWrapper): Int {
         if (deEnchantments == null) {

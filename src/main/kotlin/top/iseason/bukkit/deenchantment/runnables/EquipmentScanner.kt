@@ -28,7 +28,6 @@ object EquipmentScanner : BukkitRunnable() {
             val now = dePlayerEquipmentChangeEvent.armors
             playerEquipments[uniqueId] = now
             it.equipment!!.armorContents = now
-//            it.updateInventory()
         }
     }
 }

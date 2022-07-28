@@ -9,5 +9,4 @@ import org.bukkit.inventory.ItemStack
 class DePlayerEquipmentChangeEvent(
     val player: Player,
     val armors: Array<ItemStack?>
-) :
-    DeEnchantmentEvent(player, true)
+) : DeEnchantmentEvent(player, true)

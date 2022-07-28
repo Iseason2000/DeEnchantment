@@ -1,27 +1,34 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
-import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
-import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeEntityHurtEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.EnchantTools
 import top.iseason.bukkit.deenchantment.utils.Tools
 
 //火焰烧灼
 object Fire_Protection : BaseEnchant(DeEnchantments.DE_fire_protection) {
+    @Key
+    @Comment("", "触发概率等级乘数, 0~1")
+    var chanceRate = 0.05
+
+    @Key
+    @Comment("", "着火时间等级乘数,单位tick")
+    var fireTimeRate = 20
+
     //受到攻击有概率着火
-    @EventHandler
-    fun onEntityDamageEvent(event: EntityDamageEvent) {
-        if (event.isCancelled) return
-        if (event.cause == DamageCause.FIRE && event.cause == DamageCause.FIRE_TICK) return
+    @EventHandler(ignoreCancelled = true)
+    fun onEntityDamageEvent(event: DeEntityHurtEvent) {
+        val hurtEvent = event.event
+        if (hurtEvent.cause == DamageCause.FIRE && hurtEvent.cause == DamageCause.FIRE_TICK) return
         val entity = event.entity
-        if (entity !is LivingEntity) return
-        val levelCount = EnchantTools.getLevelCount(entity, DeEnchantments.DE_fire_protection)
-        if (levelCount == 0) return
-        if (Tools.getRandomDouble() < levelCount * 0.05)
-            entity.fireTicks = levelCount * 20
+        val level = event.getDeLevel()
+        if (level <= 0) return
+        if (Tools.getRandomDouble() < level * chanceRate)
+            entity.fireTicks = level * fireTimeRate
     }
 //    @EventHandler //着火增加伤害
 //    fun onEntityCombustByBlockEvent(event: EntityCombustEvent) {
@@ -38,6 +45,5 @@ object Fire_Protection : BaseEnchant(DeEnchantments.DE_fire_protection) {
 //        val duration = event.duration * ((15 * maxLevel) * 0.01 + 1)
 //        event.duration = duration.toInt()
 //    }
-
 
 }

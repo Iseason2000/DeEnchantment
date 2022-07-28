@@ -10,6 +10,7 @@ import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.utils.toColor
+import top.iseason.bukkit.deenchantment.events.DeEnchantmentEvent
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.utils.DeEnum
 
@@ -104,6 +105,6 @@ abstract class BaseEnchant(
     }
 
     fun ItemStack.getDeLevel() = getEnchantmentLevel(enchant)
-
+    fun DeEnchantmentEvent.getDeLevel() = getDeEnchantLevel(enchant)
 
 }

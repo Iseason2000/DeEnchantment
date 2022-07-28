@@ -1,32 +1,42 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.Guardian
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Trident
 import org.bukkit.entity.WaterMob
 import org.bukkit.event.EventHandler
-import org.bukkit.event.entity.EntityDamageByEntityEvent
-import org.bukkit.inventory.ItemStack
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeEntityAttackEvent
+import top.iseason.bukkit.deenchantment.events.DeEntityProjectileEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //刺穿
 object Impaling : BaseEnchant(DeEnchantments.DE_impaling) {
-    @EventHandler
-    fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
-        val entity = event.entity
-        val damager = event.damager
-        var item: ItemStack? = null
-        if (entity is WaterMob || entity is Guardian) return
-        if (damager is Trident) {
-            item = damager.item
-        } else if (damager is LivingEntity) {
-            item = damager.equipment?.itemInMainHand ?: return
-        }
-        if (item == null) return
-        val level = item.enchantments[DeEnchantments.DE_impaling] ?: return
-        if (level <= 0) return
-        event.damage = event.damage * (1 + 0.25 * level)
+    @Key
+    @Comment("", "近战伤害增加等级乘数")
+    var meleeDamageRate = 0.5
 
+    @Key
+    @Comment("", "弹射物伤害增加等级乘数")
+    var remoteDamageRate = 1.0
+
+    @EventHandler
+    fun onDeEntityAttackEvent(event: DeEntityAttackEvent) {
+        val otherEvent = event.event
+        val entity = otherEvent.entity
+        if (entity is WaterMob || entity is Guardian) return
+        val level = event.getDeLevel()
+        if (level <= 0) return
+        otherEvent.damage += meleeDamageRate * level
+    }
+
+    @EventHandler
+    fun onDeEntityAttackEvent(event: DeEntityProjectileEvent) {
+        val otherEvent = event.event
+        val entity = otherEvent.entity
+        if (entity is WaterMob || entity is Guardian) return
+        val level = event.getDeLevel()
+        if (level <= 0) return
+        otherEvent.damage += remoteDamageRate * level
     }
 }
