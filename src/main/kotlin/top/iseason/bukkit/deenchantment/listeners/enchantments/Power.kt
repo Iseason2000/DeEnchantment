@@ -2,25 +2,29 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.AbstractArrow
 import org.bukkit.event.EventHandler
-import org.bukkit.event.entity.EntityShootBowEvent
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeEntityShootBowEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //虚弱
 object Power : BaseEnchant(DeEnchantments.DE_power) {
-    @EventHandler
-    fun onEntityDamageByEntityEvent(event: EntityShootBowEvent) {
-        if (event.isCancelled) return
-        val level = event.bow?.enchantments?.get(DeEnchantments.DE_power) ?: return
+    @Key
+    @Comment("", "伤害及速度百分比等级乘数")
+    var damageRate = 0.15
+
+    @EventHandler(ignoreCancelled = true)
+    fun onEntityDamageByEntityEvent(event: DeEntityShootBowEvent) {
+        val level = event.getDeLevel()
         if (level <= 0) return
         val projectile = event.projectile
         if (projectile !is AbstractArrow) return
-        var percentage = 0.15 * level
-        if (percentage >= 1) percentage = 0.9
+        var percentage = damageRate * level
+        if (percentage >= 1.0) percentage = 1.0
         projectile.damage = projectile.damage * (1 - percentage)
         projectile.velocity = projectile.velocity.multiply(1 - percentage)
 
     }
-
 
 }

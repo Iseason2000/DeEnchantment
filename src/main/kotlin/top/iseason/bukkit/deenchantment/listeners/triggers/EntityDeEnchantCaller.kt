@@ -9,6 +9,7 @@ import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityShootBowEvent
+import org.bukkit.event.player.PlayerFishEvent
 import top.iseason.bukkit.deenchantment.events.*
 
 object EntityDeEnchantCaller : Listener {
@@ -40,6 +41,11 @@ object EntityDeEnchantCaller : Listener {
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
     fun onEntityShootBow(event: EntityShootBowEvent) {
         DeEntityShootBowEvent(event.entity, event.bow, event.projectile, event).call()
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGH)
+    fun onPlayerFish(event: PlayerFishEvent) {
+        DePlayerFishEvent(event.player, event).call()
     }
 
 }

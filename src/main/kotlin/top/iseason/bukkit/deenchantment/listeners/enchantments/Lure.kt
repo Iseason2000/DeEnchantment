@@ -2,22 +2,26 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerFishEvent
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DePlayerFishEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //过期钓饵
 object Lure : BaseEnchant(DeEnchantments.DE_lure) {
-    @EventHandler
-    fun onPlayerFishEvent(event: PlayerFishEvent) {
-        if (event.isCancelled) return
-        if (event.state != PlayerFishEvent.State.FISHING) return
-        val player = event.player
-        val equipment = player.equipment ?: return
-        val level = equipment.itemInMainHand.enchantments[DeEnchantments.DE_lure]
-            ?: equipment.itemInOffHand.enchantments[DeEnchantments.DE_lure] ?: return
+    @Key
+    @Comment("", "平均等待时间百分比等级乘数")
+    var waitTimeRate = 0.2
+
+    @EventHandler(ignoreCancelled = true)
+    fun onPlayerFishEvent(event: DePlayerFishEvent) {
+        val fishEvent = event.event
+        if (fishEvent.state != PlayerFishEvent.State.FISHING) return
+        val level = event.getDeLevel()
         if (level <= 0) return
-        val hook = event.hook
-        hook.maxWaitTime = 600 + level + 100
-        hook.minWaitTime = 120
+        val hook = fishEvent.hook
+        hook.maxWaitTime = (hook.maxWaitTime * (waitTimeRate * level + 1)).toInt()
+        hook.minWaitTime = (hook.minWaitTime * (waitTimeRate * level + 1)).toInt()
     }
 }

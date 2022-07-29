@@ -1,6 +1,7 @@
 package top.iseason.bukkit.bukkittemplate.utils.bukkit
 
 
+import org.bukkit.Material
 import org.bukkit.entity.Entity
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Item
@@ -38,4 +39,76 @@ fun InventoryHolder.giveItems(vararg itemStacks: ItemStack) {
         if (addItem == null) continue
         (world.spawnEntity(location, EntityType.DROPPED_ITEM) as Item).itemStack = addItem
     }
+}
+
+/**
+ * 扣除某种物品数量
+ * @return true 数量足够
+ */
+fun InventoryHolder.takeItem(itemStack: ItemStack, amount: Int): Boolean {
+    if (countItem(itemStack) < amount) return false
+    var count = amount
+    val contents = inventory.contents
+    for (index in contents.indices) {
+        val item = contents[index]
+        if (!itemStack.isSimilar(item)) continue
+        val am = item.amount
+        if (count >= am) {
+            count -= am
+            inventory.clear(index)
+        } else {
+            item.amount -= am
+            break
+        }
+    }
+    return true
+}
+
+/**
+ * 扣除某种材质的物品数量
+ * @return true 数量足够
+ */
+fun InventoryHolder.takeItem(material: Material, amount: Int): Boolean {
+    if (countItem(material) < amount) return false
+    var count = amount
+    val contents = inventory.contents
+    for (index in contents.indices) {
+        val item = contents[index] ?: continue
+        if (material != item.type) continue
+        val am = item.amount
+        if (count >= am) {
+            count -= am
+            inventory.clear(index)
+        } else {
+            item.amount -= count
+            break
+        }
+    }
+    return true
+}
+
+/**
+ * 统计某种物品的数量
+ */
+fun InventoryHolder.countItem(itemStack: ItemStack): Int {
+    var count = 0
+    this.inventory.contents.forEach {
+        if (it == null) return@forEach
+        if (!it.isSimilar(itemStack)) return@forEach
+        count += it.amount
+    }
+    return count
+}
+
+/**
+ * 统计某种材质的物品的数量
+ */
+fun InventoryHolder.countItem(material: Material): Int {
+    var count = 0
+    this.inventory.contents.forEach {
+        if (it == null) return@forEach
+        if (it.type != material) return@forEach
+        count += it.amount
+    }
+    return count
 }

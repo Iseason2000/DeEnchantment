@@ -8,7 +8,7 @@ import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.TargetFinder
 
-//弹射物吸引
+//弹射物吸引 TODO: 重构
 object Projectile_Protection : BaseEnchant(DeEnchantments.DE_projectile_protection) {
 
     @EventHandler
@@ -18,6 +18,7 @@ object Projectile_Protection : BaseEnchant(DeEnchantments.DE_projectile_protecti
         if (!TargetFinder.isMaxPool())
             submit(8, 2, task = TargetFinder(event.entity))
     }
+
 
     @EventHandler
     fun onProjectileHitEvent(event: ProjectileHitEvent) {
