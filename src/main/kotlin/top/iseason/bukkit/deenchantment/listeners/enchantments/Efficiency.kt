@@ -3,10 +3,10 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 import org.bukkit.event.EventHandler
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.deenchantment.events.DeBreakBlockEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.Tools
 
 //低效
 object Efficiency : BaseEnchant(DeEnchantments.DE_efficiency) {
@@ -19,7 +19,7 @@ object Efficiency : BaseEnchant(DeEnchantments.DE_efficiency) {
     fun onBlockBreakEvent(event: DeBreakBlockEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
-        if (Tools.getRandomDouble() >= level * rate) return
+        if (RandomUtils.getDouble() >= level * rate) return
         event.isCancelled = true
     }
 

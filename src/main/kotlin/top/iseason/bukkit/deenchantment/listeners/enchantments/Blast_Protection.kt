@@ -4,10 +4,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.deenchantment.events.DeEntityHurtEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.Tools
 
 object Blast_Protection : BaseEnchant(DeEnchantments.DE_blast_protection) {
 
@@ -36,7 +36,7 @@ object Blast_Protection : BaseEnchant(DeEnchantments.DE_blast_protection) {
         val entity = event.entity
         val levelCount = event.getDeEnchantLevel(enchant)
         if (levelCount == 0) return
-        if (Tools.getRandomDouble() > levelCount * changce) return
+        if (RandomUtils.getDouble() > levelCount * changce) return
         entity.world.createExplosion(
             entity.location,
             (explosionRate * levelCount).toFloat(),

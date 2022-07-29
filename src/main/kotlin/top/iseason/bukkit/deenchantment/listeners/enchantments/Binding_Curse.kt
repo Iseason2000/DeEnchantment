@@ -165,7 +165,7 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     fun onEquipment(event: DePlayerEquipmentChangeEvent) {
         val player = event.player
         val armorContents = event.armors
@@ -181,6 +181,7 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
             }
         }
         if (listOf.isNotEmpty()) {
+            event.isCancelled = true
             player.sendColorMessage(ownerMessage)
             player.giveItems(listOf)
 //            player.updateInventory()

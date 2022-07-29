@@ -10,12 +10,12 @@ import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import top.iseason.bukkit.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.Tools
 
-//背叛
+//背叛 TODO:重写
 object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
     @EventHandler
     fun onProjectileLaunchEvent(event: ProjectileHitEvent) {
@@ -23,7 +23,7 @@ object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
         if (entity !is Trident) return
         val level = entity.item.enchantments[DeEnchantments.DE_loyalty] ?: return
         if (level <= 0) return
-        if (Tools.getRandomDouble() > level * 0.1) return
+        if (RandomUtils.getDouble() > level * 0.1) return
         val distance = level * 5.0
         for (nearbyEntity in entity.getNearbyEntities(distance, distance, distance)) {
             if (nearbyEntity !is LivingEntity || nearbyEntity == entity.shooter) continue

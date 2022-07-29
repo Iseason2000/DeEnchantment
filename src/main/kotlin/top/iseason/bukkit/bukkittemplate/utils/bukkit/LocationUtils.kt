@@ -18,6 +18,10 @@ fun Location.getNormalX(): Vector {
     return vector
 }
 
+fun Location.getNormalY(): Vector {
+    return getNormalX().crossProduct(getNormalZ())
+}
+
 /**
  * 根据坐标yaw和pith值获取Z方向的单位向量
  * @return Z方向的单位向量,与 getDirection() 方法一致
@@ -34,6 +38,7 @@ fun Location.getNormalZ(): Vector {
     vector.z = xz * cos(Math.toRadians(rotX))
     return vector
 }
+
 
 // 以自身为原点和相对坐标系获取世界坐标
 fun Location.getRelativeByCoordinate(

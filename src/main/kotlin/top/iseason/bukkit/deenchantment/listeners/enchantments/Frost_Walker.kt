@@ -36,7 +36,7 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
 
     private val hasLevel = HashMap<UUID, Int>()
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onEquipmentChange(event: DePlayerEquipmentChangeEvent) {
         val deEnchantLevel = event.getDeLevel()
         val uniqueId = event.player.uniqueId

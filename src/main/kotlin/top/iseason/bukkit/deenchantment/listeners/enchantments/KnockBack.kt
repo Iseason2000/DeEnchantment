@@ -1,26 +1,24 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
-import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
-import org.bukkit.event.entity.EntityDamageByEntityEvent
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeEntityAttackEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //退击
 object KnockBack : BaseEnchant(DeEnchantments.DE_knockback) {
-    @EventHandler
-    fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
-        if (event.isCancelled) return
-        val damager = event.damager
+    @Key
+    @Comment("", "退击矢量等级乘数")
+    var knockBackRate = 0.6
+
+    @EventHandler(ignoreCancelled = true)
+    fun onEntityDamageByEntityEvent(event: DeEntityAttackEvent) {
         val entity = event.entity
-        if (damager !is LivingEntity) return
-        if (entity !is LivingEntity) return
-        val item = damager.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantments.DE_knockback] ?: return
+        val level = event.getDeLevel()
         if (level <= 0) return
-        val direction = damager.location.direction.normalize().multiply(-1)
-        damager.velocity = damager.velocity.add(direction.multiply(level * 0.6))
-
-
+        val direction = entity.location.direction.normalize().multiply(-1)
+        entity.velocity = entity.velocity.add(direction.multiply(level * knockBackRate))
     }
 }

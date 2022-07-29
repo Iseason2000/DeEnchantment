@@ -3,10 +3,10 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 import org.bukkit.ChatColor
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerFishEvent
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.Tools
 
 //海之嫌弃
 object Luck_Of_The_Sea : BaseEnchant(DeEnchantments.DE_luck_of_the_sea) {
@@ -19,7 +19,7 @@ object Luck_Of_The_Sea : BaseEnchant(DeEnchantments.DE_luck_of_the_sea) {
         val level = equipment.itemInMainHand.enchantments[DeEnchantments.DE_luck_of_the_sea]
             ?: equipment.itemInOffHand.enchantments[DeEnchantments.DE_luck_of_the_sea] ?: return
         if (level <= 0) return
-        if (Tools.getRandomDouble() > level * 0.1) return
+        if (RandomUtils.getDouble() > level * 0.1) return
         event.caught?.remove() ?: return
         player.sendColorMessage("${ChatColor.YELLOW}你受到了大海的嫌弃并回收了你的东西")
     }

@@ -21,7 +21,7 @@ object Depth_Strider : BaseEnchant(DeEnchantments.DE_depth_strider) {
     private val playerMap = HashMap<UUID, PotionAdder>()
     private val hasLevel = HashMap<UUID, Int>()
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     fun onEquipmentChange(event: DePlayerEquipmentChangeEvent) {
         val deEnchantLevel = event.getDeEnchantLevel(enchant)
         val uniqueId = event.player.uniqueId

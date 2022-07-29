@@ -262,7 +262,7 @@ object DeEnchantments {
             translateName = "§7多重"
             description = "§8 - 消耗一根箭射出多支箭"
             myItemTarget = EnchantmentTarget.BOW
-            myMaxLevel = 1
+            myMaxLevel = 2
             conflicts = setOf(DE_MENDING)
         }
 

@@ -4,10 +4,10 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.deenchantment.events.DeEntityHurtEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.Tools
 
 //火焰烧灼
 object Fire_Protection : BaseEnchant(DeEnchantments.DE_fire_protection) {
@@ -27,7 +27,7 @@ object Fire_Protection : BaseEnchant(DeEnchantments.DE_fire_protection) {
         val entity = event.entity
         val level = event.getDeLevel()
         if (level <= 0) return
-        if (Tools.getRandomDouble() < level * chanceRate)
+        if (RandomUtils.getDouble() < level * chanceRate)
             entity.fireTicks = level * fireTimeRate
     }
 //    @EventHandler //着火增加伤害

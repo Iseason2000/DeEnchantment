@@ -6,9 +6,9 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockDropItemEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.Tools
 
 //时运不济
 object Fortune : BaseEnchant(DeEnchantments.DE_fortune) {
@@ -30,7 +30,7 @@ object Fortune : BaseEnchant(DeEnchantments.DE_fortune) {
         val level = item.getDeLevel()
         if (level <= 0) return
         for (i in items.size - 1 downTo 0) {
-            if (Tools.getRandomDouble() > level * chanceRate) continue
+            if (RandomUtils.getDouble() > level * chanceRate) continue
             items.removeAt(i)
         }
     }
