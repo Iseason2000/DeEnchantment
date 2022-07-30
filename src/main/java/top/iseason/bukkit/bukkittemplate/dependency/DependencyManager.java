@@ -16,7 +16,13 @@ public class DependencyManager {
      * 解析下载plugin.yml中的依赖
      */
     public static void parsePluginYml() {
-        YamlConfiguration yml = YamlConfiguration.loadConfiguration(new InputStreamReader(requireNonNull(TemplatePlugin.class.getClassLoader().getResourceAsStream("plugin.yml"), "Jar does not contain plugin.yml")));
+        YamlConfiguration yml = YamlConfiguration.loadConfiguration(
+                new InputStreamReader(
+                        requireNonNull(
+                                TemplatePlugin.class.getClassLoader().getResourceAsStream("plugin.yml"),
+                                "Jar does not contain plugin.yml")
+                )
+        );
         ConfigurationSection libConfigs = yml.getConfigurationSection("runtime-libraries");
         if (libConfigs == null) return;
         DependencyDownloader dd = new DependencyDownloader();

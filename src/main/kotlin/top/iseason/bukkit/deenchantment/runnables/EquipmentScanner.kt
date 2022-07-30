@@ -18,7 +18,7 @@ object EquipmentScanner : BukkitRunnable() {
             val uniqueId = it.uniqueId
             val armorContents = it.equipment!!.armorContents
             if (Arrays.equals(armorContents, playerEquipments[uniqueId])) {
-                return
+                return@forEach
             }
             val dePlayerEquipmentChangeEvent = DePlayerEquipmentChangeEvent(it, armorContents)
             try {

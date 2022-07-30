@@ -393,7 +393,7 @@ object DeEnchantments {
         val enchants = BaseEnchant.enchants
         val totalCount = enchants.filter { it.enable }.size
         enchants.forEach { deEnchant ->
-            if (!deEnchant.enable) return
+            if (!deEnchant.enable) return@forEach
             Enchantment.registerEnchantment(deEnchant)
             count++
             if (!Config.cleanConsole) {

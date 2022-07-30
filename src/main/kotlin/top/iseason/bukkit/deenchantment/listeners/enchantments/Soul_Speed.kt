@@ -10,7 +10,7 @@ import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.PotionAdder
 import java.util.*
-
+//TODO: 重构
 object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
     private val playerMap = HashMap<UUID, PotionAdder>()
 

@@ -1,17 +1,24 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.event.EventHandler
-import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.inventory.BlockInventoryHolder
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeBreakBlockEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //彻底粉碎
 object Silk_Touch : BaseEnchant(DeEnchantments.DE_silk_touch) {
-    @EventHandler
-    fun onBlockBreakEvent(event: BlockBreakEvent) {
-        if (event.isCancelled) return
-        val level = event.player.inventory.itemInMainHand.enchantments[DeEnchantments.DE_silk_touch] ?: return
+    @Key
+    @Comment("", "是否对容器有效,设置为true将会删除容器内的物品")
+    var allowContainer = false
+
+    @EventHandler(ignoreCancelled = true)
+    fun onBlockBreakEvent(event: DeBreakBlockEvent) {
+        val level = event.getDeLevel()
         if (level <= 0) return
-        event.isDropItems = false
+        if (!allowContainer && event.event.block.state is BlockInventoryHolder) return
+        event.event.isDropItems = false
     }
 }

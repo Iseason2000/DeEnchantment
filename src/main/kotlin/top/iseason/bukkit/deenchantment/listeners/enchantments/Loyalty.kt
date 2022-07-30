@@ -36,7 +36,7 @@ object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
     var message = "&c您的武器已背叛！&6现在属于 &a{player} &6位于 &a{location}"
 
     @EventHandler
-    fun onProjectileLaunchEvent(event: ProjectileHitEvent) {
+    fun onProjectileHitEvent(event: ProjectileHitEvent) {
         val entity = event.entity
         if (entity !is Trident) return
         val level = entity.item.getDeLevel()

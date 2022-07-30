@@ -2,25 +2,28 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.LivingEntity
 import org.bukkit.event.EventHandler
-import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeEntityAttackEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 //磨钝
 object Sharpness : BaseEnchant(DeEnchantments.DE_sharpness) {
+    @Key
+    @Comment("", "伤害减少等级乘数")
+    var damageRate = 0.5
 
-    @EventHandler
-    fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
-        if (event.isCancelled) return
-        val damager = event.damager
-        if (damager !is LivingEntity) return
-        val entity = event.entity
+    @EventHandler(ignoreCancelled = true)
+    fun onEntityDamageByEntityEvent(event: DeEntityAttackEvent) {
+        val entityEvent = event.event
+        val entity = entityEvent.entity
         if (entity !is LivingEntity) return
-        val item = damager.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantments.DE_sharpness] ?: return
+        val level = event.getDeLevel()
         if (level <= 0) return
-        var damage = event.damage - 0.5 * level
+        var damage = entityEvent.getDamage(EntityDamageEvent.DamageModifier.BASE) - damageRate * level
         if (damage < 0) damage = 0.0
-        event.damage = damage
+        entityEvent.setDamage(EntityDamageEvent.DamageModifier.BASE, damage)
     }
 }

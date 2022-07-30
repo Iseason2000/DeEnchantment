@@ -10,6 +10,7 @@ import top.iseason.bukkit.deenchantment.listeners.enchantments.Frost_Walker
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.manager.ListenerManager
 import top.iseason.bukkit.deenchantment.runnables.TargetFinder
+import java.lang.Thread.sleep
 
 @FilePath("config.yml")
 object Config : SimpleYAMLConfig(isAutoUpdate = false) {
@@ -89,8 +90,12 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
         if (isInit) {
             onDisable()
         }
-        isInit = true
         ListenerManager.registerListeners()
+        //等待负魔全部初始化
+        if (!isInit) {
+            sleep(500)
+        }
+        isInit = true
         try {
             DeEnchantments.registerEnchantments()
         } catch (e: Exception) {

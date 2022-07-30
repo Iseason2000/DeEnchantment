@@ -1,29 +1,25 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
-import org.bukkit.entity.LivingEntity
-import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
-import org.bukkit.event.entity.EntityDamageByEntityEvent
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
+import top.iseason.bukkit.deenchantment.events.DeEntityProjectileEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 object Punch : BaseEnchant(DeEnchantments.DE_punch) {
-    @EventHandler(priority = EventPriority.HIGHEST)
-    fun onEntityDamageByEntityEvent(event: EntityDamageByEntityEvent) {
-        if (event.isCancelled) return
-        //实体判断
-        val entity = event.entity
-        if (entity !is LivingEntity) return
-        val damager = event.damager
-        if (damager !is Projectile) return
-        val shooter = damager.shooter
-        if (shooter !is LivingEntity) return
-        //
-        val item = shooter.equipment?.itemInMainHand ?: return
-        val level = item.enchantments[DeEnchantments.DE_punch] ?: return
+
+    @Key
+    @Comment("", "吸引速度等级乘数")
+    var velocityRate = 0.8
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    fun onEntityDamageByEntityEvent(event: DeEntityProjectileEvent) {
+        val level = event.getDeLevel()
         if (level <= 0) return
-        val direction = damager.velocity.normalize().multiply(-1)
-        entity.velocity = direction.multiply(level * 0.8)
+        val attacker = event.attacker
+        val direction = attacker.velocity.normalize().multiply(-1)
+        event.event.entity.velocity = direction.multiply(level * velocityRate)
     }
 }

@@ -3,6 +3,7 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 import org.bukkit.entity.Guardian
 import org.bukkit.entity.WaterMob
 import org.bukkit.event.EventHandler
+import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.deenchantment.events.DeEntityAttackEvent
@@ -27,7 +28,8 @@ object Impaling : BaseEnchant(DeEnchantments.DE_impaling) {
         if (entity is WaterMob || entity is Guardian) return
         val level = event.getDeLevel()
         if (level <= 0) return
-        otherEvent.damage += meleeDamageRate * level
+        val damage = otherEvent.getDamage(EntityDamageEvent.DamageModifier.BASE) + meleeDamageRate * level
+        otherEvent.setDamage(EntityDamageEvent.DamageModifier.BASE, damage)
     }
 
     @EventHandler
@@ -37,6 +39,7 @@ object Impaling : BaseEnchant(DeEnchantments.DE_impaling) {
         if (entity is WaterMob || entity is Guardian) return
         val level = event.getDeLevel()
         if (level <= 0) return
-        otherEvent.damage += remoteDamageRate * level
+        val damage = otherEvent.getDamage(EntityDamageEvent.DamageModifier.BASE) + meleeDamageRate * level
+        otherEvent.setDamage(EntityDamageEvent.DamageModifier.BASE, damage)
     }
 }

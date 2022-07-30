@@ -77,6 +77,7 @@ open class DeEnchantmentEvent(val entity: LivingEntity, async: Boolean) : Event(
 //    return count
 //}
 
-fun <T : Event> T.call() {
+fun <T : Event> T.call(): T {
     Bukkit.getPluginManager().callEvent(this)
+    return this
 }
