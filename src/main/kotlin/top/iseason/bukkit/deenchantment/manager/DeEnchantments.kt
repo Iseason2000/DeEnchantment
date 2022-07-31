@@ -185,7 +185,7 @@ object DeEnchantments {
     //横扫
     val DE_sweeping: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SWEEPING)
         .apply {
-            translateName = "§7横扫失败"
+            translateName = "§7牵引之刃"
             description = "§8 - 将范围内的敌人吸引过来"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 3

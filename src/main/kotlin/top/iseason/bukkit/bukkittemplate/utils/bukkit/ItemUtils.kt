@@ -46,10 +46,11 @@ fun ItemStack.add(count: Int): Int {
  * 检查材质是否是空气
  */
 fun Material.checkAir(): Boolean = when (this.name) {
+    "AIR",
     "VOID_AIR",
     "CAVE_AIR",
-    "AIR",
     "LEGACY_AIR" -> true
+
     else -> false
 }
 

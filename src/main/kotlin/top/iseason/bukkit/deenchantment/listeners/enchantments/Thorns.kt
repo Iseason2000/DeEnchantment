@@ -1,22 +1,57 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
-import org.bukkit.event.player.PlayerMoveEvent
+import org.bukkit.scheduler.BukkitRunnable
+import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
+import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
+import top.iseason.bukkit.bukkittemplate.utils.submit
+import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
-import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 //负荆请罪
 object Thorns : BaseEnchant(DeEnchantments.DE_thorns) {
-    @EventHandler
-    fun onPlayerMoveEvent(event: PlayerMoveEvent) {
-        if (event.isCancelled) return
+    @Key
+    @Comment("", "触发概率等级乘数")
+    var chanceRate = 0.05
+
+    @Key
+    @Comment("", "伤害等级乘数")
+    var damageRate = 0.5
+
+
+    private val playerMap = HashMap<Player, BukkitRunnable>()
+
+    @EventHandler(ignoreCancelled = true)
+    fun onDePlayerEquipmentChange(event: DePlayerEquipmentChangeEvent) {
+        val deLevel = event.getDeLevel()
         val player = event.player
-        val levelCount = EnchantTools.getLevelCount(player, DeEnchantments.DE_thorns)
-        if (levelCount == 0) return
-        if (RandomUtils.getDouble() < levelCount * 0.005) {
-            player.damage(0.5 * levelCount)
+        playerMap[player]?.cancel()
+        playerMap.remove(player)
+        if (deLevel == 0) return
+        val thornsRunnable = ThornsRunnable(event.player, deLevel)
+        submit(period = 10, async = true, task = thornsRunnable)
+        playerMap[player] = thornsRunnable
+    }
+
+    class ThornsRunnable(val player: Player, level: Int) : BukkitRunnable() {
+        private val chance = chanceRate * level
+        private val damage = damageRate * level
+        override fun run() {
+            if (!player.isOnline) {
+                cancel()
+                playerMap.remove(player)
+                return
+            }
+            if (player.velocity.length() < 0.1) return
+            if (RandomUtils.getDouble() < chance) {
+                submit {
+                    player.damage(damage, player)
+                }
+            }
         }
+
     }
 }
