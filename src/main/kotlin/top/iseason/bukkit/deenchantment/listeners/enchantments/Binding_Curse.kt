@@ -7,6 +7,7 @@ import org.bukkit.event.EventPriority
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityPickupItemEvent
 import org.bukkit.event.entity.PlayerDeathEvent
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
@@ -41,12 +42,16 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     var ownerMessage = "&c你不能使用绑定了别人灵魂的装备!"
 
     @Key
-    @Comment("", "防止灵魂绑定被他人用于铁砧")
+    @Comment("", "防止被他人用于铁砧")
     var denyAnvil = true
 
     @Key
-    @Comment("", "防止灵魂绑定被他人用于砂轮")
+    @Comment("", "防止被他人用于砂轮")
     var denyGrindStone = true
+
+    @Key
+    @Comment("", "防止被他人捡起")
+    var denyPickup = true
 
     @Key
     @Comment("", "描述中用于替换玩家名字的占位符")
@@ -225,6 +230,14 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
         protectionMap.remove(uuid)
     }
 
+    @EventHandler
+    fun onEntityPickupItem(event: EntityPickupItemEvent) {
+        if (!denyPickup) return
+        val uuid = event.item.itemStack.getSoulBindOwner() ?: return
+        if (uuid == event.entity.uniqueId.toString()) return
+        event.isCancelled = true
+    }
+
 
     //判断是否不符合灵魂绑定true表示该取消
     private fun checkMainHand(player: Player): Boolean {
@@ -247,4 +260,5 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     private fun ItemStack.getSoulBindOwner(): String? {
         return itemMeta?.persistentDataContainer?.get(EN_BINDING, PersistentDataType.STRING)?.split(";")?.first()
     }
+
 }

@@ -366,7 +366,7 @@ object DeEnchantments {
     val DE_vanishing_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_VANISHING_CURSE)
         .apply {
             translateName = "§a永存祝福"
-            description = "§8 - 通常情况下不会消失或销毁"
+            description = "§8 - 将永远陪伴你"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_BINDING_CURSE)
@@ -378,6 +378,15 @@ object DeEnchantments {
             translateName = "§7大地疾行"
             description = "§8 - 在土地上疾行"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
+            myMaxLevel = 3
+        }
+
+    // 迅捷潜行
+    val DE_swift_sneak: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_SWIFT_SNEAK)
+        .apply {
+            translateName = "§7沉重步伐"
+            description = "§8 - 缓慢前行但抗性提升"
+            myItemTarget = EnchantmentTarget.ARMOR_LEGS
             myMaxLevel = 3
         }
 
