@@ -11,7 +11,7 @@ import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 
-class GrindstoneListener : Listener {
+object GrindstoneListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onEnchantGrindStone(event: InventoryClickEvent) {
         val player = event.whoClicked as Player

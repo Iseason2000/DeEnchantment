@@ -1,6 +1,5 @@
 package top.iseason.bukkit.deenchantment.listeners.controllers
 
-import org.bukkit.ChatColor
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
@@ -10,9 +9,10 @@ import org.bukkit.inventory.EnchantingInventory
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.bukkittemplate.utils.submit
+import top.iseason.bukkit.deenchantment.settings.Message
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
-class EnchantListener : Listener {
+object EnchantListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onEnchantItemEvent(event: EnchantItemEvent) {
         val enchantsToAdd = event.enchantsToAdd
@@ -27,7 +27,7 @@ class EnchantListener : Listener {
             }
             inventory.item = itemStack
             if (enchantsToAdd != translateEnchantByChance) {
-                event.enchanter.sendColorMessage("${ChatColor.YELLOW}你的附魔发生了某些变化！")
+                event.enchanter.sendColorMessage(Message.enchant)
             }
         }
     }

@@ -6,7 +6,6 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.inventory.ItemStack
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments.getDeEnum
-import top.iseason.bukkit.deenchantment.utils.DeEnum
 
 class DeEnchantmentWrapper(val enum: DeEnum) : Enchantment(NamespacedKey.minecraft(enum.name.lowercase())) {
     var enable = true

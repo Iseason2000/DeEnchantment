@@ -299,7 +299,7 @@ open class CommandNode(
         var noPermissionMessage: String? = "&c你没有该命令的权限: &7%permission%"
 
         // 使用提示消息头
-        var usageHeader: String? = "  &7======> &d${TemplatePlugin.getPlugin().name} &7<======"
+        var usageHeader: String? = "  &7=======> &d${TemplatePlugin.getPlugin().name} &7<======="
         var usage: String = "&7 - &6%s &a%s &7%s"
 
         // 使用提示消息尾部

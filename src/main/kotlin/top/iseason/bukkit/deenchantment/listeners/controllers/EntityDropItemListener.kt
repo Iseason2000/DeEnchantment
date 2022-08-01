@@ -6,7 +6,7 @@ import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDropItemEvent
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
-class EntityDropItemListener : Listener {
+object EntityDropItemListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onEntityDropItemEvent(event: EntityDropItemEvent) {
         val itemDrop = event.itemDrop

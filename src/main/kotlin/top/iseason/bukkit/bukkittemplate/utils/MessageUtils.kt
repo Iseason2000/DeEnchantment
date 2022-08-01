@@ -87,3 +87,12 @@ fun String.toColor(): String {
 }
 
 fun String.noColor(): String? = ChatColor.stripColor(this)
+
+fun String.formatBy(vararg values: Any?): String {
+    var temp = this
+    values.forEachIndexed { index, any ->
+        if (any == null) return@forEachIndexed
+        temp = temp.replace("{$index}", any.toString())
+    }
+    return temp
+}

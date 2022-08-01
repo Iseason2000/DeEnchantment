@@ -1,4 +1,4 @@
-package top.iseason.bukkit.deenchantment.utils
+package top.iseason.bukkit.deenchantment.manager
 
 
 enum class DeEnum {

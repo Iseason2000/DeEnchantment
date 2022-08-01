@@ -12,6 +12,7 @@ import top.iseason.bukkit.bukkittemplate.debug.info
 import top.iseason.bukkit.bukkittemplate.utils.noColor
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.bukkittemplate.utils.toColor
+import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.runnables.EquipmentScanner
@@ -23,9 +24,11 @@ object DeEnchantment : KotlinPlugin() {
     override fun onEnable() {
         SimpleYAMLConfig.notifyMessage = "&a配置: &6%s &a已重载!"
         Metrics(javaPlugin, 13440)
+
     }
 
     override fun onAsyncEnable() {
+        EcoEnchantHook
         SimpleLogger.prefix = Message.prefix.toColor()
         info("${ChatColor.AQUA}██████╗ ███████╗███████╗███╗   ██╗ ██████╗██╗  ██╗ █████╗ ███╗   ██╗████████╗")
         info("${ChatColor.AQUA}██╔══██╗██╔════╝██╔════╝████╗  ██║██╔════╝██║  ██║██╔══██╗████╗  ██║╚══██╔══╝")

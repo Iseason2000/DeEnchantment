@@ -8,7 +8,7 @@ import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
-class EntitySpawnListener : Listener {
+object EntitySpawnListener : Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     fun onCreatureSpawnEvent(event: CreatureSpawnEvent) {
         if (event.isCancelled) return

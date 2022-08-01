@@ -6,9 +6,8 @@ import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import top.iseason.bukkit.bukkittemplate.debug.info
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
+import top.iseason.bukkit.deenchantment.manager.DeEnum.*
 import top.iseason.bukkit.deenchantment.settings.Config
-import top.iseason.bukkit.deenchantment.utils.DeEnum
-import top.iseason.bukkit.deenchantment.utils.DeEnum.*
 
 
 object DeEnchantments {

@@ -11,6 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataType
 import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
+import top.iseason.bukkit.bukkittemplate.utils.toRoman
 import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Binding_Curse
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
@@ -189,7 +190,7 @@ object EnchantTools {
             }
             val wholeName =
                 if (enchant.maxLevel == 1 && level == 1) "${enchant.translateName}  " else "${enchant.translateName} ${
-                    Tools.intToRome(level)
+                    level.toRoman()
                 }"
             loreList.add(0, wholeName)
             names.set(enchant.key, PersistentDataType.STRING, wholeName)

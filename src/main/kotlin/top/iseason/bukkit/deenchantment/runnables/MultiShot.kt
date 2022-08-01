@@ -23,7 +23,7 @@ class MultiShot(
         normalY = eyeLocation.getNormalY()
         direction = eyeLocation.getNormalZ().multiply(speed)
     }
-
+    //横向
     fun sweepType() {
         val fireTicks = projectile.fireTicks
         val direction = direction.clone()
@@ -43,6 +43,7 @@ class MultiShot(
         }
     }
 
+    //散射
     fun randomType() {
         val fireTicks = projectile.fireTicks
         val random = Random()

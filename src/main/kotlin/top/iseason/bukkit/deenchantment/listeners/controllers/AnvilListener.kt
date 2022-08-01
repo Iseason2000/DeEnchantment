@@ -1,6 +1,5 @@
 package top.iseason.bukkit.deenchantment.listeners.controllers
 
-import org.bukkit.ChatColor
 import org.bukkit.GameMode
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
@@ -12,12 +11,14 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.Repairable
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
+import top.iseason.bukkit.bukkittemplate.utils.formatBy
 import top.iseason.bukkit.bukkittemplate.utils.sendColorMessage
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.settings.Config
+import top.iseason.bukkit.deenchantment.settings.Message
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
-class AnvilListener : Listener {
+object AnvilListener : Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPrepareAnvilEvent(event: PrepareAnvilEvent) {
@@ -106,7 +107,7 @@ class AnvilListener : Listener {
                 return
             }
             anvilView.viewers.firstOrNull()
-                ?.sendColorMessage("${ChatColor.GREEN}本次附魔花费:${ChatColor.YELLOW} ${anvilView.repairCost}")
+                ?.sendColorMessage(Message.anvil_cost.formatBy(anvilView.repairCost))
         } else
             event.result = result
     }

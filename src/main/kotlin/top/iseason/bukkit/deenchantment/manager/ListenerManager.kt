@@ -50,35 +50,35 @@ object ListenerManager {
         val str = StringBuilder()
         if (Config.anvil) {
             str.append("铁砧、")
-            DeEnchantment.registerListeners(AnvilListener())
+            DeEnchantment.registerListeners(AnvilListener)
         }
         if (Config.chestLoot) {
             str.append("箱子、")
-            DeEnchantment.registerListeners(ChestLootTableListener())
+            DeEnchantment.registerListeners(ChestLootTableListener)
         }
         if (Config.enchant) {
             str.append("附魔台、")
-            DeEnchantment.registerListeners(EnchantListener())
+            DeEnchantment.registerListeners(EnchantListener)
         }
         if (Config.spawn) {
             str.append("生物、")
-            DeEnchantment.registerListeners(EntitySpawnListener())
+            DeEnchantment.registerListeners(EntitySpawnListener)
         }
         if (Config.trade) {
             str.append("交易、")
-            DeEnchantment.registerListeners(MerchantListener())
+            DeEnchantment.registerListeners(MerchantListener)
         }
         if (Config.fishing) {
             str.append("钓鱼、")
-            DeEnchantment.registerListeners(PlayerFishListener())
+            DeEnchantment.registerListeners(PlayerFishListener)
         }
         if (Config.reward) {
             str.append("给予、")
-            DeEnchantment.registerListeners(EntityDropItemListener())
+            DeEnchantment.registerListeners(EntityDropItemListener)
         }
         if (Config.grindstone) {
             str.append("砂轮、")
-            DeEnchantment.registerListeners(GrindstoneListener())
+            DeEnchantment.registerListeners(GrindstoneListener)
         }
         info("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
     }

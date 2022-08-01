@@ -62,27 +62,7 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     @Comment("", "是否显示负魔描述")
     var allowDescription: Boolean = false
 
-//    @Key
-//    @Comment(
-//        "",
-//        "铁砧经验公式 {level}:修改的附魔的等级之和 {repair}: 2个物品中修改次数最多的次数",
-//        "支持运算符: + - * / ^ E u sin() asin() sinh() log2 log10 ln log sqrt() exp() 等，三角函数都支持",
-//        "注意:如果有其他修改铁砧经验的插件可能会无效"
-//    )
-//    var expression = "2*{repair}+{level}+1"
-//
-//    var exprParser = ExpressionParser()
-
     var isInit = false
-//    override val onLoaded: (FileConfiguration.() -> Unit) = {
-//        expression = expression.trim()
-//        try {
-//            exprParser.evaluate(expression.replace("{repair}", "1").replace("{level}", "1"))
-//        } catch (e: Exception) {
-//            expression = "2*{repair}+{level}+1"
-//            info("${ChatColor.RED}铁砧经验公式异常，已恢复为: ${ChatColor.YELLOW} $expression")
-//        }
-//    }
 
     //重载配置
     fun reload() {

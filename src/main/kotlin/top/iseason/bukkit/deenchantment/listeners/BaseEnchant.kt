@@ -12,7 +12,7 @@ import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.events.DeEnchantmentEvent
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
-import top.iseason.bukkit.deenchantment.utils.DeEnum
+import top.iseason.bukkit.deenchantment.manager.DeEnum
 
 abstract class BaseEnchant(
     protected val enchant: DeEnchantmentWrapper
