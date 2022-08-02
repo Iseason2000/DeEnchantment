@@ -40,7 +40,7 @@ object DeEnchantment : KotlinPlugin() {
         }
         mainCommand()
         CommandBuilder.onEnable()
-        info("${ChatColor.GREEN}插件已启用！${ChatColor.DARK_PURPLE}DeEnchantments v${ChatColor.GOLD}${javaPlugin.description.version}")
+        info("${ChatColor.GREEN}插件已启用！${ChatColor.DARK_PURPLE}DeEnchantments v ${ChatColor.GOLD}${javaPlugin.description.version}")
         submit(period = 10, async = true, task = EquipmentScanner)
     }
 

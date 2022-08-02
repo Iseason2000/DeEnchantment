@@ -19,7 +19,7 @@ class ClassGetter(plugin: JavaPlugin, packageName: String) {
 
     private fun processJarfile(resource: URL, packageName: String) {
         val relPath = packageName.replace('.', '/')
-        val resPath = resource.path.replace("%20", " ").replaceFirst("[.]jar[!].*".toRegex(), ".jar")
+        val resPath = resource.path.replace("%20", " ").replaceFirst("[.]jar!.*".toRegex(), ".jar")
             .replaceFirst("file:".toRegex(), "")
         val jarPath = URLDecoder.decode(resPath, "utf-8")
         try {

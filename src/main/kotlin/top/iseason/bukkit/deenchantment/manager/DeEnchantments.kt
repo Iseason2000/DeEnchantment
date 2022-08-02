@@ -122,6 +122,7 @@ object DeEnchantments {
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_VANISHING_CURSE)
+            myIsTreasure = true
         }
 
     //锋利
@@ -369,6 +370,7 @@ object DeEnchantments {
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_BINDING_CURSE)
+            myIsTreasure = true
         }
 
     // 灵魂疾行

@@ -29,7 +29,7 @@ object AnvilListener : Listener {
         //其他插件使用铁砧,仅更新lore
         val renameText = event.inventory.renameText
         //可能是要改名
-        if (item2.type.checkAir() && renameText != null && renameText.isNotEmpty()) {
+        if (item2.type.checkAir() && !renameText.isNullOrEmpty()) {
             val clone = item1.itemMeta
             clone?.setDisplayName(renameText)
             event.result?.itemMeta = clone
@@ -85,7 +85,7 @@ object AnvilListener : Listener {
             result = itemClone.applyMeta {
                 if (this !is Repairable) return
                 repairCost += 1
-                if (renameText != null && renameText.isNotEmpty()) setDisplayName(renameText)
+                if (!renameText.isNullOrEmpty()) setDisplayName(renameText)
             }
         } else {
             result = result.applyMeta {
@@ -97,7 +97,7 @@ object AnvilListener : Listener {
                         addEnchant(t, u, true)
                 }
                 EnchantTools.updateLore(this)
-                if (renameText != null && renameText.isNotEmpty()) setDisplayName(renameText)
+                if (!renameText.isNullOrEmpty()) setDisplayName(renameText)
             }
         }
         anvilView.repairCost += cost.coerceAtLeast(1)

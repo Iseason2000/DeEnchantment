@@ -64,7 +64,7 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     @Comment("", "是否显示负魔描述")
     var allowDescription: Boolean = false
 
-    var isInit = false
+    private var isInit = false
 
     //重载配置
     fun reload() {

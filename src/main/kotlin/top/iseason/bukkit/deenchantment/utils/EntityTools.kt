@@ -13,6 +13,7 @@ object EntityTools {
             is Wither,
             is SkeletonHorse,
             is ZombieHorse -> true
+
             else -> false
         }
     }
@@ -25,6 +26,7 @@ object EntityTools {
             is Zoglin,
             is Endermite,
             is Bee -> true
+
             else -> false
         }
     }
