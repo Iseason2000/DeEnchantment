@@ -13,6 +13,7 @@ import top.iseason.bukkit.bukkittemplate.utils.RandomUtils
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.toRoman
 import top.iseason.bukkit.deenchantment.DeEnchantment
+import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Binding_Curse
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
@@ -169,7 +170,7 @@ object EnchantTools {
         clearEnchantLore(itemMeta)
         val enchants = if (itemMeta is EnchantmentStorageMeta) itemMeta.storedEnchants else itemMeta.enchants
         if (enchants.isEmpty()) return
-        if (itemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS)) return
+        if (itemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS) || EcoEnchantHook.hasHook) return
         val loreList = itemMeta.lore ?: mutableListOf<String>()
         val pdc = itemMeta.persistentDataContainer
         val names = pdc.adapterContext.newPersistentDataContainer()

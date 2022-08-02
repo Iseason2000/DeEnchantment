@@ -11,11 +11,12 @@ import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.events.DeEnchantmentEvent
+import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.manager.DeEnum
 
 abstract class BaseEnchant(
-    protected val enchant: DeEnchantmentWrapper
+    val enchant: DeEnchantmentWrapper
 ) : SimpleYAMLConfig("enchantments/${enchant.name.lowercase()}.yml"), Listener {
 
     @Comment("", "是否启用")
@@ -67,6 +68,7 @@ abstract class BaseEnchant(
             enchant.conflicts = mutableSetOf
         } catch (_: Exception) {
         }
+        EcoEnchantHook.setInfo(this@BaseEnchant)
     }
 
     companion object {

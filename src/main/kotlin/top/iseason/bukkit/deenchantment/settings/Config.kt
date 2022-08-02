@@ -6,6 +6,7 @@ import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.FilePath
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.debug.info
+import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Frost_Walker
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.manager.ListenerManager
@@ -83,7 +84,7 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
             info("${ChatColor.RED}附魔注册异常!")
         }
 //        info("${ChatColor.GREEN}铁砧经验公式为: ${ChatColor.YELLOW} $expression")
-
+        EcoEnchantHook.update()
     }
 
     fun onDisable() {
