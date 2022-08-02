@@ -24,6 +24,9 @@ object Message : SimpleYAMLConfig() {
     var command__reload_success = "&a负魔已重新注册!"
     var command__reload_failure = "&c负魔注册异常，请反馈作者!"
 
+    var command__migrate = "&a迁移完成!"
+    var command__migrating = "&6数据迁移中,预计20秒......"
+
     override val onLoaded: (FileConfiguration.() -> Unit) = {
         SimpleLogger.prefix = prefix.toColor()
         MessageUtils.defaultPrefix = SimpleLogger.prefix

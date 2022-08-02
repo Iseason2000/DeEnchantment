@@ -1,6 +1,7 @@
-package top.iseason.bukkit.deenchantment
+package top.iseason.bukkit.deenchantment.command
 
 import org.bukkit.Material
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
@@ -9,17 +10,17 @@ import top.iseason.bukkit.bukkittemplate.command.Param
 import top.iseason.bukkit.bukkittemplate.command.ParamSuggestCache
 import top.iseason.bukkit.bukkittemplate.command.ParmaException
 import top.iseason.bukkit.bukkittemplate.command.commandRoot
+import top.iseason.bukkit.bukkittemplate.utils.*
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.applyMeta
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.checkAir
 import top.iseason.bukkit.bukkittemplate.utils.bukkit.giveItems
-import top.iseason.bukkit.bukkittemplate.utils.formatBy
-import top.iseason.bukkit.bukkittemplate.utils.noColor
-import top.iseason.bukkit.bukkittemplate.utils.toRoman
+import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.settings.Message
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
+import java.io.File
 
 fun mainCommand() {
     commandRoot(
@@ -112,6 +113,43 @@ fun mainCommand() {
             }
             onSuccess(Message.command__reload_success)
             onFailure(Message.command__reload_failure)
+        }
+        //迁移
+        node(
+            "migrate",
+            default = PermissionDefault.OP,
+            description = "将v1版本的旧配置迁移到新版", async = true
+        ) {
+            onExecute {
+                val file = File(DeEnchantment.javaPlugin.dataFolder, "old_config.yml")
+                if (!file.exists()) throw ParmaException("&6请将旧配置文件改名为&a\"old_config.yml\"&6并放入插件配置文件夹中!")
+                it.sendColorMessage(Message.command__migrating)
+                val config = YamlConfiguration.loadConfiguration(file)
+                Config.anvil = config.getBoolean("Anvil", true)
+                Config.chestLoot = config.getBoolean("Chest", true)
+                Config.enchant = config.getBoolean("EnchantTable", true)
+                Config.spawn = config.getBoolean("Mobs", true)
+                Config.trade = config.getBoolean("Villager", true)
+                Config.fishing = config.getBoolean("Fishing", true)
+                Config.reward = config.getBoolean("Reward", true)
+                Config.grindstone = config.getBoolean("Grindstone", true)
+                Config.levelUnlimited = config.getBoolean("LevelUnlimited", true)
+                Config.tooExpensive = config.getBoolean("AllowTooExpensive", true)
+                Config.cleanConsole = config.getBoolean("CleanConsole", true)
+                Config.save(false)
+                Message.prefix = config.getString("Prefix") ?: Message.prefix
+                Message.saveAsync(false)
+                for (enchant in BaseEnchant.enchantConfigs) {
+                    val key = enchant.enchant.key.key.uppercase()
+                    enchant.enable = config.getBoolean("$key.Enable", true)
+                    enchant.translate_name = config.getString("$key.DisplayName")?.toColor() ?: enchant.translate_name
+                    enchant.max_level = config.getInt("$key.MaxLevel", enchant.max_level)
+                    enchant.chance = config.getDouble("$key.Chance", enchant.chance)
+                    enchant.save(false)
+                }
+                true
+            }
+            onSuccess(Message.command__migrate)
         }
     }
 }

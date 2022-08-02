@@ -43,7 +43,6 @@ object SlimeFun4Hook : Listener {
                 }
             }
         }
-//        val position = event.processor
     }
 
     fun register() {

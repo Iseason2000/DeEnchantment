@@ -84,7 +84,6 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
             e.printStackTrace()
             info("${ChatColor.RED}附魔注册异常!")
         }
-//        info("${ChatColor.GREEN}铁砧经验公式为: ${ChatColor.YELLOW} $expression")
         EcoEnchantHook.init()
         SlimeFun4Hook.register()
     }
@@ -101,6 +100,5 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
         TargetFinder.removeAll()
         ListenerManager.unRegisterAll()
     }
-
 
 }

@@ -73,10 +73,12 @@ abstract class BaseEnchant(
 
     companion object {
         val enchants = mutableSetOf<DeEnchantmentWrapper>()
+        val enchantConfigs = mutableSetOf<BaseEnchant>()
     }
 
     init {
         enchants.add(enchant)
+        enchantConfigs.add(this)
     }
 
     /**
