@@ -1,72 +1,151 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
-    java
-    id("com.github.johnrengelman.shadow") version "7.1.2"
-    kotlin("jvm") version "1.6.21"
+    kotlin("jvm")
+    id("com.github.johnrengelman.shadow")
 }
-group = "top.iseason"
-version = "1.3.1"
-val mainClass = "DeEnchantmentPlugin"
-val author = "Iseason"
-val jarOutputFile = "E:\\mc\\1.19\\plugins"
 
+buildscript {
+    repositories {
+        mavenCentral()
+        google()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:4.0.2")
+        classpath("com.guardsquare:proguard-gradle:7.2.2")
+    }
+}
+// 插件名称，请在gradle.properties 修改
+val pluginName: String by project
+//包名，请在gradle.properties 修改
+val group: String by project
+val groupS = group
+// 作者，请在gradle.properties 修改
+val author: String by project
+// jar包输出路径，请在gradle.properties 修改
+val jarOutputFile: String by project
+//插件版本，请在gradle.properties 修改
+val version: String by project
+// shadowJar 版本 ，请在gradle.properties 修改
+val shadowJar: ShadowJar by tasks
+// exposed 数据库框架版本，请在gradle.properties 修改
+val exposedVersion: String by project
 repositories {
+//    阿里的服务器速度快一点
+    maven {
+        name = "aliyun"
+        url = uri("https://maven.aliyun.com/repository/public/")
+    }
+    google()
     mavenCentral()
     maven {
-        url = uri("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
+        name = "spigot"
+        url = uri("https://hub.spigotmc.org/nexus/content/repositories/public/")
     }
-//    maven {
-//        url = uri("https://repo.codemc.org/repository/maven-public/")
-//    }
+    maven {
+        name = "jitpack"
+        url = uri("https://jitpack.io")
+    }
+
+    mavenLocal()
 }
 
 dependencies {
-    compileOnly("org.spigotmc:spigot-api:1.16.4-R0.1-SNAPSHOT")
+    //基础库
     compileOnly(kotlin("stdlib-jdk8"))
-//    implementation("io.github.bananapuncher714:nbteditor:7.18.1")
+//    反射库
+//    compileOnly(kotlin("reflect"))
+
+//    协程库
+//    compileOnly("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.2")
+
+//    compileOnly("org.jetbrains.exposed:exposed-core:$exposedVersion")
+//    compileOnly("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+//    compileOnly("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+
+    implementation("org.bstats:bstats-bukkit:3.0.0")
+    compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
+    compileOnly("com.willfp:EcoEnchants:8.102.0")
+    compileOnly("com.willfp:eco:6.38.2")
+    compileOnly("com.github.Slimefun:Slimefun4:RC-32")
+    compileOnly("io.github.baked-libs:dough-api:1.2.0")
 
 }
-//
-//(tasks.getByName("processResources") as ProcessResources).apply {
-//    val p = "${project.group}.${rootProject.name.toLowerCase()}"
-//    include("config.yml")
-//    include("plugin.yml").expand(
-//        "name" to rootProject.name.toLowerCase(),
-//        "main" to "$p.$mainClass",
-//        "version" to version,
-//        "author" to author
-//    )
-//}
+
+
 tasks {
     shadowJar {
-        destinationDirectory.set(file(jarOutputFile))
-        minimize()
-//        relocate("io.github.bananapuncher714", "top.iseason.deenchantment.libs")
+        relocate("top.iseason.bukkit.bukkittemplate", "$groupS.lib.core")
     }
     compileJava {
         options.encoding = "UTF-8"
     }
+    compileKotlin {
+        kotlinOptions.jvmTarget = "1.8"
+    }
     processResources {
         filesMatching("plugin.yml") {
-            val p = "${project.group}.${rootProject.name.toLowerCase()}"
             expand(
-                "name" to rootProject.name,
-                "main" to "$p.$mainClass",
-                "version" to version,
+                "main" to "$groupS.lib.core.TemplatePlugin",
+                "name" to pluginName,
+                "version" to project.version,
                 "author" to author,
-                "kotlin" to "1.6.21"
+                "kotlinVersion" to getProperties("kotlinVersion"),
+                "exposedVersion" to exposedVersion
             )
         }
     }
 }
-tasks.withType<KotlinCompile> { kotlinOptions.jvmTarget = "1.8" }
+task<com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation>("relocateShadowJar") {
+    target = tasks.shadowJar.get()
+    prefix = "$groupS.lib"
+    shadowJar.minimize()
+}
+tasks.shadowJar.get().dependsOn(tasks.getByName("relocateShadowJar"))
 
-tasks.jar {
-    destinationDirectory.set(file(jarOutputFile))
+tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
+    group = "minecraft"
+    verbose()
+    injars(tasks.named("shadowJar"))
+    //是否混淆，注销掉启用混淆
+    val obfuscated = getProperties("obfuscated") == "true"
+    val shrink = getProperties("shrink") == "true"
+    if (!obfuscated) {
+        dontobfuscate()
+    }
+    if (!shrink) {
+        dontshrink()
+    }
+    optimizationpasses(5)
+    dontwarn()
+    val javaHome = System.getProperty("java.home")
+    if (JavaVersion.current() < JavaVersion.toVersion(9)) {
+        libraryjars("$javaHome/lib/rt.jar")
+    } else {
+        libraryjars(
+            mapOf(
+                "jarfilter" to "!**.jar",
+                "filter" to "!module-info.class"
+            ),
+            "$javaHome/jmods/java.base.jmod"
+        )
+    }
+    val allowObf = mapOf("allowobfuscation" to true)
+    libraryjars(configurations.compileClasspath.get().files)
+    keep("class $groupS.lib.core.TemplatePlugin {}")
+    keep("class * implements top.iseason.bukkit.deenchantment.listeners.BaseEnchant {*;}")
+    keep(allowObf, "class * implements $groupS.lib.core.KotlinPlugin {*;}")
+    keepclassmembers(allowObf, "class * implements org.bukkit.event.Event {*;}")
+    keepclassmembers("class * extends $groupS.lib.core.config.SimpleYAMLConfig {*;}")
+    keepclassmembers(allowObf, "class * implements org.bukkit.event.Listener {*;}")
+    keep(allowObf, "class $groupS.lib.core.utils.MessageUtilsKt {*;}")
+    keepattributes("Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod")
+    keepkotlinmetadata()
+    repackageclasses()
+    if (obfuscated)
+        outjars(File(jarOutputFile, "${project.name}-${project.version}-obfuscated.jar"))
+    else
+        outjars(File(jarOutputFile, "${project.name}-${project.version}.jar"))
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
+fun getProperties(properties: String) = rootProject.properties[properties].toString()
