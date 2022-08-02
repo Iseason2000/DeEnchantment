@@ -132,4 +132,8 @@ deenchantment 缩写 de、den
 /deenchantment migrate  将v1版本的旧配置迁移到新版 权限:deenchantment.migrate
 ~~~
 
+## 构建插件
+
+./gradlew buildplugin
+
 ![](https://bstats.org/signatures/bukkit/DeEnchantment.svg)
