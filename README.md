@@ -24,7 +24,7 @@ V2 重构了80%以上的代码，大部提升性能与功能
 ## 附魔对照
 
 **部分负魔功能较V1有变化，请注意**
-![img.png](资源/img.png)
+![img](https://user-images.githubusercontent.com/65019366/182375428-b02a48ea-8b45-49f2-b6b4-a425c46fd74a.png)
 
 ## 部分效果截图
 
