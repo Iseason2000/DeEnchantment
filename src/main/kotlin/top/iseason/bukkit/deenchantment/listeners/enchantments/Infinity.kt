@@ -2,7 +2,6 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
-import org.bukkit.event.EventPriority
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.deenchantment.events.DeEntityShootBowEvent
@@ -20,7 +19,7 @@ object Infinity : BaseEnchant(DeEnchantments.DE_infinity) {
     @Comment("", "偏离角度")
     var angle = 0.2
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.LOWEST)
+    @EventHandler(ignoreCancelled = true)
     fun onEntityShootBowEvent(event: DeEntityShootBowEvent) {
         val projectile = event.projectile
         if (projectile !is Projectile) return

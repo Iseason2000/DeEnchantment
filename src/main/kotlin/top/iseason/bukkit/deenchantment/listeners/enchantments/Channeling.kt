@@ -27,7 +27,7 @@ object Channeling : BaseEnchant(DeEnchantments.DE_channeling) {
         val shooter = entity.shooter as? LivingEntity ?: return
         val level = entity.item.getDeLevel()
         if (level <= 0) return
-        val lightning = if (isEffect)
+        val lightning = if (!isEffect)
             shooter.world.strikeLightning(shooter.location)
         else
             shooter.world.strikeLightningEffect(shooter.location)
