@@ -15,11 +15,12 @@ object EcoEnchantHook {
     var file: File? = null
     var hasHook = false
 
-    init {
+    fun init() {
         if (plugin != null) {
             lang = EcoEnchantsPlugin.getInstance().langYml
             info("&a检测到&6 EcoEnchant")
             hasHook = true
+            EnchantmentCache.update()
         }
     }
 
@@ -29,10 +30,5 @@ object EcoEnchantHook {
 //        lang?.save()
     }
 
-    fun update() {
-        if (plugin == null) return
-        EnchantmentCache.update()
-
-    }
 
 }

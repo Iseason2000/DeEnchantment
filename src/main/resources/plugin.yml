@@ -4,6 +4,7 @@ version: ${version}
 authors: [ ${ author } ]
 softdepend:
   - EcoEnchants
+  - Slimefun
 api-version: 1.13
 runtime-libraries:
   # If not defined, it will be 'libraries'
