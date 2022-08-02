@@ -26,7 +26,7 @@ object DeEnchantments {
     val DE_fire_protection: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_FIRE_PROTECTION)
         .apply {
             translateName = "§7易燃"
-            description = "§8 - 增加受到的火焰伤害"
+            description = "§8 - 受到攻击时有概率着火"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
             conflicts = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
@@ -177,7 +177,7 @@ object DeEnchantments {
     val DE_looting: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_LOOTING)
         .apply {
             translateName = "§7知足"
-            description = "§8 - 击杀生物掉落物减少"
+            description = "§8 - 击杀生物有概率没有掉落物"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 3
         }
@@ -366,7 +366,7 @@ object DeEnchantments {
     val DE_vanishing_curse: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_VANISHING_CURSE)
         .apply {
             translateName = "§a永存祝福"
-            description = "§8 - 将永远陪伴你"
+            description = "§8 - 物品将永远陪伴你"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
             conflicts = setOf(DE_BINDING_CURSE)
@@ -389,6 +389,7 @@ object DeEnchantments {
             description = "§8 - 缓慢前行但抗性提升"
             myItemTarget = EnchantmentTarget.ARMOR_LEGS
             myMaxLevel = 3
+            myIsTreasure = true
         }
 
     /**
