@@ -64,6 +64,10 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     @Comment("", "是否显示负魔描述")
     var allowDescription: Boolean = false
 
+    @Key
+    @Comment("", "负魔lore的插入位置,设置得足够大以插入在末尾")
+    var lorePosition: Int = 0
+
     private var isInit = false
 
     //重载配置

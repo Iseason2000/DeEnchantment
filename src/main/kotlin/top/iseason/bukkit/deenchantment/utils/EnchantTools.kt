@@ -91,7 +91,7 @@ object EnchantTools {
      */
     fun clearEnchantLore(itemMeta: ItemMeta) {
         if (!itemMeta.hasLore()) return
-        val loreSet = itemMeta.lore?.toHashSet() ?: return
+        val lore = itemMeta.lore ?: return
         val pdc = itemMeta.persistentDataContainer
         val names = pdc.get(EN_NAMES, PersistentDataType.TAG_CONTAINER)
         val descriptions = pdc.get(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER)
@@ -101,15 +101,15 @@ object EnchantTools {
         }
         names?.keys?.forEach {
             val str = names.get(it, PersistentDataType.STRING)
-            loreSet.remove(str)
+            lore.remove(str)
         }
         descriptions?.keys?.forEach {
             val str = descriptions.get(it, PersistentDataType.STRING)
-            loreSet.remove(str)
+            lore.remove(str)
         }
         pdc.remove(EN_NAMES)
         pdc.remove(EN_DESCRIPTIONS)
-        itemMeta.lore = loreSet.toMutableList()
+        itemMeta.lore = lore
     }
 
     /**
@@ -182,12 +182,17 @@ object EnchantTools {
         val enchants = if (itemMeta is EnchantmentStorageMeta) itemMeta.storedEnchants else itemMeta.enchants
         if (enchants.isEmpty()) return
         if (itemMeta.hasItemFlag(ItemFlag.HIDE_ENCHANTS) || EcoEnchantHook.hasHook) return
-        val loreList = itemMeta.lore ?: mutableListOf<String>()
+        val loreList = mutableListOf<String>()
         val pdc = itemMeta.persistentDataContainer
         val names = pdc.adapterContext.newPersistentDataContainer()
         val descriptions = pdc.adapterContext.newPersistentDataContainer()
         for ((enchant, level) in enchants) {
             if (enchant !is DeEnchantmentWrapper) continue
+            val wholeName =
+                if (enchant.maxLevel == 1 && level == 1) "${enchant.translateName}  " else "${enchant.translateName} ${
+                    level.toRoman()
+                }"
+            loreList.add(wholeName)
             if (Config.allowDescription) {
                 var description = enchant.description
                 //特殊处理灵魂绑定
@@ -197,19 +202,22 @@ object EnchantTools {
                         description = description.replace(Binding_Curse.placeHolder, get.split(";").last())
                     }
                 }
-                loreList.add(0, description)
+                loreList.add(description)
                 descriptions.set(enchant.key, PersistentDataType.STRING, description)
             }
-            val wholeName =
-                if (enchant.maxLevel == 1 && level == 1) "${enchant.translateName}  " else "${enchant.translateName} ${
-                    level.toRoman()
-                }"
-            loreList.add(0, wholeName)
             names.set(enchant.key, PersistentDataType.STRING, wholeName)
         }
         pdc.set(EN_NAMES, PersistentDataType.TAG_CONTAINER, names)
         pdc.set(EN_DESCRIPTIONS, PersistentDataType.TAG_CONTAINER, descriptions)
-        itemMeta.lore = loreList
+        if (!itemMeta.hasLore()) {
+            itemMeta.lore = loreList
+        } else {
+            val lore = itemMeta.lore!!
+            val lorePosition = if (loreList.size <= Config.lorePosition) loreList.size else Config.lorePosition
+            lore.addAll(lorePosition, loreList)
+            itemMeta.lore = lore
+        }
+
     }
 
     //向物品Meta添加负魔
