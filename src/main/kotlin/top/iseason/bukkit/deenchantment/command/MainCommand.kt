@@ -32,7 +32,7 @@ fun mainCommand() {
             description = "给予玩家特定负魔书",
             params = arrayOf(Param("[player]", suggestRuntime = ParamSuggestCache.playerParam), Param("[name]") {
                 BaseEnchant.enchants.filter { it.enable }.map { it.translateName.noColor()!! }
-            }, Param("<level>", listOf("1", "2", "3"))),
+            }, Param("<level>", listOf("1", "2", "3", "4", "5"))),
             async = true
         ) {
             onExecute {
@@ -61,7 +61,7 @@ fun mainCommand() {
             description = "将特定负魔添加到手上的东西上",
             params = arrayOf(Param("[name]") {
                 BaseEnchant.enchants.filter { it.enable }.map { it.translateName.noColor()!! }
-            }, Param("<level>", listOf("1", "2", "3"))),
+            }, Param("<level>", listOf("1", "2", "3", "4", "5"))),
             isPlayerOnly = true, async = true
         ) {
             onExecute {

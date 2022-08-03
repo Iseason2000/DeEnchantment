@@ -135,6 +135,7 @@ tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     keep("class $groupS.lib.core.TemplatePlugin {}")
     keep("class * implements top.iseason.bukkit.deenchantment.listeners.BaseEnchant {*;}")
     keep(allowObf, "class * implements $groupS.lib.core.KotlinPlugin {*;}")
+    keep(allowObf, "class top.iseason.bukkit.deenchantment.manager.DeEnum {*;}")
     keepclassmembers(allowObf, "class * implements org.bukkit.event.Event {*;}")
     keepclassmembers("class * extends $groupS.lib.core.config.SimpleYAMLConfig {*;}")
     keepclassmembers(allowObf, "class * implements org.bukkit.event.Listener {*;}")

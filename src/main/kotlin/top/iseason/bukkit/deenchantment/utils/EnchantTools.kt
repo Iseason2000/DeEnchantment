@@ -29,7 +29,8 @@ object EnchantTools {
      */
     fun addEnchantments(
         target: ItemStack,
-        en2: Map<DeEnchantmentWrapper, Int>,
+        en2: Map<Enchantment, Int>,
+        removes: MutableSet<Enchantment>,
         ignoreConflicts: Boolean
     ): Int {
         var cost = 0
@@ -46,11 +47,15 @@ object EnchantTools {
             if (!ignoreConflicts) {
                 if (!e2.canEnchantItem(target)) return@forEach
                 for ((e1, _) in enchantments) {
-                    if (e2.conflictsWith(e1)) {
+                    //冲突的应该删除
+                    if (e2.conflictsWith(e1) || e1.conflictsWith(e2)) {
+                        removes.add(e2)
                         return@forEach
                     }
                 }
             }
+//            //别的附魔不需要我处理
+//            if (e2 !is DeEnchantmentWrapper) return@forEach
             //等级合并计算
             var level = l2
             if (enchantments.containsKey(e2)) {
@@ -66,7 +71,9 @@ object EnchantTools {
                 level = e2.maxLevel
             }
             enchantments[e2] = level
-            cost += level
+            //只计算负魔的经验，其他的附魔不归我管
+            if (e2 is DeEnchantmentWrapper)
+                cost += level
         }
         addEnchants(itemMeta, enchantments)
         updateLore(itemMeta)
@@ -109,14 +116,18 @@ object EnchantTools {
      * 计算物品负魔突变
      */
     fun translateEnchantsByChance(itemStack: ItemStack) {
-        val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
-        if (enchantOrStoredEnchant.isEmpty()) return
-        val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant).toMutableMap()
-        clearEnchants(itemStack)
-        itemStack.applyMeta {
-            addEnchants(this, enchantByChance)
-            updateLore(this)
+        try {
+            val enchantOrStoredEnchant = getEnchantOrStoredEnchant(itemStack)
+            if (enchantOrStoredEnchant.isEmpty()) return
+            val enchantByChance = translateEnchantByChance(enchantOrStoredEnchant).toMutableMap()
+            clearEnchants(itemStack)
+            itemStack.applyMeta {
+                addEnchants(this, enchantByChance)
+                updateLore(this)
+            }
+        } catch (_: Throwable) {
         }
+
     }
 
     fun clearEnchants(itemStack: ItemStack) {

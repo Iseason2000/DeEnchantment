@@ -45,13 +45,8 @@ object AnvilListener : Listener {
                 itemMeta2.storedEnchants
             else
                 item2.enchantments
-        val deEns = mutableMapOf<DeEnchantmentWrapper, Int>()
-        en2.forEach { (k, v) ->
-            if (k !is DeEnchantmentWrapper) return@forEach
-            deEns[k] = v
-        }
 //        //第二个没有附魔跳过
-        if (deEns.isEmpty()) {
+        if (en2.isEmpty()) {
             //修复物品判断
             val result = event.result ?: return
             //修复物品附魔
@@ -72,8 +67,9 @@ object AnvilListener : Listener {
         //不是附魔书且材质与第一格不同
         if (itemMeta2 !is EnchantmentStorageMeta && item2.type != item1.type) return
         val itemClone = item1.clone()
+        val removes = mutableSetOf<Enchantment>()
         val cost =
-            EnchantTools.addEnchantments(itemClone, deEns, ignoreConflicts)
+            EnchantTools.addEnchantments(itemClone, en2, removes, ignoreConflicts)
         var result = event.result
         val anvilView = event.inventory
         //不能附魔的物品
@@ -89,6 +85,10 @@ object AnvilListener : Listener {
             }
         } else {
             result = result.applyMeta {
+                //删除冲突的
+                for (remove in removes) {
+                    removeEnchant(remove)
+                }
                 itemClone.enchantments.forEach { (t, u) ->
                     if (t !is DeEnchantmentWrapper) return@forEach
                     if (this is EnchantmentStorageMeta)
@@ -99,6 +99,10 @@ object AnvilListener : Listener {
                 EnchantTools.updateLore(this)
                 if (!renameText.isNullOrEmpty()) setDisplayName(renameText)
             }
+        }
+        if (itemMeta1 !is EnchantmentStorageMeta && result.enchantments == item1.enchantments) {
+            event.result = null
+            return
         }
         anvilView.repairCost += cost.coerceAtLeast(1)
         if (anvilView.repairCost >= 40) {

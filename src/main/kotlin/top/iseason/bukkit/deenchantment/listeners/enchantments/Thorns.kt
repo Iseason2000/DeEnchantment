@@ -45,7 +45,7 @@ object Thorns : BaseEnchant(DeEnchantments.DE_thorns) {
                 playerMap.remove(player)
                 return
             }
-            if (player.velocity.length() < 0.1) return
+            if (!player.isSprinting) return
             if (RandomUtils.getDouble() < chance) {
                 submit {
                     player.damage(damage, player)

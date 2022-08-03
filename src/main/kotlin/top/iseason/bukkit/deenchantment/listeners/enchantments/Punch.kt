@@ -18,8 +18,9 @@ object Punch : BaseEnchant(DeEnchantments.DE_punch) {
     fun onEntityDamageByEntityEvent(event: DeEntityProjectileEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
-        val attacker = event.attacker
-        val direction = attacker.velocity.normalize().multiply(-1)
-        event.event.entity.velocity = direction.multiply(level * velocityRate)
+        val attacker = event.projectile
+        val direction = attacker.velocity.normalize()
+        val multiply = direction.multiply(-1 * level * velocityRate)
+        event.event.entity.velocity = multiply
     }
 }

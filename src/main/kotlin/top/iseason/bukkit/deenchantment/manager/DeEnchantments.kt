@@ -86,7 +86,7 @@ object DeEnchantments {
     val DE_thorns: DeEnchantmentWrapper = DeEnchantmentWrapper(DE_THORNS)
         .apply {
             translateName = "§7负荆请罪"
-            description = "§8 - 行走时有概率受伤"
+            description = "§8 - 疾跑时有概率受伤"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 3
 

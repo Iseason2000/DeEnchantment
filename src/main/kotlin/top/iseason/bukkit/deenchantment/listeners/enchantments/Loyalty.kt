@@ -41,6 +41,7 @@ object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
         if (entity !is Trident) return
         val level = entity.item.getDeLevel()
         if (level <= 0) return
+        //判断背叛
         if (RandomUtils.getDouble() > level * chanceRate) return
         for (nearbyEntity in entity.getNearbyEntities(radius, radius, radius)) {
             if (nearbyEntity !is LivingEntity || nearbyEntity == entity.shooter) continue
@@ -48,13 +49,19 @@ object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
             val equipment = nearbyEntity.equipment ?: continue
             val itemInMainHand = equipment.itemInMainHand
             equipment.setItemInMainHand(trident)
+            if (entity.shooter is LivingEntity && entity.shooter !is Player) {
+                (entity.shooter as LivingEntity).equipment?.setItemInMainHand(null)
+            }
             //替换玩家手上物品
             if (!itemInMainHand.type.checkAir() && nearbyEntity is Player && nearbyEntity.gameMode != GameMode.CREATIVE) {
                 nearbyEntity.giveItems(itemInMainHand)
             }
             //设置生物掉落几率
             if (entity !is Player) {
-                equipment.itemInMainHandDropChance = 1.0F
+                try {
+                    equipment.itemInMainHandDropChance = 1.0F
+                } catch (_: Exception) {
+                }
             }
             val shooter = entity.shooter
             if (highlight)
