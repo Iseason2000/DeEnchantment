@@ -105,10 +105,6 @@ public class TemplatePlugin extends JavaPlugin {
                 } catch (ClassNotFoundException e) {
                     return;
                 }
-//                if (SimpleYAMLConfig.class.isAssignableFrom(aClass)) {
-//                    classes.add(aClass);
-//                    return;
-//                }
                 if (KotlinPlugin.class.isAssignableFrom(aClass) && !KotlinPlugin.class.getName().equals(aClass.getName())) {
                     classes.add(aClass);
                 }
@@ -154,6 +150,7 @@ public class TemplatePlugin extends JavaPlugin {
     @Override
     public void onDisable() {
         ktPlugin.onDisable();
+        Bukkit.getScheduler().cancelTasks(this);
     }
 
 }

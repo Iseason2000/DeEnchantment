@@ -40,6 +40,7 @@ object ListenerManager {
             }
             instance.isAccessible = true
             val newInstance = instance.get(null) as BaseEnchant
+            newInstance.load(false)
             if (newInstance.enable) {
                 DeEnchantment.registerListeners(newInstance)
             }

@@ -14,7 +14,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import java.lang.Thread.sleep
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 import java.nio.file.Files
@@ -104,7 +103,6 @@ abstract class SimpleYAMLConfig(
         if (isAutoUpdate)
             ConfigWatcher.fromFile(configPath.absoluteFile)
         configs[configPath.absolutePath] = this
-        loadAsync(false)
     }
 
     fun setUpdate(enable: Boolean) {
@@ -179,7 +177,7 @@ abstract class SimpleYAMLConfig(
         val currentTimeMillis = System.currentTimeMillis()
         if (currentTimeMillis - updateTime < 2000L) return false
         updateTime = currentTimeMillis
-        sleep(300L)
+//        sleep(300L)
         val loadConfiguration = YamlConfiguration.loadConfiguration(configPath)
         val temp = YamlConfiguration()
         val commentMap = mutableMapOf<String, String>()

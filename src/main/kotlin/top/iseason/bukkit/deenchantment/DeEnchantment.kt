@@ -27,6 +27,7 @@ object DeEnchantment : KotlinPlugin() {
     }
 
     override fun onAsyncEnable() {
+        Message.load(false)
         SimpleLogger.prefix = Message.prefix.toColor()
         info("${ChatColor.AQUA}██████╗ ███████╗███████╗███╗   ██╗ ██████╗██╗  ██╗ █████╗ ███╗   ██╗████████╗")
         info("${ChatColor.AQUA}██╔══██╗██╔════╝██╔════╝████╗  ██║██╔════╝██║  ██║██╔══██╗████╗  ██║╚══██╔══╝")
@@ -46,7 +47,6 @@ object DeEnchantment : KotlinPlugin() {
 
     override fun onDisable() {
         Config.onDisable()
-        EquipmentScanner.cancel()
         ConfigWatcher.onDisable()
         CommandBuilder.onDisable()
         info("${ChatColor.GREEN}插件已注销！")

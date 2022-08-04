@@ -3,6 +3,7 @@ package top.iseason.bukkit.bukkittemplate.config
 import org.bukkit.scheduler.BukkitRunnable
 import top.iseason.bukkit.bukkittemplate.TemplatePlugin
 import java.io.File
+import java.lang.Thread.sleep
 import java.nio.file.FileSystems
 import java.nio.file.Path
 import java.nio.file.StandardWatchEventKinds
@@ -20,15 +21,19 @@ class ConfigWatcher private constructor(private val folder: File) : BukkitRunnab
             } catch (e: Exception) {
                 break
             }
-            key.pollEvents().forEach {
-                //监听文件修改
-                if (it.kind() != StandardWatchEventKinds.ENTRY_MODIFY) return@forEach
-                val path = it.context() as Path
+            //监听文件修改
+            event@ for (pollEvent in key.pollEvents()) {
+                if (pollEvent.kind() != StandardWatchEventKinds.ENTRY_MODIFY) continue
+                val path = pollEvent.context() as Path
                 val absolutePath = "${folder}${File.separatorChar}$path"
-                val simpleYAMLConfig = SimpleYAMLConfig.configs[absolutePath] ?: return@forEach
-                if (simpleYAMLConfig.isAutoUpdate)
+                val simpleYAMLConfig = SimpleYAMLConfig.configs[absolutePath] ?: continue
+                if (simpleYAMLConfig.isAutoUpdate) {
+                    sleep(200)
                     simpleYAMLConfig.load()
+                    break@event
+                }
             }
+            service.poll()?.reset()
             key.reset()
         }
     }
