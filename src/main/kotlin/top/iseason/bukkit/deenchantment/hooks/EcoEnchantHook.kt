@@ -20,7 +20,10 @@ object EcoEnchantHook {
             lang = EcoEnchantsPlugin.getInstance().langYml
             info("&a检测到&6 EcoEnchant")
             hasHook = true
-            EnchantmentCache.update()
+            try {
+                EnchantmentCache.update()
+            } catch (_: Exception) {
+            }
         }
     }
 
