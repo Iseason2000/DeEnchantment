@@ -27,7 +27,9 @@ object EcoEnchantHook {
             } catch (_: Exception) {
                 warn("EcoEnchants 兼容异常，将在5秒后尝试重新更新!")
                 submit(async = true, delay = 100) {
+                    warn("尝试兼容 EcoEnchants... ")
                     EnchantmentCache.update()
+                    info("&a已兼容EcoEnchants!")
                 }
             }
         }
