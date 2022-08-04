@@ -23,7 +23,7 @@ fun debug(message: Any?) {
  * 输出警告日志
  */
 fun warn(message: Any?) {
-    TemplatePlugin.getPlugin().logger.warning(message.toString())
+    TemplatePlugin.getPlugin().logger.warning(SimpleLogger.prefix + message.toString())
 }
 
 object SimpleLogger {

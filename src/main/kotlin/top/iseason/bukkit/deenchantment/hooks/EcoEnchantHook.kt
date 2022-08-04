@@ -6,6 +6,8 @@ import com.willfp.ecoenchants.display.EnchantmentCache
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import top.iseason.bukkit.bukkittemplate.debug.info
+import top.iseason.bukkit.bukkittemplate.debug.warn
+import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import java.io.File
 
@@ -23,6 +25,10 @@ object EcoEnchantHook {
             try {
                 EnchantmentCache.update()
             } catch (_: Exception) {
+                warn("EcoEnchants 兼容异常，将在5秒后尝试重新更新!")
+                submit(async = true, delay = 100) {
+                    EnchantmentCache.update()
+                }
             }
         }
     }

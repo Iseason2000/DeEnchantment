@@ -35,10 +35,10 @@ object DeEnchantment : KotlinPlugin() {
         info("${ChatColor.AQUA}██║  ██║██╔══╝  ██╔══╝  ██║╚██╗██║██║     ██╔══██║██╔══██║██║╚██╗██║   ██║   ")
         info("${ChatColor.AQUA}██████╔╝███████╗███████╗██║ ╚████║╚██████╗██║  ██║██║  ██║██║ ╚████║   ██║   ")
         info("${ChatColor.AQUA}╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ")
-        Config.reload()
         TypeParam(DeEnchantmentWrapper::class, { "$it &6不是一个有效的负魔" }) { str ->
             BaseEnchant.enchants.find { it.translateName.noColor() == str }
         }
+        Config.reload()
         mainCommand()
         CommandBuilder.onEnable()
         info("&a插件已启用！作者: &6Iseason &5DeEnchantments v &6${javaPlugin.description.version}")
