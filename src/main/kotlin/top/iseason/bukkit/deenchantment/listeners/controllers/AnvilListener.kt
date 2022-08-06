@@ -29,9 +29,11 @@ object AnvilListener : Listener {
         //其他插件使用铁砧,仅更新lore
         val renameText = event.inventory.renameText
         //可能是要改名
+        var result = event.result
+        val name = result?.itemMeta?.displayName ?: renameText
         if (item2.type.checkAir() && !renameText.isNullOrEmpty()) {
             val clone = item1.itemMeta
-            clone?.setDisplayName(renameText)
+            clone?.setDisplayName(name)
             event.result?.itemMeta = clone
             return
         }
@@ -70,7 +72,6 @@ object AnvilListener : Listener {
         val removes = mutableSetOf<Enchantment>()
         val cost =
             EnchantTools.addEnchantments(itemClone, en2, removes, ignoreConflicts)
-        var result = event.result
         val anvilView = event.inventory
         //不能附魔的物品
         if (item1 == result) {
@@ -81,7 +82,7 @@ object AnvilListener : Listener {
             result = itemClone.applyMeta {
                 if (this !is Repairable) return
                 repairCost += 1
-                if (!renameText.isNullOrEmpty()) setDisplayName(renameText)
+                if (!renameText.isNullOrEmpty()) setDisplayName(name)
             }
         } else {
             result = result.applyMeta {
@@ -97,14 +98,14 @@ object AnvilListener : Listener {
                         addEnchant(t, u, true)
                 }
                 EnchantTools.updateLore(this)
-                if (!renameText.isNullOrEmpty()) setDisplayName(renameText)
+                if (!renameText.isNullOrEmpty()) setDisplayName(name)
             }
         }
         if (itemMeta1 !is EnchantmentStorageMeta && result.enchantments == item1.enchantments) {
             event.result = null
             return
         }
-        anvilView.repairCost += cost.coerceAtLeast(1)
+        anvilView.repairCost += cost
         if (anvilView.repairCost >= 40) {
             if (!Config.tooExpensive && !ignoreConflicts) {
                 event.result = null
