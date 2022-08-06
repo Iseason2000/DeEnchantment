@@ -128,7 +128,6 @@ object EnchantTools {
             }
         } catch (_: Throwable) {
         }
-
     }
 
     fun clearEnchants(itemStack: ItemStack) {
@@ -161,6 +160,8 @@ object EnchantTools {
         val addSet = mutableSetOf<Enchantment>()
         for ((en, level) in enchants) {
             val de = getDeEnchantByEnchant(en) as? DeEnchantmentWrapper ?: continue//剔除非原版附魔
+            //未启用的跳过
+            if (!de.enable) continue
             if (RandomUtils.checkPercentage(de.chance * 100)) {
                 continue
             }
