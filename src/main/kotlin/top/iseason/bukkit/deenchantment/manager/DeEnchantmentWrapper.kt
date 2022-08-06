@@ -18,10 +18,10 @@ class DeEnchantmentWrapper(val enum: DeEnum) : Enchantment(NamespacedKey.minecra
     var myStartLevel: Int = 1
     var myIsTreasure: Boolean = false
     var myIsCursed: Boolean = false
-    var conflicts: Set<DeEnum> = emptySet()
+    var conflicts: Set<String> = emptySet()
 
     fun getEnchantment(): Enchantment {
-        return getByKey(key)!!
+        return getByKey(NamespacedKey.minecraft(key.key.removePrefix("de_")))!!
     }
 
     override fun getMaxLevel(): Int {
@@ -56,11 +56,8 @@ class DeEnchantmentWrapper(val enum: DeEnum) : Enchantment(NamespacedKey.minecra
     }
 
     override fun conflictsWith(other: Enchantment): Boolean {
-        if (other is DeEnchantmentWrapper) {
-            return conflicts.contains(other.enum)
-        }
         val deEnum = getDeEnum(other)
         if (enum == deEnum) return true
-        return conflicts.contains(deEnum)
+        return conflicts.contains(other.key.key)
     }
 }

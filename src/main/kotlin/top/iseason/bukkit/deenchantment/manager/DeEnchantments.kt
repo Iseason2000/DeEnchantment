@@ -19,7 +19,7 @@ object DeEnchantments {
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
             myStartLevel = 1
-            conflicts = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_FIRE_PROTECTION)
+            conflicts = setOf(DE_BLAST_PROTECTION.name, DE_PROJECTILE_PROTECTION.name, DE_FIRE_PROTECTION.name)
         }
 
     //火焰保护
@@ -29,7 +29,7 @@ object DeEnchantments {
             description = "§8 - 受到攻击时有概率着火"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
-            conflicts = setOf(DE_BLAST_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
+            conflicts = setOf(DE_BLAST_PROTECTION.name, DE_PROJECTILE_PROTECTION.name, DE_PROTECTION.name)
 
         }
 
@@ -40,7 +40,7 @@ object DeEnchantments {
             description = "§8 - 受到伤害时有概率爆炸"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
-            conflicts = setOf(DE_FIRE_PROTECTION, DE_PROJECTILE_PROTECTION, DE_PROTECTION)
+            conflicts = setOf(DE_FIRE_PROTECTION.name, DE_PROJECTILE_PROTECTION.name, DE_PROTECTION.name)
 
         }
 
@@ -51,7 +51,7 @@ object DeEnchantments {
             description = "§8 - 吸引附近的弹射物"
             myItemTarget = EnchantmentTarget.ARMOR
             myMaxLevel = 4
-            conflicts = setOf(DE_FIRE_PROTECTION, DE_BLAST_PROTECTION, DE_PROTECTION)
+            conflicts = setOf(DE_FIRE_PROTECTION.name, DE_BLAST_PROTECTION.name, DE_PROTECTION.name)
 
         }
 
@@ -99,7 +99,7 @@ object DeEnchantments {
             description = "§8 - 水下视野减少"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
             myMaxLevel = 3
-            conflicts = setOf(DE_FROST_WALKER)
+            conflicts = setOf(DE_FROST_WALKER.name)
 
         }
 
@@ -110,7 +110,7 @@ object DeEnchantments {
             description = "§8 - 在岩浆上行走"
             myItemTarget = EnchantmentTarget.ARMOR_FEET
             myMaxLevel = 2
-            conflicts = setOf(DE_DEPTH_STRIDER)
+            conflicts = setOf(DE_DEPTH_STRIDER.name)
 
         }
 
@@ -121,7 +121,7 @@ object DeEnchantments {
             description = "§8 - 绑定玩家的灵魂仅允许使用"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
-            conflicts = setOf(DE_VANISHING_CURSE)
+            conflicts = setOf(DE_VANISHING_CURSE.name)
             myIsTreasure = true
         }
 
@@ -132,7 +132,7 @@ object DeEnchantments {
             description = "§8 - 攻击伤害减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 5
-            conflicts = setOf(DE_SMITE, DE_BANE_OF_ARTHROPODS)
+            conflicts = setOf(DE_SMITE.name, DE_BANE_OF_ARTHROPODS.name)
         }
 
     //亡灵杀手
@@ -142,7 +142,7 @@ object DeEnchantments {
             description = "§8 - 对亡灵生物伤害减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 5
-            conflicts = setOf(DE_SHARPNESS, DE_BANE_OF_ARTHROPODS)
+            conflicts = setOf(DE_SHARPNESS.name, DE_BANE_OF_ARTHROPODS.name)
         }
 
     //截肢杀手
@@ -152,7 +152,7 @@ object DeEnchantments {
             description = "§8 - 对截肢生物伤害减少"
             myItemTarget = EnchantmentTarget.WEAPON
             myMaxLevel = 5
-            conflicts = setOf(DE_SHARPNESS, DE_SMITE)
+            conflicts = setOf(DE_SHARPNESS.name, DE_SMITE.name)
         }
 
     //击退
@@ -207,7 +207,7 @@ object DeEnchantments {
             description = "§8 - 挖掘方块不会有掉落物"
             myItemTarget = EnchantmentTarget.TOOL
             myMaxLevel = 1
-            conflicts = setOf(DE_FORTUNE)
+            conflicts = setOf(DE_FORTUNE.name)
         }
 
     // 耐久
@@ -226,7 +226,7 @@ object DeEnchantments {
             description = "§8 - 挖掘方块掉落物有概率消失"
             myItemTarget = EnchantmentTarget.TOOL
             myMaxLevel = 3
-            conflicts = setOf(DE_SILK_TOUCH)
+            conflicts = setOf(DE_SILK_TOUCH.name)
         }
 
     //力量
@@ -263,7 +263,7 @@ object DeEnchantments {
             description = "§8 - 消耗一根箭射出多支箭"
             myItemTarget = EnchantmentTarget.BOW
             myMaxLevel = 2
-            conflicts = setOf(DE_MENDING)
+            conflicts = setOf(DE_MENDING.name)
         }
 
     //海之眷顾
@@ -291,7 +291,7 @@ object DeEnchantments {
             description = "§8 - 三叉戟有概率叛逃他人"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 3
-            conflicts = setOf(DE_RIPTIDE)
+            conflicts = setOf(DE_RIPTIDE.name)
         }
 
     // 穿刺
@@ -310,7 +310,7 @@ object DeEnchantments {
             description = "§8 - 在燃烧时快速移动"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 3
-            conflicts = setOf(DE_LOYALTY, DE_CHANNELING)
+            conflicts = setOf(DE_LOYALTY.name, DE_CHANNELING.name)
         }
 
     // 引雷
@@ -320,7 +320,7 @@ object DeEnchantments {
             description = "§8 - 在雷雨天时会遭天谴"
             myItemTarget = EnchantmentTarget.TRIDENT
             myMaxLevel = 1
-            conflicts = setOf(DE_RIPTIDE)
+            conflicts = setOf(DE_RIPTIDE.name)
         }
 
     // 多重射击
@@ -330,7 +330,7 @@ object DeEnchantments {
             description = "§8 - 连续射出多支箭"
             myItemTarget = EnchantmentTarget.CROSSBOW
             myMaxLevel = 1
-            conflicts = setOf(DE_PIERCING)
+            conflicts = setOf(DE_PIERCING.name)
         }
 
     // 快速装填
@@ -340,7 +340,7 @@ object DeEnchantments {
             description = "§8 - 填充速度减慢"
             myItemTarget = EnchantmentTarget.CROSSBOW
             myMaxLevel = 3
-            conflicts = setOf(DE_PIERCING)
+            conflicts = setOf(DE_PIERCING.name)
         }
 
     //穿透
@@ -350,7 +350,7 @@ object DeEnchantments {
             description = "§8 - 击中生物时反弹"
             myItemTarget = EnchantmentTarget.CROSSBOW
             myMaxLevel = 4
-            conflicts = setOf(DE_MULTISHOT)
+            conflicts = setOf(DE_MULTISHOT.name)
         }
 
     // 经验修补
@@ -369,7 +369,7 @@ object DeEnchantments {
             description = "§8 - 物品将永远陪伴你"
             myItemTarget = EnchantmentTarget.BREAKABLE
             myMaxLevel = 1
-            conflicts = setOf(DE_BINDING_CURSE)
+            conflicts = setOf(DE_BINDING_CURSE.name)
             myIsTreasure = true
         }
 
@@ -440,18 +440,19 @@ object DeEnchantments {
         val keyMap = keyField[null] as HashMap<*, *>
         val nameMap = nameField[null] as HashMap<*, *>
         val totalCount = BaseEnchant.enchants.filter { it.enable }.size
-        BaseEnchant.enchants.forEachIndexed { index, en ->
+        var count = 1
+        BaseEnchant.enchants.forEach { en ->
+            if (!en.enable) return@forEach
             keyMap.remove(en.key)
             nameMap.remove(en.name)
             if (!Config.cleanConsole) {
                 info(
                     "${ChatColor.YELLOW}已注销${ChatColor.GRAY}" +
-                            "(${ChatColor.GOLD}${index + 1}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
+                            "(${ChatColor.GOLD}${count++}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
                             "${ChatColor.GRAY}):${en.translateName}"
                 )
             }
         }
-
         keyField.isAccessible = false
         nameField.isAccessible = false
         info("${ChatColor.YELLOW}负魔注销完毕!")

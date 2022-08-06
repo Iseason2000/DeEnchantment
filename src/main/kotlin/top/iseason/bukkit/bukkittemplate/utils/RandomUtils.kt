@@ -25,7 +25,7 @@ object RandomUtils {
     /**
      * 获取安全的随机整数，范围[start,end] 默认[0,Int.MAX_VALUE)
      */
-    fun getInteger(start: Int = 0, end: Int = Int.MAX_VALUE - 1) = start + SECURE_RANDOM.nextInt(end - start)
+    fun getInteger(start: Int = 0, end: Int = Int.MAX_VALUE - 1) = start + SECURE_RANDOM.nextInt(end - start + 1)
 
     /**
      * 获取安全的随机布尔值

@@ -13,7 +13,6 @@ import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.events.DeEnchantmentEvent
 import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
-import top.iseason.bukkit.deenchantment.manager.DeEnum
 
 abstract class BaseEnchant(
     val enchant: DeEnchantmentWrapper
@@ -45,7 +44,7 @@ abstract class BaseEnchant(
 
     @Comment("", "互相冲突的负魔")
     @Key
-    var conflicts: List<String> = enchant.conflicts.map { it.name }
+    var conflicts: List<String> = enchant.conflicts.toList()
 
     fun checkEnchantment(e: Enchantment) = enchant == e
 
@@ -57,15 +56,9 @@ abstract class BaseEnchant(
         enchant.myMaxLevel = max_level
         try {
             enchant.myItemTarget = EnchantmentTarget.valueOf(target.uppercase())
-            val mutableSetOf = mutableSetOf<DeEnum>()
-            for (conflict in conflicts) {
-                try {
-                    mutableSetOf.add(DeEnum.valueOf(conflict.uppercase()))
-                } catch (e: Exception) {
-                    continue
-                }
-            }
-            enchant.conflicts = mutableSetOf
+            val list = conflicts.map { it.lowercase() }
+            conflicts = list
+            enchant.conflicts = list.toHashSet()
         } catch (_: Exception) {
         }
         EcoEnchantHook.setInfo(this@BaseEnchant)

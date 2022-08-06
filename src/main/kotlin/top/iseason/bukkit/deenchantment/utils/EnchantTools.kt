@@ -48,6 +48,7 @@ object EnchantTools {
                 if (!e2.canEnchantItem(target)) return@forEach
                 for ((e1, _) in enchantments) {
                     //冲突的应该删除
+                    if (e2 == e1) continue
                     if (e2.conflictsWith(e1) || e1.conflictsWith(e2)) {
                         removes.add(e2)
                         return@forEach

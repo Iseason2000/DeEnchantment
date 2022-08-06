@@ -6,6 +6,7 @@ import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.FilePath
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
 import top.iseason.bukkit.bukkittemplate.debug.info
+import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.hooks.SlimeFun4Hook
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Frost_Walker
@@ -73,7 +74,7 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     fun reload() {
         load()
         if (isInit) {
-            onDisable()
+            DeEnchantment.javaPlugin.onDisable()
         }
         ListenerManager.registerListeners()
         isInit = true

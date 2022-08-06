@@ -44,13 +44,79 @@ fun mainCommand() {
                     m.addStoredEnchant(en, level, false)
                     EnchantTools.updateLore(m)
                 }
-                player.giveItems(item)
+                submit {
+                    player.giveItems(item)
+                }
                 onSuccess(
                     Message.command__give.formatBy(
                         player.name,
                         en.translateName.noColor() + " " + level.toRoman()
                     )
                 )
+                true
+            }
+
+        }
+        node(
+            "random",
+            default = PermissionDefault.OP,
+            description = "给予玩家随机负魔,不指定等级则随机，不超最大等级",
+            params = arrayOf(
+                Param("[type]", suggest = listOf("book", "enchant")),
+                Param("[player]", suggestRuntime = ParamSuggestCache.playerParam),
+                Param("<level>", listOf("1", "2", "3", "4", "5"))
+            ),
+            async = true
+        ) {
+            onExecute {
+                val type = getParam<String>(0)
+                if (type !in setOf("book", "enchant")) throw ParmaException("&6不支持的类型,应为: book、enchant")
+                val player = getParam<Player>(1)
+                if (type == "book") {
+                    val enchants = BaseEnchant.enchants.filter { wrapper -> wrapper.enable }
+                    if (enchants.isEmpty()) throw ParmaException("&c没有可用的负魔!")
+                    val random = enchants.random()
+                    val level = getOptionalParam<Int>(2) ?: if (random.maxLevel == 1) 1 else RandomUtils.getInteger(
+                        1,
+                        random.maxLevel
+                    )
+                    val item = ItemStack(Material.ENCHANTED_BOOK).applyMeta {
+                        val m = this as EnchantmentStorageMeta
+                        m.addStoredEnchant(random, level, false)
+                        EnchantTools.updateLore(m)
+                    }
+                    submit {
+                        player.giveItems(item)
+                    }
+                    it.sendColorMessage(
+                        Message.command__random_book.formatBy(
+                            player.name,
+                            random.translateName.noColor() + " " + level.toRoman()
+                        )
+                    )
+                } else {
+                    val itemInMainHand = player.inventory.itemInMainHand
+                    if (itemInMainHand.type.isAir) return@onExecute false
+                    val enchants =
+                        BaseEnchant.enchants.filter { wrapper -> wrapper.enable && wrapper.canEnchantItem(itemInMainHand) }
+                    if (enchants.isEmpty()) throw ParmaException("&c没有可用的负魔!")
+                    val random = enchants.random()
+                    val level = getOptionalParam<Int>(2) ?: if (random.maxLevel == 1) 1 else RandomUtils.getInteger(
+                        1,
+                        random.maxLevel
+                    )
+                    itemInMainHand.applyMeta {
+                        if (this is EnchantmentStorageMeta) addStoredEnchant(random, level, true)
+                        else addEnchant(random, level, true)
+                        EnchantTools.updateLore(this)
+                    }
+                    it.sendColorMessage(
+                        Message.command__random_enchant.formatBy(
+                            player.name,
+                            random.translateName.noColor() + " " + level.toRoman()
+                        )
+                    )
+                }
                 true
             }
 
@@ -113,6 +179,38 @@ fun mainCommand() {
             }
             onSuccess(Message.command__reload_success)
             onFailure(Message.command__reload_failure)
+        }
+        //净化
+        node(
+            "purification",
+            default = PermissionDefault.OP,
+            description = "将玩家手上物品的负魔转为正常的附魔", async = true,
+            params = arrayOf(Param("[player]", suggestRuntime = ParamSuggestCache.playerParam))
+        ) {
+            onExecute {
+                val player = getParam<Player>(0)
+                val itemInMainHand = player.inventory.itemInMainHand
+                if (itemInMainHand.type.isAir) return@onExecute true
+                itemInMainHand.applyMeta {
+                    val itemMeta = this
+                    if (itemMeta is EnchantmentStorageMeta) {
+                        for ((enchant, level) in itemMeta.storedEnchants) {
+                            if (enchant !is DeEnchantmentWrapper) continue
+                            itemMeta.removeStoredEnchant(enchant)
+                            itemMeta.addStoredEnchant(enchant.getEnchantment(), level, true)
+                        }
+                    } else {
+                        for ((enchant, level) in itemMeta.enchants) {
+                            if (enchant !is DeEnchantmentWrapper) continue
+                            itemMeta.removeEnchant(enchant)
+                            itemMeta.addEnchant(enchant.getEnchantment(), level, true)
+                        }
+                    }
+                    EnchantTools.updateLore(itemMeta)
+                }
+                true
+            }
+            onSuccess(Message.command__purification_success)
         }
         //迁移
         node(
