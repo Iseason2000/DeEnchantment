@@ -1,6 +1,7 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.entity.Trident
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.ProjectileHitEvent
@@ -25,6 +26,7 @@ object Channeling : BaseEnchant(DeEnchantments.DE_channeling) {
         if (event.hitEntity == null) return
         if (!entity.world.isThundering) return
         val shooter = entity.shooter as? LivingEntity ?: return
+        if (!checkPermission(shooter as? Player)) return
         val level = entity.item.getDeLevel()
         if (level <= 0) return
         val lightning = if (!isEffect)

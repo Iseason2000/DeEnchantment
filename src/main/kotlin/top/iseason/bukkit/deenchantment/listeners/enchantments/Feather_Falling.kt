@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.potion.PotionEffect
@@ -32,6 +33,7 @@ object Feather_Falling : BaseEnchant(DeEnchantments.DE_feather_falling) {
         val entity = event.entity
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(entity as? Player)) return
         hurtEvent.damage += (hurtEvent.damage * (level * damageRate))
         entity.addPotionEffect(PotionEffect(PotionEffectType.SLOW, level * potionTimeRate, potionLevel * level))
     }

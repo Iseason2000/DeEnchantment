@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -18,6 +19,8 @@ object Protection : BaseEnchant(DeEnchantments.DE_protection) {
     fun onEntityDamageEvent(event: DeEntityHurtEvent) {
         val damageEvent = event.event
         val level = event.getDeLevel()
+        if (level == 0) return
+        if (!checkPermission(event.entity as? Player)) return
         val d = damageEvent.getDamage(EntityDamageEvent.DamageModifier.BASE)
         val damage = d + d * (level * damageRate)
         damageEvent.setDamage(EntityDamageEvent.DamageModifier.BASE, damage)

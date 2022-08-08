@@ -68,6 +68,10 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     @Comment("", "负魔lore的插入位置,设置得足够大以插入在末尾")
     var lorePosition: Int = 0
 
+    @Key
+    @Comment("", "是否开启负魔的权限检查")
+    var enchantsPermission: Boolean = false
+
     private var isInit = false
 
     //重载配置

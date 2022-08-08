@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDeathEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -21,6 +22,7 @@ object Looting : BaseEnchant(DeEnchantments.DE_looting) {
         if (drops.isEmpty()) return
         val level = killer.inventory.itemInMainHand.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(killer as? Player)) return
         if (RandomUtils.getDouble() >= level * chanceRate) return
         drops.clear()
     }

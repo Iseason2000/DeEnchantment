@@ -41,6 +41,7 @@ object Loyalty : BaseEnchant(DeEnchantments.DE_loyalty) {
         if (entity !is Trident) return
         val level = entity.item.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(entity.shooter as? Player)) return
         //判断背叛
         if (RandomUtils.getDouble() > level * chanceRate) return
         for (nearbyEntity in entity.getNearbyEntities(radius, radius, radius)) {

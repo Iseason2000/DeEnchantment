@@ -11,29 +11,35 @@ import java.nio.file.WatchService
 
 class ConfigWatcher private constructor(private val folder: File) : BukkitRunnable() {
     private var isEnable = true
-    private val service: WatchService = FileSystems.getDefault().newWatchService()
+    private var service: WatchService = FileSystems.getDefault().newWatchService()
         .apply { folder.toPath().register(this, StandardWatchEventKinds.ENTRY_MODIFY) }
 
     override fun run() {
+        FileSystems.getDefault().newWatchService()
         while (isEnable) {
             val key = try {
                 service.take()
             } catch (e: Exception) {
+                cancel()
                 break
             }
             //监听文件修改
             event@ for (pollEvent in key.pollEvents()) {
                 if (pollEvent.kind() != StandardWatchEventKinds.ENTRY_MODIFY) continue
                 val path = pollEvent.context() as Path
+                if (!path.toString().endsWith(".yml")) break@event
                 val absolutePath = "${folder}${File.separatorChar}$path"
                 val simpleYAMLConfig = SimpleYAMLConfig.configs[absolutePath] ?: continue
                 if (simpleYAMLConfig.isAutoUpdate) {
                     sleep(200)
                     simpleYAMLConfig.load()
+                    sleep(300)
+                    service.close()
+                    service = FileSystems.getDefault().newWatchService()
+                        .apply { folder.toPath().register(this, StandardWatchEventKinds.ENTRY_MODIFY) }
                     break@event
                 }
             }
-            service.poll()?.reset()
             key.reset()
         }
     }

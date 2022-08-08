@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerFishEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -26,6 +27,7 @@ object Luck_Of_The_Sea : BaseEnchant(DeEnchantments.DE_luck_of_the_sea) {
         if (fishEvent.state != PlayerFishEvent.State.CAUGHT_FISH) return
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.player as? Player)) return
         if (RandomUtils.getDouble() > level * chanceRate) return
         fishEvent.caught?.remove() ?: return
         event.player.sendColorMessage(message)

@@ -19,6 +19,7 @@ object Efficiency : BaseEnchant(DeEnchantments.DE_efficiency) {
     fun onBlockBreakEvent(event: DeBreakBlockEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.player)) return
         if (RandomUtils.getDouble() >= level * rate) return
         event.isCancelled = true
     }

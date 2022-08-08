@@ -50,10 +50,10 @@ object AnvilListener : Listener {
 //        //第二个没有附魔跳过
         if (en2.isEmpty()) {
             //修复物品判断
-            val result = event.result ?: return
+            val result2 = event.result ?: return
             //修复物品附魔
             //补回附魔
-            result.applyMeta {
+            result2.applyMeta {
                 itemMeta1.enchants.forEach { (t, u) ->
                     if (t !is DeEnchantmentWrapper) return@forEach
                     if (this is EnchantmentStorageMeta)

@@ -14,6 +14,8 @@ object Vanishing_Curse : BaseEnchant(DeEnchantments.DE_vanishing_curse) {
     fun onItemDeSpawnEvent(event: ItemDespawnEvent) {
         val level = event.entity.itemStack.getDeLevel()
         if (level <= 0) return
+        val owner = event.entity.owner
+        if (owner != null && !checkPermission(Bukkit.getPlayer(owner))) return
         event.isCancelled = true
     }
 
@@ -23,6 +25,8 @@ object Vanishing_Curse : BaseEnchant(DeEnchantments.DE_vanishing_curse) {
         val itemStack = item.itemStack
         val level = itemStack.getDeLevel()
         if (level <= 0) return
+        val owner = item.owner
+        if (owner != null && !checkPermission(Bukkit.getPlayer(owner))) return
         event.isCancelled = true
         val uuid = item.thrower ?: return
         val thrower = Bukkit.getEntity(uuid) ?: return

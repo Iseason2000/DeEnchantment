@@ -19,6 +19,7 @@ object Aqua_Affinity : BaseEnchant(DeEnchantments.DE_aqua_affinity) {
     fun onBlockDamageEvent(event: BlockBreakEvent) {
         val player = event.player
         if (player.eyeLocation.block.type != Material.WATER) return
+        if (!checkPermission(player)) return
         val level = player.getArmorDeEnchant()
         if (level == 0) return
         if (!RandomUtils.checkPercentage(rate * level)) {

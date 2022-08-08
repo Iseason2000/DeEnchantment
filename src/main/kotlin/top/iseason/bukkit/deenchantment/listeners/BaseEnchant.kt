@@ -1,11 +1,14 @@
 package top.iseason.bukkit.deenchantment.listeners
 
-import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.enchantments.EnchantmentTarget
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.Listener
 import org.bukkit.inventory.ItemStack
+import org.bukkit.permissions.Permission
+import org.bukkit.permissions.PermissionDefault
 import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
@@ -13,10 +16,13 @@ import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.events.DeEnchantmentEvent
 import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
+import top.iseason.bukkit.deenchantment.settings.Config
 
 abstract class BaseEnchant(
     val enchant: DeEnchantmentWrapper
 ) : SimpleYAMLConfig("enchantments/${enchant.name.lowercase()}.yml"), Listener {
+
+    val permission = Permission("deenchantment.enchants.${enchant.name.lowercase()}", PermissionDefault.TRUE)
 
     @Comment("", "是否启用")
     @Key
@@ -48,7 +54,12 @@ abstract class BaseEnchant(
 
     fun checkEnchantment(e: Enchantment) = enchant == e
 
-    override val onLoaded: (FileConfiguration.() -> Unit) = {
+    fun checkPermission(player: Player?): Boolean {
+        if (!Config.enchantsPermission) return true
+        return player?.hasPermission(permission) ?: true
+    }
+
+    override val onLoaded: (ConfigurationSection.() -> Unit) = {
         enchant.enable = enable
         enchant.translateName = translate_name.toColor()
         enchant.description = description.toColor()

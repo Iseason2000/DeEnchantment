@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -35,6 +36,7 @@ object Blast_Protection : BaseEnchant(DeEnchantments.DE_blast_protection) {
         ) return
         val entity = event.entity
         val levelCount = event.getDeEnchantLevel(enchant)
+        if (!checkPermission(entity as? Player)) return
         if (levelCount == 0) return
         if (RandomUtils.getDouble() > levelCount * changce) return
         entity.world.createExplosion(

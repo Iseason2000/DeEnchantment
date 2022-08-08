@@ -2,6 +2,7 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.AbstractArrow
 import org.bukkit.entity.Entity
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.ProjectileHitEvent
 import org.bukkit.projectiles.ProjectileSource
@@ -26,6 +27,7 @@ object Piercing : BaseEnchant(DeEnchantments.DE_piercing) {
     @EventHandler
     fun onDeEntityShootBow(event: DeEntityShootBowEvent) {
         val deLevel = event.getDeLevel()
+        if (!checkPermission(event.entity as? Player)) return
         if (deLevel != 0) {
             projectiles[event.projectile] = deLevel
         }

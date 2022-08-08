@@ -31,6 +31,7 @@ object Thorns : BaseEnchant(DeEnchantments.DE_thorns) {
         playerMap[player]?.cancel()
         playerMap.remove(player)
         if (deLevel == 0) return
+        if (!checkPermission(event.player)) return
         val thornsRunnable = ThornsRunnable(event.player, deLevel)
         submit(period = 10, async = true, task = thornsRunnable)
         playerMap[player] = thornsRunnable

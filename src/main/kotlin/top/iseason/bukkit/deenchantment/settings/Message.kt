@@ -1,6 +1,6 @@
 package top.iseason.bukkit.deenchantment.settings
 
-import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.configuration.ConfigurationSection
 import top.iseason.bukkit.bukkittemplate.config.SimpleYAMLConfig
 import top.iseason.bukkit.bukkittemplate.config.annotations.FilePath
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
@@ -31,7 +31,7 @@ object Message : SimpleYAMLConfig() {
     var command__migrate = "&a迁移完成!"
     var command__migrating = "&6数据迁移中,预计20秒......"
 
-    override val onLoaded: (FileConfiguration.() -> Unit) = {
+    override val onLoaded: (ConfigurationSection.() -> Unit) = {
         SimpleLogger.prefix = prefix.toColor()
         MessageUtils.defaultPrefix = SimpleLogger.prefix
     }

@@ -17,6 +17,7 @@ object UnBreaking : BaseEnchant(DeEnchantments.DE_unbreaking) {
     fun onPlayerItemDamageEvent(event: PlayerItemDamageEvent) {
         val level = event.item.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.player)) return
         event.damage = event.damage + level * damageRate
     }
 }

@@ -1,6 +1,7 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.LivingEntity
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -22,6 +23,7 @@ object Sharpness : BaseEnchant(DeEnchantments.DE_sharpness) {
         if (entity !is LivingEntity) return
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(entity as? Player)) return
         var damage = entityEvent.getDamage(EntityDamageEvent.DamageModifier.BASE) - damageRate * level
         if (damage < 0) damage = 0.0
         entityEvent.setDamage(EntityDamageEvent.DamageModifier.BASE, damage)

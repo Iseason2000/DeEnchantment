@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.entity.Projectile
 import org.bukkit.event.EventHandler
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -25,6 +26,7 @@ object Infinity : BaseEnchant(DeEnchantments.DE_infinity) {
         if (projectile !is Projectile) return
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.entity as? Player)) return
         val entity = event.entity
         val multiShot = MultiShot(entity, level, projectile, angle)
         if (type == 1) multiShot.randomType()

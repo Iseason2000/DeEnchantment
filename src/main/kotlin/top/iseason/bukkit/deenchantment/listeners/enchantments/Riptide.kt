@@ -29,6 +29,7 @@ object Riptide : BaseEnchant(DeEnchantments.DE_riptide) {
         val shooter = trident.shooter as? Player ?: return
         val level = trident.item.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(shooter as? Player)) return
         event.isCancelled = true
         val fireTicks = shooter.fireTicks
         if (fireTicks <= 0) return

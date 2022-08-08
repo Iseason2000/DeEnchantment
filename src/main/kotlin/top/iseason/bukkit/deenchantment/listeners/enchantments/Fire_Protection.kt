@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -26,6 +27,7 @@ object Fire_Protection : BaseEnchant(DeEnchantments.DE_fire_protection) {
         if (hurtEvent.cause == DamageCause.FIRE && hurtEvent.cause == DamageCause.FIRE_TICK) return
         val entity = event.entity
         val level = event.getDeLevel()
+        if (!checkPermission(entity as? Player)) return
         if (level <= 0) return
         if (RandomUtils.getDouble() < level * chanceRate)
             entity.fireTicks = level * fireTimeRate

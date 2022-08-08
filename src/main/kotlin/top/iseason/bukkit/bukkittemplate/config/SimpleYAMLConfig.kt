@@ -1,7 +1,7 @@
 package top.iseason.bukkit.bukkittemplate.config
 
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.MemorySection
-import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
 import top.iseason.bukkit.bukkittemplate.TemplatePlugin
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -24,7 +24,7 @@ import java.util.*
  * 一个简单的支持自动重载的配置类，不建议作为数据储存用
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-abstract class SimpleYAMLConfig(
+open class SimpleYAMLConfig(
     /**
      * 默认配置路径，以.yml结尾，覆盖@FilePath
      */
@@ -38,6 +38,13 @@ abstract class SimpleYAMLConfig(
      */
     var updateNotify: Boolean = true
 ) {
+    constructor(
+        config: ConfigurationSection,
+        isAutoUpdate: Boolean = true,
+        updateNotify: Boolean = true
+    ) : this(null, isAutoUpdate, updateNotify) {
+        this.config = config
+    }
 
     /**
      * 更新时间
@@ -57,7 +64,7 @@ abstract class SimpleYAMLConfig(
     /**
      * 配置对象,修改并不会生效，只能直接修改成员
      */
-    var config: YamlConfiguration = YamlConfiguration.loadConfiguration(configPath)
+    var config: ConfigurationSection = YamlConfiguration.loadConfiguration(configPath)
         private set
 
     private val keys = mutableListOf<ConfigKey>().also { list ->
@@ -189,6 +196,8 @@ abstract class SimpleYAMLConfig(
                 var value = loadConfiguration.get(key.key)
                 if (Map::class.java.isAssignableFrom(key.field.type) && value != null) {
                     value = (value as MemorySection).getValues(false)
+                } else if (Set::class.java.isAssignableFrom(key.field.type) && value != null) {
+                    value = loadConfiguration.getList(key.key)?.toSet()
                 }
                 if (value != null) {
                     //获取修改的键值
@@ -216,7 +225,11 @@ abstract class SimpleYAMLConfig(
             }
             //将数据写入临时配置
             try {
-                temp.set(key.key, key.getValue(this))
+                var value = key.getValue(this)
+                if (value is Set<*>) {
+                    value = value.toList()
+                }
+                temp.set(key.key, value)
             } catch (e: Exception) {
                 debug("setting config $configPath error! key:${key.key}")
             }
@@ -231,8 +244,8 @@ abstract class SimpleYAMLConfig(
         return true
     }
 
-    open val onLoaded: (FileConfiguration.() -> Unit)? = null
-    open val onSaved: (FileConfiguration.() -> Unit)? = null
+    open val onLoaded: (ConfigurationSection.() -> Unit)? = null
+    open val onSaved: (ConfigurationSection.() -> Unit)? = null
 
     /**
      * 转换配置文件的注释

@@ -24,6 +24,7 @@ object Multishot : BaseEnchant(DeEnchantments.DE_multishot) {
         val bowEvent = event.event
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.entity as? Player)) return
         val projectile = event.projectile
         if (projectile !is Projectile) return
         val entity = bowEvent.entity

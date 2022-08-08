@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
@@ -25,6 +26,7 @@ object Quick_Charge : BaseEnchant(DeEnchantments.DE_quick_charge) {
         if (itemMeta.hasChargedProjectiles()) return//有箭取消
         val level = item.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.player as? Player)) return
         val count = chargeMap[item] ?: (level * timeRate) //检查次数，没有赋值
         if (count <= 0) { //次数达到
             chargeMap.remove(item)

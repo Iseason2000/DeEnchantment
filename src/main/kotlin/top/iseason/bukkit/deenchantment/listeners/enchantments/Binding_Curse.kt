@@ -64,6 +64,7 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     fun onItemDamage(event: PlayerItemDamageEvent) {
         val item = event.item
         if (!item.containsEnchantment(enchant)) return
+        if (!checkPermission(event.player)) return
         item.applyMeta {
             val pdc = persistentDataContainer
             val hasBind = pdc.get(EN_BINDING, PersistentDataType.STRING)

@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
@@ -22,6 +23,7 @@ object Fire_Aspect : BaseEnchant(DeEnchantments.DE_fire_aspect) {
     fun onEntityDamageByEntityEvent(event: DeEntityAttackEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.entity as? Player)) return
         if (RandomUtils.getDouble() >= level * chanceRate) return
         event.entity.fireTicks += (level * fireTickRate)
     }

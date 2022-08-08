@@ -1,6 +1,7 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
 import org.bukkit.entity.AbstractArrow
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
@@ -18,6 +19,7 @@ object Power : BaseEnchant(DeEnchantments.DE_power) {
     fun onEntityDamageByEntityEvent(event: DeEntityShootBowEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.entity as? Player)) return
         val projectile = event.projectile
         if (projectile !is AbstractArrow) return
         var percentage = damageRate * level

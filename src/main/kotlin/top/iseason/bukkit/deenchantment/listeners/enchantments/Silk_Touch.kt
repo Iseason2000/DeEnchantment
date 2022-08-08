@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.inventory.BlockInventoryHolder
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -18,6 +19,7 @@ object Silk_Touch : BaseEnchant(DeEnchantments.DE_silk_touch) {
     fun onBlockBreakEvent(event: DeBreakBlockEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.player as? Player)) return
         if (!allowContainer && event.event.block.state is BlockInventoryHolder) return
         event.event.isDropItems = false
     }

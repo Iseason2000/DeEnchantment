@@ -50,6 +50,7 @@ object Swift_Sneak : BaseEnchant(DeEnchantments.DE_swift_sneak) {
         if (deLevel == 0) {
             return
         }
+        if (!checkPermission(event.player)) return
         if (maxSlowLevel != 0) {
             val level = if (maxSlowLevel > 0) min(deLevel * slowLevelRate, maxSlowLevel) else deLevel * slowLevelRate
             val slow = PotionAdder(player, PotionEffectType.SLOW, 220, level)

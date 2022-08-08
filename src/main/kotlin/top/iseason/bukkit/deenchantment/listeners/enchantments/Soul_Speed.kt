@@ -3,7 +3,7 @@ package top.iseason.bukkit.deenchantment.listeners.enchantments
 import org.bukkit.Material
 import org.bukkit.attribute.Attribute
 import org.bukkit.attribute.AttributeModifier
-import org.bukkit.configuration.file.FileConfiguration
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.scheduler.BukkitRunnable
@@ -33,7 +33,7 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
     private val uuid = UUID.fromString("1ff16a9b-3b50-4ed4-b9f6-9e83418e8c1f")
     private val playerMap = HashMap<Player, BukkitRunnable>()
 
-    override val onLoaded: FileConfiguration.() -> Unit
+    override val onLoaded: ConfigurationSection.() -> Unit
         get() = {
             super.onLoaded(this)
             types = blocks.mapNotNull { Material.matchMaterial(it) }.toHashSet()
@@ -48,6 +48,7 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
         if (deLevel == 0) {
             return
         }
+        if (!checkPermission(event.player)) return
         val speedUpper = SpeedUpper(
             player, AttributeModifier(
                 uuid,

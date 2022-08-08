@@ -23,6 +23,7 @@ object Depth_Strider : BaseEnchant(DeEnchantments.DE_depth_strider) {
 
     @EventHandler(ignoreCancelled = true)
     fun onEquipmentChange(event: DePlayerEquipmentChangeEvent) {
+        if (!checkPermission(event.player)) return
         val deEnchantLevel = event.getDeEnchantLevel(enchant)
         val uniqueId = event.player.uniqueId
         if (deEnchantLevel > 0) {

@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkit.bukkittemplate.config.annotations.Key
@@ -18,6 +19,7 @@ object KnockBack : BaseEnchant(DeEnchantments.DE_knockback) {
         val entity = event.entity
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.entity as? Player)) return
         val direction = entity.location.direction.normalize().multiply(-1)
         entity.velocity = entity.velocity.add(direction.multiply(level * knockBackRate))
     }

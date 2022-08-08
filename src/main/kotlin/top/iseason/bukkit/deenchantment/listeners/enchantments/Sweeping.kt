@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -20,6 +21,7 @@ object Sweeping : BaseEnchant(DeEnchantments.DE_sweeping) {
         if (entityEvent.cause != EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK) return
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.entity as? Player)) return
         val v1 = entityEvent.entity.location.toVector()
         val v2 = event.entity.location.toVector()
         entityEvent.entity.velocity = v2.subtract(v1).normalize().multiply(level * powerRate)

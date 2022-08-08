@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -18,6 +19,7 @@ object Punch : BaseEnchant(DeEnchantments.DE_punch) {
     fun onEntityDamageByEntityEvent(event: DeEntityProjectileEvent) {
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.attacker as? Player)) return
         val attacker = event.projectile
         val direction = attacker.velocity.normalize()
         val multiply = direction.multiply(-1 * level * velocityRate)

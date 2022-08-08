@@ -29,6 +29,7 @@ object Fortune : BaseEnchant(DeEnchantments.DE_fortune) {
         val item = player.equipment?.itemInMainHand ?: return
         val level = item.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(player)) return
         for (i in items.size - 1 downTo 0) {
             if (RandomUtils.getDouble() > level * chanceRate) continue
             items.removeAt(i)

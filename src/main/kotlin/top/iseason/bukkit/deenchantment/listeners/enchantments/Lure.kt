@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.listeners.enchantments
 
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerFishEvent
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -20,6 +21,7 @@ object Lure : BaseEnchant(DeEnchantments.DE_lure) {
         if (fishEvent.state != PlayerFishEvent.State.FISHING) return
         val level = event.getDeLevel()
         if (level <= 0) return
+        if (!checkPermission(event.player as? Player)) return
         val hook = fishEvent.hook
         hook.maxWaitTime = (hook.maxWaitTime * (waitTimeRate * level + 1)).toInt()
         hook.minWaitTime = (hook.minWaitTime * (waitTimeRate * level + 1)).toInt()

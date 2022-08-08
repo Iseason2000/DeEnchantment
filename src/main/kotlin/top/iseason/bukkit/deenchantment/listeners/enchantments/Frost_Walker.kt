@@ -5,6 +5,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.block.data.Levelled
+import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.block.BlockBreakEvent
@@ -38,6 +39,7 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
 
     @EventHandler(ignoreCancelled = true)
     fun onEquipmentChange(event: DePlayerEquipmentChangeEvent) {
+        if (!checkPermission(event.player as? Player)) return
         val deEnchantLevel = event.getDeLevel()
         val uniqueId = event.player.uniqueId
         if (deEnchantLevel > 0) {

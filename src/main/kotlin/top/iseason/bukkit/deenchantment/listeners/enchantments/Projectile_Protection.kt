@@ -41,6 +41,7 @@ object Projectile_Protection : BaseEnchant(DeEnchantments.DE_projectile_protecti
         if (!playerOnly) return
         val deLevel = event.getDeLevel()
         if (deLevel == 0) return
+        if (!checkPermission(player)) return
         val radius = min(radius * deLevel, maxRadius)
         val projectileCollector = ProjectileCollector(event.player, radius)
         collectors[player] = projectileCollector

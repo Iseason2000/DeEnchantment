@@ -1,5 +1,6 @@
 package top.iseason.bukkit.deenchantment.manager
 
+import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.NamespacedKey
 import org.bukkit.enchantments.Enchantment
@@ -401,10 +402,12 @@ object DeEnchantments {
         acceptingNew.isAccessible = true
         acceptingNew.set(null, true)
         var count = 0
-        val enchants = BaseEnchant.enchants
+        val enchants = BaseEnchant.enchantConfigs
         val totalCount = enchants.filter { it.enable }.size
-        enchants.forEach { deEnchant ->
+        enchants.forEach { enc ->
+            val deEnchant = enc.enchant
             if (!deEnchant.enable) return@forEach
+            Bukkit.getPluginManager().addPermission(enc.permission)
             Enchantment.registerEnchantment(deEnchant)
             count++
             if (!Config.cleanConsole) {
@@ -441,15 +444,17 @@ object DeEnchantments {
         val nameMap = nameField[null] as HashMap<*, *>
         val totalCount = BaseEnchant.enchants.filter { it.enable }.size
         var count = 1
-        BaseEnchant.enchants.forEach { en ->
-            if (!en.enable) return@forEach
-            keyMap.remove(en.key)
-            nameMap.remove(en.name)
+        BaseEnchant.enchantConfigs.forEach { en ->
+            val enchant = en.enchant
+            Bukkit.getPluginManager().removePermission(en.permission)
+            if (!enchant.enable) return@forEach
+            keyMap.remove(enchant.key)
+            nameMap.remove(enchant.name)
             if (!Config.cleanConsole) {
                 info(
                     "${ChatColor.YELLOW}已注销${ChatColor.GRAY}" +
                             "(${ChatColor.GOLD}${count++}${ChatColor.GREEN}/${ChatColor.AQUA}$totalCount" +
-                            "${ChatColor.GRAY}):${en.translateName}"
+                            "${ChatColor.GRAY}):${enchant.translateName}"
                 )
             }
         }

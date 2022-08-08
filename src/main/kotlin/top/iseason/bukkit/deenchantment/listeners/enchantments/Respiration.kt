@@ -26,6 +26,7 @@ object Respiration : BaseEnchant(DeEnchantments.DE_respiration) {
         if (deLevel == 0) {
             map.remove(event.player)
         } else {
+            if (!checkPermission(event.player)) return
             map[event.player] = deLevel
         }
     }
