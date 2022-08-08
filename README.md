@@ -123,13 +123,17 @@ placeHolder: 玩家
 ## 命令
 
 ~~~ 
+
 命令全部默认OP权限
-deenchantment 缩写 de、den
-/deenchantment give [player] [name] <level>  给予玩家特定负魔书 权限:deenchantment.give
-/deenchantment add [name] <level>  将特定负魔添加到手上的东西上 权限:deenchantment.add
-/deenchantment update  更新手上装备的负魔描述及名称 权限:deenchantment.update
-/deenchantment reload  重新注册负魔 权限:deenchantment.reload
-/deenchantment migrate  将v1版本的旧配置迁移到新版 权限:deenchantment.migrate
+deenchantment 缩写 de、den 权限:deenchantment.
+/deenchantment give [player] [name] <level> 给予玩家特定负魔书 权限:deenchantment.give
+/deenchantment random [type] [player] <level> 给予玩家随机负魔,不指定等级则随机，不超最大等级 权限:deenchantment.random
+/deenchantment add [name] <level> 将特定负魔添加到手上的东西上 权限:deenchantment.add
+/deenchantment update 更新手上装备的负魔描述及名称 权限:deenchantment.update
+/deenchantment reload 重新注册负魔 权限:deenchantment.reload
+/deenchantment purification [player] 将玩家手上物品的负魔转为正常的附魔 权限:deenchantment.purification
+/deenchantment migrate 将v1版本的旧配置迁移到新版 权限:deenchantment.migrate
+
 ~~~
 
 ## 构建插件
