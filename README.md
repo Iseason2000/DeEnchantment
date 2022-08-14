@@ -1,6 +1,23 @@
 # 负魔书
 
-[![CodeFactor](https://www.codefactor.io/repository/github/iseason2000/deenchantment/badge/master)](https://www.codefactor.io/repository/github/iseason2000/deenchantment/overview/master)
+<h4 align="center">☄️ 开源的负魔插件, 使用 Kotlin 语言.</h4>
+<p align="center">
+    <a href="https://www.codefactor.io/repository/github/iseason2000/deenchantment" alt="CodeFactor Score">
+        <img src="https://www.codefactor.io/repository/github/iseason2000/deenchantment/badge"/>
+    </a>
+    <a href="https://www.mcbbs.net/thread-1198268-1-1.html">
+        <img alt="mcbbs" src="https://img.shields.io/badge/mcbbs-deenchantment-brightgreen"/>
+    </a>
+    <a href="https://bstats.org/plugin/bukkit/DeEnchantment/13440" alt="bstats servers">
+        <img src="https://img.shields.io/bstats/servers/13440?color=brightgreen"/>
+    </a>
+    <a href="https://bstats.org/plugin/bukkit/DeEnchantment/13440" alt="bstats players">
+        <img src="https://img.shields.io/bstats/players/13440?color=brightgreen"/>
+    </a>
+    <a href="https://github.com/Iseason2000/DeEnchantment" alt="source code">
+        <img src="https://img.shields.io/badge/source-code-brightgreen"/>
+    </a>
+</p>
 
 > 给原版增加一些对立附魔，有好有坏
 
