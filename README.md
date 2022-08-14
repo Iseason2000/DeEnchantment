@@ -1,5 +1,7 @@
 # 负魔书
 
+> 给原版增加一些对立附魔，有好有坏
+
 <h4 align="center">☄️ 开源的负魔插件, 使用 Kotlin 语言.</h4>
 <p align="center">
     <a href="https://www.codefactor.io/repository/github/iseason2000/deenchantment" alt="CodeFactor Score">
@@ -19,7 +21,6 @@
     </a>
 </p>
 
-> 给原版增加一些对立附魔，有好有坏
 
 V2 重构了80%以上的代码，大部提升性能与功能
 
