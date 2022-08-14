@@ -1,5 +1,7 @@
 # 负魔书
 
+[![CodeFactor](https://www.codefactor.io/repository/github/iseason2000/deenchantment/badge/master)](https://www.codefactor.io/repository/github/iseason2000/deenchantment/overview/master)
+
 > 给原版增加一些对立附魔，有好有坏
 
 V2 重构了80%以上的代码，大部提升性能与功能
