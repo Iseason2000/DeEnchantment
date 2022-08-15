@@ -7,6 +7,15 @@
     <a href="https://www.codefactor.io/repository/github/iseason2000/deenchantment" alt="CodeFactor Score">
         <img src="https://www.codefactor.io/repository/github/iseason2000/deenchantment/badge"/>
     </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Iseason2000_DeEnchantment" alt="source code">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=Iseason2000_DeEnchantment&metric=security_rating"/>
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Iseason2000_DeEnchantment" alt="source code">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=Iseason2000_DeEnchantment&metric=ncloc"/>
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Iseason2000_DeEnchantment" alt="source code">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=Iseason2000_DeEnchantment&metric=sqale_rating"/>
+    </a>
     <a href="https://www.mcbbs.net/thread-1198268-1-1.html">
         <img alt="mcbbs" src="https://img.shields.io/badge/mcbbs-deenchantment-brightgreen"/>
     </a>
@@ -19,6 +28,7 @@
     <a href="https://github.com/Iseason2000/DeEnchantment" alt="source code">
         <img src="https://img.shields.io/badge/source-code-brightgreen"/>
     </a>
+    
 </p>
 
 
