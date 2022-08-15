@@ -4,6 +4,7 @@
 
 <h4 align="center">☄️ 开源的负魔插件, 使用 Kotlin 语言.</h4>
 <p align="center">
+    <a href="https://www.oscs1024.com/project/oscs/Iseason2000/DeEnchantment?ref=badge_small" alt="OSCS Status"><img src="https://www.oscs1024.com/platform/badge/Iseason2000/DeEnchantment.svg?size=small"/></a>
     <a href="https://www.codefactor.io/repository/github/iseason2000/deenchantment" alt="CodeFactor Score">
         <img src="https://www.codefactor.io/repository/github/iseason2000/deenchantment/badge"/>
     </a>
