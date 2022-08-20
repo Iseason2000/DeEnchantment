@@ -2,6 +2,31 @@
 
 > 给原版增加一些对立附魔，有好有坏
 
+<h4 align="center">☄️ 开源的负魔插件, 使用 Kotlin 语言.</h4>
+<p align="center">
+    <a href="https://www.oscs1024.com/project/oscs/Iseason2000/DeEnchantment?ref=badge_small" alt="OSCS Status"><img src="https://www.oscs1024.com/platform/badge/Iseason2000/DeEnchantment.svg?size=small"/></a>
+    <a href="https://www.codefactor.io/repository/github/iseason2000/deenchantment" alt="CodeFactor Score">
+        <img src="https://www.codefactor.io/repository/github/iseason2000/deenchantment/badge"/>
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Iseason2000_DeEnchantment" alt="source code">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=Iseason2000_DeEnchantment&metric=security_rating"/>
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Iseason2000_DeEnchantment" alt="source code">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=Iseason2000_DeEnchantment&metric=ncloc"/>
+    </a>
+    <a href="https://sonarcloud.io/summary/new_code?id=Iseason2000_DeEnchantment" alt="source code">
+        <img src="https://sonarcloud.io/api/project_badges/measure?project=Iseason2000_DeEnchantment&metric=sqale_rating"/>
+    </a>
+    <a href="https://bstats.org/plugin/bukkit/DeEnchantment/13440" alt="bstats servers">
+        <img src="https://img.shields.io/bstats/servers/13440?color=brightgreen"/>
+    </a>
+    <a href="https://bstats.org/plugin/bukkit/DeEnchantment/13440" alt="bstats players">
+        <img src="https://img.shields.io/bstats/players/13440?color=brightgreen"/>
+    </a>
+    
+</p>
+
+
 V2 重构了80%以上的代码，大部提升性能与功能
 
 ## V2特点
