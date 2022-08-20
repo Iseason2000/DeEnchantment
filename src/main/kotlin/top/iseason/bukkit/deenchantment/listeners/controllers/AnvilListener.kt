@@ -30,6 +30,7 @@ object AnvilListener : Listener {
         val renameText = event.inventory.renameText
         //可能是要改名
         var result = event.result
+        if (result?.type?.checkAir() == true) result = null
         val name = result?.itemMeta?.displayName ?: renameText
         if (item2.type.checkAir() && !renameText.isNullOrEmpty()) {
             val clone = item1.itemMeta
@@ -51,6 +52,7 @@ object AnvilListener : Listener {
         if (en2.isEmpty()) {
             //修复物品判断
             val result2 = event.result ?: return
+            if (result2.type.checkAir()) return
             //修复物品附魔
             //补回附魔
             result2.applyMeta {

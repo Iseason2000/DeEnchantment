@@ -49,8 +49,7 @@ public class TemplatePlugin extends JavaPlugin {
                     Field instance = aClass.getDeclaredField("INSTANCE");
                     instance.setAccessible(true);
                     return (KotlinPlugin) instance.get(null);
-                } catch (NoSuchFieldException | IllegalAccessException e) {
-                    throw new RuntimeException(e);
+                } catch (NoSuchFieldException | IllegalAccessException ignored) {
                 }
             }
         }
@@ -106,7 +105,7 @@ public class TemplatePlugin extends JavaPlugin {
                 } catch (ClassNotFoundException e) {
                     return;
                 }
-                if (KotlinPlugin.class.isAssignableFrom(aClass) && !KotlinPlugin.class.getName().equals(aClass.getName())) {
+                if (KotlinPlugin.class.isAssignableFrom(aClass)) {
                     classes.add(aClass);
                 }
             });

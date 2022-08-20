@@ -29,16 +29,20 @@ object EcoEnchantHook {
                 submit(async = true, delay = 100) {
                     warn("尝试兼容 EcoEnchants... ")
                     EnchantmentCache.update()
+                    lang?.save()
                     info("&a已兼容EcoEnchants!")
                 }
+            } finally {
+                lang?.save()
             }
+        } else {
+            plugin = Bukkit.getPluginManager().getPlugin("EcoEnchants") as? JavaPlugin?
         }
     }
 
     fun setInfo(enchant: BaseEnchant) {
         lang?.set("enchantments.${enchant.enchant.key.key}.name", enchant.translate_name)
         lang?.set("enchantments.${enchant.enchant.key.key}.description", enchant.description)
-//        lang?.save()
     }
 
 
