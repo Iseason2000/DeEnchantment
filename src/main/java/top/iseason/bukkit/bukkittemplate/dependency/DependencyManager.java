@@ -1,5 +1,6 @@
 package top.iseason.bukkit.bukkittemplate.dependency;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import top.iseason.bukkit.bukkittemplate.TemplatePlugin;
@@ -46,6 +47,9 @@ public class DependencyManager {
             dd.repositories.add("https://repo.maven.apache.org/maven2/");
         }
         List<String> libraries = libConfigs.getStringList("libraries");
+        if (Bukkit.getPluginManager().getPlugin("EcoEnchants") != null) {
+            libraries.removeIf(it -> it.contains("org.jetbrains.kotlin:kotlin-stdlib-jdk8"));
+        }
         if (libraries != null) {
             dd.dependencies = libraries;
         }

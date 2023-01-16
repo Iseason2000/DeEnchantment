@@ -4,6 +4,7 @@ import org.bukkit.ChatColor
 import org.bukkit.event.HandlerList
 import top.iseason.bukkit.bukkittemplate.debug.info
 import top.iseason.bukkit.deenchantment.DeEnchantment
+import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.listeners.controllers.*
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Aqua_Affinity
@@ -49,7 +50,7 @@ object ListenerManager {
 
     private fun registerControllers() {
         val str = StringBuilder()
-        if (Config.anvil) {
+        if (Config.anvil && !EcoEnchantHook.hasHook) {
             str.append("铁砧、")
             DeEnchantment.registerListeners(AnvilListener)
         }
@@ -78,7 +79,7 @@ object ListenerManager {
             DeEnchantment.registerListeners(EntityDropItemListener)
         }
         if (Config.grindstone) {
-            str.append("砂轮、")
+            str.append("砂轮")
             DeEnchantment.registerListeners(GrindstoneListener)
         }
         info("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")

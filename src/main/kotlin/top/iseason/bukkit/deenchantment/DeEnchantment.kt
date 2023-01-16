@@ -13,6 +13,7 @@ import top.iseason.bukkit.bukkittemplate.utils.noColor
 import top.iseason.bukkit.bukkittemplate.utils.submit
 import top.iseason.bukkit.bukkittemplate.utils.toColor
 import top.iseason.bukkit.deenchantment.command.mainCommand
+import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.runnables.EquipmentScanner
@@ -46,6 +47,7 @@ object DeEnchantment : KotlinPlugin() {
     }
 
     override fun onDisable() {
+        EcoEnchantHook.save()
         Config.onDisable()
         ConfigWatcher.onDisable()
         CommandBuilder.onDisable()

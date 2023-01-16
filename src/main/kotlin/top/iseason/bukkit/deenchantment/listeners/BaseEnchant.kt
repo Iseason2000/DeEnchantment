@@ -112,7 +112,7 @@ abstract class BaseEnchant(
         return count
     }
 
-    fun ItemStack.getDeLevel() = getEnchantmentLevel(enchant)
+    fun ItemStack.getDeLevel() = enchantments[enchant] ?: 0
     fun DeEnchantmentEvent.getDeLevel() = getDeEnchantLevel(enchant)
 
 }

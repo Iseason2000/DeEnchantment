@@ -15,7 +15,6 @@ import org.bukkit.event.inventory.InventoryType.SlotType
 import org.bukkit.event.inventory.PrepareAnvilEvent
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.event.player.PlayerItemDamageEvent
-import org.bukkit.event.player.PlayerRespawnEvent
 import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataType
 import top.iseason.bukkit.bukkittemplate.config.annotations.Comment
@@ -30,7 +29,6 @@ import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
-import java.util.*
 
 object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     @Key
@@ -52,6 +50,10 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
     @Key
     @Comment("", "防止被他人捡起")
     var denyPickup = true
+
+    @Key
+    @Comment("", "死亡不掉落")
+    var keepInventory = true
 
     @Key
     @Comment("", "描述中用于替换玩家名字的占位符")
@@ -194,41 +196,26 @@ object Binding_Curse : BaseEnchant(DeEnchantments.DE_binding_curse) {
         }
     }
 
-    //灵魂绑定
-    private val protectionMap = mutableMapOf<UUID, MutableMap<Int, ItemStack>>()
-
     @EventHandler(priority = EventPriority.LOW)
     fun onPlayerDeathEvent(event: PlayerDeathEvent) {
+        if (event.keepInventory || !keepInventory) return
         val player = event.entity
         val drops = event.drops
         if (drops.isEmpty()) return
-        if (event.keepInventory) return
-        val contents = player.inventory.contents
         //位置不可能重复，故而在前
-        val bindings = mutableMapOf<Int, ItemStack>()
-        for (slot in contents.indices) {
-            val itemStack = contents[slot] ?: continue
-            val enchantments = itemStack.enchantments
-            if (enchantments.isEmpty()) continue
+        val bindings = ArrayList<ItemStack>(drops.size)
+        val iterator = drops.iterator()
+        while (iterator.hasNext()) {
+            val next = iterator.next()
+            val enchantments = next.enchantments
             if (!enchantments.containsKey(DeEnchantments.DE_binding_curse)) continue
-            bindings[slot] = itemStack
+            iterator.remove()
+            bindings.add(next)
         }
         if (bindings.isEmpty()) return
-        protectionMap[player.uniqueId] = bindings
-        event.drops.removeAll(bindings.values.toSet())
-    }
-
-    @EventHandler
-    fun onPlayerRespawnEvent(event: PlayerRespawnEvent) {
-        val player = event.player
-        val uuid = player.uniqueId
-        val bindings = protectionMap[uuid] ?: return
-        val inventory = player.inventory
-        for ((slot, item) in bindings) {
-            if (inventory.getItem(slot) != null) continue//由其他插件设置或者物品不掉落
-            inventory.setItem(slot, item)
+        submit(async = true) {
+            player.giveItems(bindings)
         }
-        protectionMap.remove(uuid)
     }
 
     @EventHandler

@@ -80,6 +80,7 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
         if (isInit) {
             DeEnchantment.javaPlugin.onDisable()
         }
+        EcoEnchantHook.init()
         ListenerManager.registerListeners()
         isInit = true
         try {
@@ -88,7 +89,7 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
             e.printStackTrace()
             info("${ChatColor.RED}附魔注册异常!")
         }
-        EcoEnchantHook.init()
+        EcoEnchantHook.save()
         SlimeFun4Hook.register()
     }
 

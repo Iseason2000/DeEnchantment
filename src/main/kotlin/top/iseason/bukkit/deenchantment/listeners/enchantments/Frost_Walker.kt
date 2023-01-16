@@ -18,6 +18,7 @@ import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.BlockTimer
+import java.lang.Integer.min
 import java.util.*
 import kotlin.math.sqrt
 
@@ -59,7 +60,7 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
         val to = event.to?.clone() ?: return
         //脚下
         to.y = to.y - 1
-        val round = getRound(to, level * radiusRate + 1)
+        val round = getRound(to, min(level * radiusRate + 1, 32))
         for (block in round) {
             if (block.type != Material.LAVA) continue
             if (player.eyeLocation.block.type == Material.LAVA ||

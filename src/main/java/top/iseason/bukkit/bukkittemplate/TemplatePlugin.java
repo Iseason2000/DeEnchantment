@@ -102,7 +102,7 @@ public class TemplatePlugin extends JavaPlugin {
                 Class<?> aClass;
                 try {
                     aClass = Class.forName(name.replace('/', '.').substring(0, name.length() - 6), false, TemplatePlugin.class.getClassLoader());
-                } catch (ClassNotFoundException e) {
+                } catch (Throwable e) {
                     return;
                 }
                 if (KotlinPlugin.class.isAssignableFrom(aClass)) {

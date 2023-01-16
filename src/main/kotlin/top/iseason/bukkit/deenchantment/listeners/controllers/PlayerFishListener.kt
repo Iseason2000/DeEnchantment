@@ -8,9 +8,8 @@ import org.bukkit.event.player.PlayerFishEvent
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
 
 object PlayerFishListener : Listener {
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     fun onPlayerFishEvent(event: PlayerFishEvent) {
-        if (event.isCancelled) return
         if (event.state != PlayerFishEvent.State.CAUGHT_FISH) return
         val caught = event.caught ?: return
         if (caught !is Item) return

@@ -9,9 +9,14 @@ import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 
 object Mending : BaseEnchant(DeEnchantments.DE_mending) {
+
     @Key
     @Comment("", "经验等级乘数")
-    var expRate = 1
+    var expRate = 1.0
+
+    @Key
+    @Comment("", "额外耐久等级乘数")
+    var damageRate = 1.0
 
     @EventHandler
     fun onPlayerItemDamageEvent(event: PlayerItemDamageEvent) {
@@ -20,7 +25,8 @@ object Mending : BaseEnchant(DeEnchantments.DE_mending) {
         if (level <= 0) return
         if (!checkPermission(event.player as? Player)) return
         if (event.damage < 1) return
+        event.damage += (level * damageRate).toInt()
         val player = event.player
-        player.giveExp(level * expRate)
+        player.giveExp((level * expRate).toInt())
     }
 }

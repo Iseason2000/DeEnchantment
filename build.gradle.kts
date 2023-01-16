@@ -65,11 +65,11 @@ dependencies {
 
     implementation("org.bstats:bstats-bukkit:3.0.0")
     compileOnly("org.spigotmc:spigot-api:1.16.5-R0.1-SNAPSHOT")
-    compileOnly("com.willfp:EcoEnchants:8.102.0")
-    compileOnly("com.willfp:eco:6.38.2")
+    compileOnly("com.willfp:eco:6.48.0")
+    compileOnly("com.willfp:libreforge:3.127.2")
+    compileOnly("com.willfp:EcoEnchants:9.15.3")
     compileOnly("com.github.Slimefun:Slimefun4:RC-32")
     compileOnly("io.github.baked-libs:dough-api:1.2.0")
-
 }
 
 
