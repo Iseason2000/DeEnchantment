@@ -48,8 +48,13 @@ object EcoEnchantHook {
     }
 
     fun save() {
-        lang?.save()
-        registerVanillaEnchants(EcoEnchantsPlugin.instance)
+        if (plugin == null) return
+        try {
+            lang?.save()
+            registerVanillaEnchants(EcoEnchantsPlugin.instance)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
     }
 
 }
