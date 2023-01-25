@@ -220,7 +220,7 @@ open class CommandNode(
         }
         submit(async = node.async) {
             try {
-                node.onExecute!!.onExecute((Params(params, node)), sender)
+                node.onExecute!!.accept(Params(params, node), sender)
             } catch (e: ParmaException) {
                 //参数错误的提示
                 if (e.paramAdopter != null) {

@@ -1,7 +1,6 @@
 package top.iseason.bukkittemplate.command
 
 import org.bukkit.command.CommandSender
+import java.util.function.BiConsumer
 
-interface CommandNodeExecutor {
-    fun onExecute(params: Params, sender: CommandSender)
-}
+fun interface CommandNodeExecutor : BiConsumer<Params, CommandSender>

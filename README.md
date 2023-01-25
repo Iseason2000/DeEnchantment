@@ -23,7 +23,7 @@
     <a href="https://bstats.org/plugin/bukkit/DeEnchantment/13440" alt="bstats players">
         <img src="https://img.shields.io/bstats/players/13440?color=brightgreen"/>
     </a>
-    
+
 </p>
 
 
@@ -163,6 +163,10 @@ deenchantment 缩写 de、den 权限:deenchantment.
 
 ## 构建插件
 
-./gradlew buildplugin
+./gradlew build
+
+或
+
+./gradlew.bat build
 
 ![](https://bstats.org/signatures/bukkit/DeEnchantment.svg)

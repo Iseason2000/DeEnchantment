@@ -1,6 +1,5 @@
 package top.iseason.bukkit.deenchantment.command
 
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.permissions.PermissionDefault
@@ -8,7 +7,10 @@ import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.settings.Message
 import top.iseason.bukkit.deenchantment.utils.EnchantTools
-import top.iseason.bukkittemplate.command.*
+import top.iseason.bukkittemplate.command.CommandNode
+import top.iseason.bukkittemplate.command.CommandNodeExecutor
+import top.iseason.bukkittemplate.command.Param
+import top.iseason.bukkittemplate.command.ParmaException
 import top.iseason.bukkittemplate.utils.bukkit.ItemUtils.applyMeta
 import top.iseason.bukkittemplate.utils.bukkit.ItemUtils.checkAir
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.formatBy
@@ -29,19 +31,17 @@ object AddCommand : CommandNode(
     isPlayerOnly = true,
     async = true
 ) {
-    override var onExecute: CommandNodeExecutor? = object : CommandNodeExecutor {
-        override fun onExecute(params: Params, sender: CommandSender) {
-            val player = sender as Player
-            val en = params.next<DeEnchantmentWrapper>()
-            val level = params.nextOrNull<Int>() ?: 1
-            val itemInMainHand = player.inventory.itemInMainHand
-            if (itemInMainHand.checkAir()) throw ParmaException(Message.command__add_hand)
-            itemInMainHand.applyMeta {
-                if (this is EnchantmentStorageMeta) addStoredEnchant(en, level, true)
-                else addEnchant(en, level, true)
-                EnchantTools.updateLore(this)
-            }
-            sender.sendColorMessage(Message.command__add.formatBy(en.translateName.noColor() + " " + level.toRoman()))
+    override var onExecute: CommandNodeExecutor? = CommandNodeExecutor { params, sender ->
+        val player = sender as Player
+        val en = params.next<DeEnchantmentWrapper>()
+        val level = params.nextOrNull<Int>() ?: 1
+        val itemInMainHand = player.inventory.itemInMainHand
+        if (itemInMainHand.checkAir()) throw ParmaException(Message.command__add_hand)
+        itemInMainHand.applyMeta {
+            if (this is EnchantmentStorageMeta) addStoredEnchant(en, level, true)
+            else addEnchant(en, level, true)
+            EnchantTools.updateLore(this)
         }
+        sender.sendColorMessage(Message.command__add.formatBy(en.translateName.noColor() + " " + level.toRoman()))
     }
 }
