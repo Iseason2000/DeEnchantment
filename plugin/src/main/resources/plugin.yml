@@ -1,0 +1,27 @@
+name: ${name}
+main: ${main}
+version: ${version}
+authors: [ ${ author } ]
+api-version: 1.13
+softdepend:
+  - EcoEnchants
+  - Slimefun
+  - PlaceHolderAPI
+runtime-libraries:
+  # If not defined, it will be 'libraries'
+  # when start with @Plugin: will start with plugin data folder
+  libraries-folder: 'libraries'
+  repositories:
+    - https://maven.aliyun.com/repository/public/
+    - https://repo.maven.apache.org/maven2/
+
+  libraries:
+    - org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}
+#    - org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}
+#    - org.jetbrains.exposed:exposed-core:${exposedVersion}
+#    - org.jetbrains.exposed:exposed-dao:${exposedVersion}
+#    - org.jetbrains.exposed:exposed-jdbc:${exposedVersion}
+#    - org.jetbrains.exposed:exposed-java-time:${exposedVersion}
+#    - com.zaxxer:HikariCP:4.0.3
+
+
