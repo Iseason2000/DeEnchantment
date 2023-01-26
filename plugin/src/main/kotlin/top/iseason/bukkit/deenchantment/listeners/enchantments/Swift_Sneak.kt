@@ -39,37 +39,39 @@ object Swift_Sneak : BaseEnchant(DeEnchantments.DE_swift_sneak) {
         val player = event.player
         val potion1 = slows[player]
         val potion2 = resistances[player]
-        if (potion1 != null || potion2 != null) {
+        val noEnchant = deLevel == 0 || !checkPermission(event.player)
+        //取消滞留负魔
+        if (potion1 != null && (noEnchant || maxSlowLevel == 0)) {
             submit {
-                potion1?.cancel()
-                potion2?.cancel()
+                potion1.cancel()
             }
             slows.remove(player)
+        }
+        if (potion2 != null && (noEnchant || maxResistanceLevel == 0)) {
+            submit {
+                potion2.cancel()
+            }
             resistances.remove(player)
         }
-        if (deLevel == 0) {
-            return
-        }
-        if (!checkPermission(event.player)) return
+        if (noEnchant) return
         if (maxSlowLevel != 0) {
             val level = if (maxSlowLevel > 0) min(deLevel * slowLevelRate, maxSlowLevel) else deLevel * slowLevelRate
-            val slow = PotionAdder(player, PotionEffectType.SLOW, 220, level)
-            submit(period = 200, task = slow)
-            slows[player] = slow
+            slows.computeIfAbsent(player) {
+                PotionAdder(player, PotionEffectType.SLOW, 220, level).also {
+                    submit(period = 200, task = it)
+                }
+            }.level = level
         }
         if (maxResistanceLevel != 0) {
             val level = if (maxResistanceLevel > 0) min(
                 deLevel * resistanceLevelRate,
                 maxResistanceLevel
             ) else deLevel * resistanceLevelRate
-            val resistance = PotionAdder(
-                player,
-                PotionEffectType.DAMAGE_RESISTANCE,
-                220,
-                level
-            )
-            submit(period = 200, task = resistance)
-            resistances[player] = resistance
+            resistances.computeIfAbsent(player) {
+                PotionAdder(player, PotionEffectType.DAMAGE_RESISTANCE, 220, level).also {
+                    submit(period = 200, task = it)
+                }
+            }.level = level
         }
     }
 }

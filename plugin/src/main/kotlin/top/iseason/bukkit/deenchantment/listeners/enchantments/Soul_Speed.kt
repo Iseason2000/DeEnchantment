@@ -31,7 +31,7 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
 
     private var types = HashSet<Material>()
     private val uuid = UUID.fromString("1ff16a9b-3b50-4ed4-b9f6-9e83418e8c1f")
-    private val playerMap = HashMap<Player, BukkitRunnable>()
+    private val playerMap = HashMap<Player, SpeedUpper>()
 
     override fun onLoaded(section: ConfigurationSection) {
         super.onLoaded(section)
@@ -42,28 +42,31 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
     fun onDePlayerEquipmentChange(event: DePlayerEquipmentChangeEvent) {
         val player = event.player
         val deLevel = event.getDeLevel()
-        playerMap[player]?.cancel()
-        playerMap.remove(player)
-        if (deLevel == 0) {
+        if (deLevel == 0 || !checkPermission(event.player)) {
+            val speedUpper = playerMap[player] ?: return
+            speedUpper.cancel()
+            playerMap.remove(player)
             return
         }
-        if (!checkPermission(event.player)) return
-        val speedUpper = SpeedUpper(
-            player, AttributeModifier(
-                uuid,
-                "De_Soul_Speed",
-                deLevel * speedRate,
-                AttributeModifier.Operation.ADD_SCALAR
-            )
+        val attributeModifier = AttributeModifier(
+            uuid,
+            "De_Soul_Speed",
+            deLevel * speedRate,
+            AttributeModifier.Operation.ADD_SCALAR
         )
-        playerMap[player] = speedUpper
-        submit(period = period, async = true, task = speedUpper)
+        val speedUpper = playerMap.computeIfAbsent(player) {
+            SpeedUpper(player, attributeModifier).also { runnable ->
+                submit(period = period, async = true, task = runnable)
+            }
+        }
+        speedUpper.setModifier(attributeModifier)
     }
 
-    class SpeedUpper(val player: Player, private val modifier: AttributeModifier) : BukkitRunnable() {
-        private val attribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!
+    private class SpeedUpper(val player: Player, private var modifier: AttributeModifier) : BukkitRunnable() {
+        private var attribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED)!!
         private var hasSpeed = false
         override fun cancel() {
+            if (isCancelled) return
             super.cancel()
             attribute.removeModifier(modifier)
         }
@@ -78,7 +81,6 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
             val type = location.block.type
             //忽略空气的影响
             if (type.checkAir()) return
-            val attribute = player.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED) ?: return
             if (types.contains(type)) {
                 if (hasSpeed) return
                 hasSpeed = true
@@ -88,6 +90,12 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
                 hasSpeed = false
                 attribute.removeModifier(modifier)
             }
+        }
+
+        fun setModifier(modifier: AttributeModifier) {
+            attribute.removeModifier(this.modifier)
+            this.modifier = modifier
+            attribute.addModifier(modifier)
         }
     }
 

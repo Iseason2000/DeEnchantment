@@ -22,24 +22,29 @@ object Thorns : BaseEnchant(DeEnchantments.DE_thorns) {
     var damageRate = 0.5
 
 
-    private val playerMap = HashMap<Player, BukkitRunnable>()
+    private val playerMap = HashMap<Player, ThornsRunnable>()
 
     @EventHandler(ignoreCancelled = true)
     fun onDePlayerEquipmentChange(event: DePlayerEquipmentChangeEvent) {
         val deLevel = event.getDeLevel()
         val player = event.player
-        playerMap[player]?.cancel()
-        playerMap.remove(player)
-        if (deLevel == 0) return
-        if (!checkPermission(event.player)) return
-        val thornsRunnable = ThornsRunnable(event.player, deLevel)
-        submit(period = 10, async = true, task = thornsRunnable)
-        playerMap[player] = thornsRunnable
+        if (deLevel == 0 || !checkPermission(event.player)) {
+            val thornsRunnable = playerMap[player] ?: return
+            playerMap.remove(player)
+            thornsRunnable.cancel()
+            return
+        }
+        val runnable = playerMap.computeIfAbsent(player) {
+            ThornsRunnable(event.player, deLevel).also { runnable ->
+                submit(period = 10, async = true, task = runnable)
+            }
+        }
+        runnable.setLevel(deLevel)
     }
 
-    class ThornsRunnable(val player: Player, level: Int) : BukkitRunnable() {
-        private val chance = chanceRate * level
-        private val damage = damageRate * level
+    private class ThornsRunnable(val player: Player, level: Int) : BukkitRunnable() {
+        private var chance = chanceRate * level
+        private var damage = damageRate * level
         override fun run() {
             if (!player.isOnline) {
                 cancel()
@@ -54,5 +59,14 @@ object Thorns : BaseEnchant(DeEnchantments.DE_thorns) {
             }
         }
 
+        fun setLevel(level: Int) {
+            chance = chanceRate * level
+            damage = damageRate * level
+        }
+
+        override fun cancel() {
+            if (isCancelled) return
+            super.cancel()
+        }
     }
 }
