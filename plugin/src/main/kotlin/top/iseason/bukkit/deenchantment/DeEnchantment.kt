@@ -37,7 +37,7 @@ object DeEnchantment : KotlinPlugin() {
         info("${ChatColor.AQUA}╚═════╝ ╚══════╝╚══════╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝   ╚═╝   ")
         ParamAdopter(DeEnchantmentWrapper::class, "%s &6不是一个有效的负魔") { str ->
             BaseEnchant.enchants.find { it.translateName.noColor() == str }
-        }
+        }.register()
         Config.reload()
         setupCommands()
         CommandHandler.updateCommands()

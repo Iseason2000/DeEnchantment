@@ -1,7 +1,6 @@
 package top.iseason.bukkit.deenchantment.settings
 
 import org.bukkit.ChatColor
-import top.iseason.bukkit.deenchantment.DeEnchantment
 import top.iseason.bukkit.deenchantment.hooks.EcoEnchantHook
 import top.iseason.bukkit.deenchantment.hooks.SlimeFun4Hook
 import top.iseason.bukkit.deenchantment.listeners.enchantments.Frost_Walker
@@ -15,7 +14,7 @@ import top.iseason.bukkittemplate.config.annotations.Key
 import top.iseason.bukkittemplate.debug.info
 
 @FilePath("config.yml")
-object Config : SimpleYAMLConfig(isAutoUpdate = false) {
+object Config : SimpleYAMLConfig() {
     @Key
     @Comment("", "是否能够在铁砧中使用")
     var anvil: Boolean = true
@@ -71,18 +70,16 @@ object Config : SimpleYAMLConfig(isAutoUpdate = false) {
     @Key
     @Comment("", "是否开启负魔的权限检查")
     var enchantsPermission: Boolean = false
-
     private var isInit = false
 
-    //重载配置
     fun reload() {
-        load()
-        if (isInit) {
-            DeEnchantment.javaPlugin.onDisable()
+        load(false)
+
+        if (!isInit) {
+            onDisable()
         }
         EcoEnchantHook.init()
         ListenerManager.registerListeners()
-        isInit = true
         try {
             DeEnchantments.registerEnchantments()
         } catch (e: Exception) {
