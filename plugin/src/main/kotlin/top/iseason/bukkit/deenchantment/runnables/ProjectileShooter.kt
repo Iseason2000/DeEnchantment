@@ -15,13 +15,14 @@ class ProjectileShooter(
     private val consumeType: Material?
 ) : BukkitRunnable() {
     private val speed = projectile.velocity.clone().length()
+
     override fun run() {
         if (isConsumable && !(entity as Player).takeItem(consumeType!!, 1)) {
-            this.cancel()
+            cancel()
             return
         }
         entity.launchProjectile(projectile.javaClass, entity.location.direction.multiply(speed))
         count--
-        if (count <= 0) this.cancel()
+        if (count <= 0) cancel()
     }
 }

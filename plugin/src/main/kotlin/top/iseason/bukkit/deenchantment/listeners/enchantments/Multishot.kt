@@ -8,9 +8,9 @@ import top.iseason.bukkit.deenchantment.events.DeEntityShootBowEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.ProjectileShooter
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
-import top.iseason.bukkittemplate.utils.other.submit
 
 //连珠
 object Multishot : BaseEnchant(DeEnchantments.DE_multishot) {
@@ -32,9 +32,8 @@ object Multishot : BaseEnchant(DeEnchantments.DE_multishot) {
         var isConsumable = false
         if (entity is Player && entity.gameMode != GameMode.CREATIVE && consumable != null)
             isConsumable = true
-        submit(period, period, task = ProjectileShooter(entity, projectile, level, isConsumable, consumable?.type))
-
+        ProjectileShooter(entity, projectile, level, isConsumable, consumable?.type)
+            .runTaskTimer(BukkitTemplate.getPlugin(), period, period)
     }
-
 
 }
