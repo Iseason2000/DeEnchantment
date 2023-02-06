@@ -22,12 +22,9 @@ import top.iseason.bukkittemplate.utils.other.submit
 object DeEnchantment : KotlinPlugin() {
 
     override fun onEnable() {
+        Message.load(false)
         SimpleYAMLConfig.notifyMessage = "&a配置: &6%s &a已重载!"
         Metrics(javaPlugin, 13440)
-    }
-
-    override fun onAsyncEnable() {
-        Message.load(false)
         SimpleLogger.prefix = Message.prefix.toColor()
         info("${ChatColor.AQUA}██████╗ ███████╗███████╗███╗   ██╗ ██████╗██╗  ██╗ █████╗ ███╗   ██╗████████╗")
         info("${ChatColor.AQUA}██╔══██╗██╔════╝██╔════╝████╗  ██║██╔════╝██║  ██║██╔══██╗████╗  ██║╚══██╔══╝")
