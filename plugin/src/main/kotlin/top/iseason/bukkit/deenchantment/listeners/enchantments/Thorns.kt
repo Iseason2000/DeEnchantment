@@ -6,6 +6,7 @@ import org.bukkit.scheduler.BukkitRunnable
 import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
 import top.iseason.bukkittemplate.utils.other.RandomUtils
@@ -36,7 +37,7 @@ object Thorns : BaseEnchant(DeEnchantments.DE_thorns) {
         }
         val runnable = playerMap.computeIfAbsent(player) {
             ThornsRunnable(event.player, deLevel).also { runnable ->
-                submit(period = 10, async = true, task = runnable)
+                runnable.runTaskTimerAsynchronously(BukkitTemplate.getPlugin(), 0, 10)
             }
         }
         runnable.setLevel(deLevel)

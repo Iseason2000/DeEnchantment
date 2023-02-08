@@ -9,9 +9,9 @@ import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.ProjectileCollector
 import top.iseason.bukkit.deenchantment.runnables.TargetFinder
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
-import top.iseason.bukkittemplate.utils.other.submit
 import kotlin.math.min
 
 //弹射物吸引
@@ -45,7 +45,7 @@ object Projectile_Protection : BaseEnchant(DeEnchantments.DE_projectile_protecti
         val radius = min(radius * deLevel, maxRadius)
         val projectileCollector = ProjectileCollector(event.player, radius)
         collectors[player] = projectileCollector
-        submit(0, period, task = projectileCollector)
+        projectileCollector.runTaskTimer(BukkitTemplate.getPlugin(), 0, period)
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -53,7 +53,7 @@ object Projectile_Protection : BaseEnchant(DeEnchantments.DE_projectile_protecti
         if (playerOnly) return
         //超过128个任务则不会创建，防止卡顿
         if (!TargetFinder.isMaxPool()) {
-            submit(period, period, task = TargetFinder(event.entity))
+            TargetFinder(event.entity).runTaskTimer(BukkitTemplate.getPlugin(), period, period)
         }
     }
 

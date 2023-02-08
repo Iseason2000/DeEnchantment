@@ -10,10 +10,10 @@ import org.bukkit.scheduler.BukkitRunnable
 import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
 import top.iseason.bukkittemplate.utils.bukkit.ItemUtils.checkAir
-import top.iseason.bukkittemplate.utils.other.submit
 import java.util.*
 
 object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
@@ -56,7 +56,7 @@ object Soul_Speed : BaseEnchant(DeEnchantments.DE_soul_speed) {
         )
         val speedUpper = playerMap.computeIfAbsent(player) {
             SpeedUpper(player, attributeModifier).also { runnable ->
-                submit(period = period, async = true, task = runnable)
+                runnable.runTaskTimerAsynchronously(BukkitTemplate.getPlugin(), 0, period)
             }
         }
         speedUpper.setModifier(attributeModifier)

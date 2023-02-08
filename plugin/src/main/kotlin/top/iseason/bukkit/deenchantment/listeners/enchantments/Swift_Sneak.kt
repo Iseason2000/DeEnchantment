@@ -7,6 +7,7 @@ import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.PotionAdder
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
 import top.iseason.bukkittemplate.utils.other.submit
@@ -58,7 +59,7 @@ object Swift_Sneak : BaseEnchant(DeEnchantments.DE_swift_sneak) {
             val level = if (maxSlowLevel > 0) min(deLevel * slowLevelRate, maxSlowLevel) else deLevel * slowLevelRate
             slows.computeIfAbsent(player) {
                 PotionAdder(player, PotionEffectType.SLOW, 220, level).also {
-                    submit(period = 200, task = it)
+                    it.runTaskTimer(BukkitTemplate.getPlugin(), 0, 200)
                 }
             }.level = level
         }
@@ -69,7 +70,7 @@ object Swift_Sneak : BaseEnchant(DeEnchantments.DE_swift_sneak) {
             ) else deLevel * resistanceLevelRate
             resistances.computeIfAbsent(player) {
                 PotionAdder(player, PotionEffectType.DAMAGE_RESISTANCE, 220, level).also {
-                    submit(period = 200, task = it)
+                    it.runTaskTimer(BukkitTemplate.getPlugin(), 0, 200)
                 }
             }.level = level
         }

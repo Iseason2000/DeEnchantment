@@ -17,7 +17,6 @@ import top.iseason.bukkittemplate.debug.SimpleLogger
 import top.iseason.bukkittemplate.debug.info
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.noColor
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.toColor
-import top.iseason.bukkittemplate.utils.other.submit
 
 object DeEnchantment : KotlinPlugin() {
 
@@ -40,7 +39,7 @@ object DeEnchantment : KotlinPlugin() {
         CommandHandler.updateCommands()
         EcoEnchantHook.checkHooked()
         info("&a插件已启用 作者: &6Iseason &5DeEnchantment v &6${javaPlugin.description.version}")
-        submit(period = 10, async = true, task = EquipmentScanner)
+        EquipmentScanner.runTaskTimerAsynchronously(javaPlugin, 0, 10)
     }
 
     override fun onDisable() {

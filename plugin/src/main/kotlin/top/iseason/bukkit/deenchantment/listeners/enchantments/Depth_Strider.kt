@@ -8,9 +8,9 @@ import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.PotionAdder
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
-import top.iseason.bukkittemplate.utils.other.submit
 import java.util.*
 
 //旱鸭子 只能改变视野
@@ -47,7 +47,7 @@ object Depth_Strider : BaseEnchant(DeEnchantments.DE_depth_strider) {
         }
         if (potionAdder != null) return
         potionAdder = PotionAdder(player, PotionEffectType.SLOW, 220, level * rate)
-        submit(period = 200L, task = potionAdder)
+        potionAdder.runTaskTimer(BukkitTemplate.getPlugin(), 0, 200)
         playerMap[uniqueId] = potionAdder
     }
 }

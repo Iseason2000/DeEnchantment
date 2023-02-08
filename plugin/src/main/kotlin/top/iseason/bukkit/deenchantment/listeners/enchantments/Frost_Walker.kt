@@ -15,18 +15,24 @@ import top.iseason.bukkit.deenchantment.events.DePlayerEquipmentChangeEvent
 import top.iseason.bukkit.deenchantment.listeners.BaseEnchant
 import top.iseason.bukkit.deenchantment.manager.DeEnchantments
 import top.iseason.bukkit.deenchantment.runnables.BlockTimer
+import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.Key
-import top.iseason.bukkittemplate.utils.other.submit
 import java.lang.Integer.min
 import java.util.*
 import kotlin.math.sqrt
 
 //熔岩行者
 object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
+
     @Key
     @Comment("", "半径等级乘数，最终半径 = radiusRate * level +1")
     var radiusRate = 1
+
+    @Key
+    @Comment("", "黑曜石存活时间，单位tick")
+    var existTime = 160L
+
     val fakeBlock = HashSet<Block>()
 
     fun clear() {
@@ -68,7 +74,7 @@ object Frost_Walker : BaseEnchant(DeEnchantments.DE_frost_walker) {
             ) continue
             if ((block.blockData as Levelled).level != 0) continue
             fakeBlock.add(block)
-            submit(delay = 160, task = BlockTimer(block))
+            BlockTimer(block).runTaskLater(BukkitTemplate.getPlugin(), existTime)
         }
     }
 
