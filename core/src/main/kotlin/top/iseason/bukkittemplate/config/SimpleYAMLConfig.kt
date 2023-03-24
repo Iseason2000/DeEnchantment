@@ -68,7 +68,7 @@ open class SimpleYAMLConfig(
     private val keys = mutableListOf<ConfigKey>().also { list ->
         //判断是否全为键值
         if (this@SimpleYAMLConfig.javaClass.getAnnotation(Key::class.java) != null) {
-            this.javaClass.declaredFields.forEach {
+            getAllFields().forEach {
 //                if ("INSTANCE" == it.name) return@forEach
                 if (Modifier.isFinal(it.modifiers)) {
                     return@forEach
@@ -217,12 +217,16 @@ open class SimpleYAMLConfig(
             val key = iterator.next()
             //获取并设置注释
             var keyName = key.key
+            //识别@键 SakuraBind start
+            val anotherName = if (keyName.endsWith('@')) keyName.substring(0, keyName.length - 1) else "$keyName@"
+            keyName = if (newConfig.contains(anotherName)) anotherName else keyName
+            // SakuraBind end
             if (isReadOnly) {
                 var value = newConfig.get(keyName)
                 if (Map::class.java.isAssignableFrom(key.field.type) && value != null) {
                     value = (value as MemorySection).getValues(false)
                 } else if (Set::class.java.isAssignableFrom(key.field.type) && value != null) {
-                    value = newConfig.getList(keyName)?.toSet()
+                    value = newConfig.getStringList(keyName).toHashSet()
                 }
                 if (value != null) {
                     //获取修改的键值

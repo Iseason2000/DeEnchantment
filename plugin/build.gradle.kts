@@ -17,14 +17,14 @@ dependencies {
 
     // 本地依赖放在libs文件夹内
     compileOnly(fileTree("libs") { include("*.jar") })
+    implementation("org.bstats:bstats-bukkit:3.0.1")
+    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
     compileOnly("com.willfp:eco:6.48.0")
     compileOnly("com.willfp:libreforge:3.127.2")
     compileOnly("com.willfp:EcoEnchants:9.15.3")
     compileOnly("com.github.Slimefun:Slimefun4:RC-32")
-    compileOnly("io.github.bananapuncher714:nbteditor:7.18.4")
     compileOnly("io.github.baked-libs:dough-api:1.2.0")
-    implementation("org.bstats:bstats-bukkit:3.0.0")
-    compileOnly("org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT")
+
 }
 
 // 插件名称，请在gradle.properties 修改
@@ -52,8 +52,10 @@ val output =
         File(jarOutputFile, "${rootProject.name}-${rootProject.version}-obfuscated.jar")
     else
         File(jarOutputFile, "${rootProject.name}-${rootProject.version}.jar")
+
 tasks {
     shadowJar {
+
         if (isObfuscated) {
             relocate("top.iseason.bukkittemplate.BukkitTemplate", "a")
         }
@@ -71,7 +73,7 @@ tasks {
         filesMatching("plugin.yml") {
             // 删除注释,你可以返回null以删除整行，但是IDEA有bug会报错，故而返回了""
             filter {
-                if (it.trim().startsWith("#")) "" else it
+                if (it.trim().startsWith("#")) null else it
             }
             expand(
                 "main" to if (isObfuscated) "a" else "$groupS.libs.core.BukkitTemplate",
@@ -84,13 +86,6 @@ tasks {
         }
     }
 }
-task<com.github.jengelman.gradle.plugins.shadow.tasks.ConfigureShadowRelocation>("relocateShadowJar") {
-    target = tasks.shadowJar.get()
-    prefix = "$groupS.libs"
-    shadowJar.minimize()
-}
-tasks.shadowJar.get().dependsOn(tasks.getByName("relocateShadowJar"))
-
 tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     group = "minecraft"
     verbose()
@@ -101,9 +96,10 @@ tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     if (shrink != "true") {
         dontshrink()
     }
+    allowaccessmodification() //优化时允许访问并修改有修饰符的类和类的成员
+    dontusemixedcaseclassnames() // 混淆时不要大小写混合
     optimizationpasses(5)
     dontwarn()
-//    dontpreverify()
     //添加运行环境
     val javaHome = System.getProperty("java.home")
     if (JavaVersion.current() < JavaVersion.toVersion(9)) {
@@ -124,18 +120,21 @@ tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     if (isObfuscated) keep(allowObf, "class a {}")
     else keep("class $groupS.libs.core.BukkitTemplate {}")
     keep("class kotlin.Metadata {}")
-    keep(allowObf, "class * implements $groupS.libs.core.KotlinPlugin {*;}")
-    keep(allowObf, "class * extends top.iseason.bukkit.deenchantment.listeners.BaseEnchant {*;}")
+    keep(allowObf, "class $groupS.libs.core.PluginBootStrap {*;}")
+    keep(allowObf, "class * implements $groupS.libs.core.BukkitPlugin {*;}")
     keepclassmembers("class * extends $groupS.libs.core.config.SimpleYAMLConfig {*;}")
     keepclassmembers("class * implements $groupS.libs.core.ui.container.BaseUI {*;}")
     keepclassmembers(allowObf, "class * implements org.bukkit.event.Listener {*;}")
-    keepclassmembers(allowObf, "class $groupS.libs.bstats {}")
     keepclassmembers(allowObf, "class * extends org.bukkit.event.Event {*;}")
     keepclassmembers(allowObf, "class * extends org.jetbrains.exposed.dao.id.IdTable {*;}")
     keepclassmembers(allowObf, "class * extends org.jetbrains.exposed.dao.Entity {*;}")
     keepattributes("Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*")
-//    keepkotlinmetadata()
+    keepclassmembers("enum * {public static **[] values();public static ** valueOf(java.lang.String);}")
+
+    keep(allowObf, "class * extends top.iseason.bukkit.deenchantment.listeners.BaseEnchant {*;}")
+
     repackageclasses()
-    outjars(defaultFile)
+    outjars(output)
 }
+
 fun getProperties(properties: String) = rootProject.properties[properties].toString()

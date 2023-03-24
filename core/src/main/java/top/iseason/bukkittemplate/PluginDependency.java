@@ -1,8 +1,8 @@
-package top.iseason.bukkittemplate.dependency;
+package top.iseason.bukkittemplate;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
-import top.iseason.bukkittemplate.BukkitTemplate;
+import top.iseason.bukkittemplate.dependency.DependencyDownloader;
 
 import java.io.File;
 import java.io.InputStreamReader;

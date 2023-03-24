@@ -913,5 +913,8 @@ object ItemUtils {
      */
     fun Inventory.canAddItem(itemStacks: Collection<ItemStack>): Int = canAddItem(*itemStacks.toTypedArray())
 
-
+    fun ItemStack.getDisplayName(): String? {
+        if (!hasItemMeta() || !itemMeta!!.hasDisplayName()) return null
+        return itemMeta!!.displayName
+    }
 }

@@ -1,4 +1,4 @@
-package top.iseason.bukkittemplate.dependency;
+package top.iseason.bukkittemplate;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

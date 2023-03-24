@@ -6,11 +6,9 @@ plugins {
 buildscript {
     repositories {
         mavenCentral()
-        google()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:4.0.2")
-        classpath("com.guardsquare:proguard-gradle:7.3.1")
+        classpath("com.guardsquare:proguard-gradle:7.3.2")
     }
 }
 subprojects {
@@ -25,9 +23,13 @@ subprojects {
 //    阿里的服务器速度快一点
         maven {
             name = "aliyun"
-            url = uri("https://maven.aliyun.com/repository/public/")
+            url = uri("https://maven.aliyun.com/repository/public")
         }
-        google()
+        maven {
+            name = "aliyun-google"
+            url = uri("https://maven.aliyun.com/repository/google")
+        }
+//        google()
         mavenCentral()
         maven {
             name = "spigot"
@@ -41,26 +43,22 @@ subprojects {
             name = "CodeMC"
             url = uri("https://repo.codemc.org/repository/maven-public")
         }
-        maven {
-            name = "PlaceHolderAPI"
-            url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
-        }
         mavenLocal()
     }
 
     dependencies {
+        val kotlinVersion: String by rootProject
+        compileOnly(platform("org.jetbrains.kotlin:kotlin-bom:$kotlinVersion"))
         //基础库
-        compileOnly(kotlin("stdlib-jdk8"))
+        compileOnly(kotlin("stdlib"))
         // 数据库
         val exposedVersion: String by rootProject
+        implementation("io.github.bananapuncher714:nbteditor:7.18.5")
         compileOnly("org.jetbrains.exposed:exposed-core:$exposedVersion")
         compileOnly("org.jetbrains.exposed:exposed-dao:$exposedVersion")
         compileOnly("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
         compileOnly("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
         compileOnly("com.zaxxer:HikariCP:4.0.3")
-        compileOnly("me.clip:placeholderapi:2.11.2")
-        implementation("io.github.bananapuncher714:nbteditor:7.18.4")
-
     }
 
     tasks {
@@ -70,6 +68,7 @@ subprojects {
             targetCompatibility = "1.8"
         }
     }
+
 }
 
 repositories {
@@ -83,5 +82,5 @@ repositories {
 }
 dependencies {
     //基础库
-    compileOnly(kotlin("stdlib-jdk8"))
+    compileOnly(kotlin("stdlib"))
 }

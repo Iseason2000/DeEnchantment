@@ -36,7 +36,8 @@ object MigrateCommand : CommandNode(
         Config.tooExpensive = config.getBoolean("AllowTooExpensive", true)
         Config.cleanConsole = config.getBoolean("CleanConsole", true)
         Config.save(false)
-        Message.prefix = config.getString("Prefix") ?: Message.prefix
+        Message.system__log_prefix = config.getString("Prefix") ?: Message.system__log_prefix
+        Message.system__msg_prefix = config.getString("Prefix") ?: Message.system__msg_prefix
         Message.saveAsync(false)
         for (enchant in BaseEnchant.enchantConfigs) {
             val key = enchant.enchant.key.key.uppercase()

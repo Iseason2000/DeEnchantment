@@ -58,7 +58,7 @@ object EntityUtils {
      */
     fun PlayerInventory.getHeldItem(): ItemStack? {
         val item = getItem(heldItemSlot)
-        if (item == null || item.type.checkAir()) return null
+        if (item.checkAir()) return null
         return item
     }
 
@@ -123,25 +123,19 @@ object EntityUtils {
      * 统计某种物品的数量
      */
     fun InventoryHolder.countItem(itemStack: ItemStack): Int {
-        var count = 0
-        this.inventory.contents.forEach {
-            if (it == null) return@forEach
-            if (!it.isSimilar(itemStack)) return@forEach
-            count += it.amount
+        return this.inventory.contents.sumOf {
+            if (it != null && it.isSimilar(itemStack)) it.amount
+            else 0
         }
-        return count
     }
 
     /**
      * 统计某种材质的物品的数量
      */
     fun InventoryHolder.countItem(material: Material): Int {
-        var count = 0
-        this.inventory.contents.forEach {
-            if (it == null) return@forEach
-            if (it.type != material) return@forEach
-            count += it.amount
+        return this.inventory.contents.sumOf {
+            if (it != null && it.type == material) it.amount
+            else 0
         }
-        return count
     }
 }

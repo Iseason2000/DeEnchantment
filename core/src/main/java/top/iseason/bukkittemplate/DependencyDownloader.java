@@ -1,9 +1,8 @@
-package top.iseason.bukkittemplate.dependency;
+package top.iseason.bukkittemplate;
 
 import org.bukkit.Bukkit;
 import org.xml.sax.SAXException;
-import top.iseason.bukkittemplate.BukkitTemplate;
-import top.iseason.bukkittemplate.ReflectionUtil;
+import top.iseason.bukkittemplate.dependency.XmlParser;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
@@ -296,6 +295,16 @@ public class DependencyDownloader {
     }
 
     /**
+     * 检查依赖格式是否非法
+     *
+     * @param libraryName
+     * @return
+     */
+    public static boolean checkLibraryIllegal(String libraryName) {
+        return XmlParser.placeHolder.matcher(libraryName).find() || libraryName.contains("[") || libraryName.contains("(");
+    }
+
+    /**
      * 添加仓库地址
      *
      * @param repository 仓库地址，请以 "/" 结尾
@@ -306,16 +315,6 @@ public class DependencyDownloader {
         if (!repository.endsWith("/")) temp = repository + "/";
         repositories.add(temp);
         return this;
-    }
-
-    /**
-     * 检查依赖格式是否非法
-     *
-     * @param libraryName
-     * @return
-     */
-    public static boolean checkLibraryIllegal(String libraryName) {
-        return XmlParser.placeHolder.matcher(libraryName).find() || libraryName.contains("[") || libraryName.contains("(");
     }
 
     /**

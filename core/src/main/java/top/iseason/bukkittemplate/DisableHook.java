@@ -1,12 +1,14 @@
 package top.iseason.bukkittemplate;
 
-import java.util.ArrayList;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * 在插件 onDisable 时自动调用 onDisable() 方法
  */
-public class DisableHook {
-    private static final ArrayList<DisableTask> tasks = new ArrayList<>();
+public final class DisableHook {
+
+    private static final Queue<DisableTask> tasks = new ConcurrentLinkedQueue<>();
 
     /**
      * 运行所有注册的任务，会在插件 onDisable 时自动调用
@@ -15,9 +17,11 @@ public class DisableHook {
         for (DisableTask task : tasks) {
             try {
                 task.onDisable();
-            } catch (Throwable ignored) {
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
+        tasks.clear();
     }
 
     /**

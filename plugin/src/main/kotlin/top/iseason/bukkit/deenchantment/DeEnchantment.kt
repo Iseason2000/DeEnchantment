@@ -9,22 +9,18 @@ import top.iseason.bukkit.deenchantment.manager.DeEnchantmentWrapper
 import top.iseason.bukkit.deenchantment.runnables.EquipmentScanner
 import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.settings.Message
-import top.iseason.bukkittemplate.KotlinPlugin
+import top.iseason.bukkittemplate.BukkitPlugin
 import top.iseason.bukkittemplate.command.CommandHandler
 import top.iseason.bukkittemplate.command.ParamAdopter
 import top.iseason.bukkittemplate.config.SimpleYAMLConfig
-import top.iseason.bukkittemplate.debug.SimpleLogger
 import top.iseason.bukkittemplate.debug.info
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.noColor
-import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.toColor
 
-object DeEnchantment : KotlinPlugin() {
-
+object DeEnchantment : BukkitPlugin {
     override fun onEnable() {
         Message.load(false)
         SimpleYAMLConfig.notifyMessage = "&a配置: &6%s &a已重载!"
         Metrics(javaPlugin, 13440)
-        SimpleLogger.prefix = Message.prefix.toColor()
         info("${ChatColor.AQUA}██████╗ ███████╗███████╗███╗   ██╗ ██████╗██╗  ██╗ █████╗ ███╗   ██╗████████╗")
         info("${ChatColor.AQUA}██╔══██╗██╔════╝██╔════╝████╗  ██║██╔════╝██║  ██║██╔══██╗████╗  ██║╚══██╔══╝")
         info("${ChatColor.AQUA}██║  ██║█████╗  █████╗  ██╔██╗ ██║██║     ███████║███████║██╔██╗ ██║   ██║   ")
