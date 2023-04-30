@@ -38,11 +38,7 @@ public class ClassAppender {
      */
     public synchronized void addIsolatedURL(URL url) {
         if (url == null) return;
-        try {
-            isolatedClassLoader.addURL(url);
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        isolatedClassLoader.addURL(url);
     }
 
     /**
@@ -50,11 +46,7 @@ public class ClassAppender {
      */
     public synchronized void addAssemblyURL(URL url) {
         if (url == null) return;
-        try {
-            assemblyClassLoader.addURL(url);
-        } catch (Throwable e) {
-            throw new RuntimeException(e);
-        }
+        assemblyClassLoader.addURL(url);
     }
 
     /**

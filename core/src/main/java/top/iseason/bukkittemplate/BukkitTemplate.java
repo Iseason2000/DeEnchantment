@@ -29,7 +29,7 @@ public class BukkitTemplate extends JavaPlugin {
     public BukkitTemplate() throws ClassNotFoundException, NoSuchFieldException, RuntimeException {
         plugin = this;
         runtimeManager = PluginYmlRuntime.parsePluginYml();
-        Bukkit.getLogger().info("[" + BukkitTemplate.getPlugin().getName() + "] Loading libraries successfully");
+
         bukkitPlugin = loadInstance();
     }
 

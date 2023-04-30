@@ -1,8 +1,7 @@
 package top.iseason.bukkittemplate.runtime;
 
-import org.bukkit.Bukkit;
+
 import org.xml.sax.SAXException;
-import top.iseason.bukkittemplate.BukkitTemplate;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
@@ -14,6 +13,7 @@ import java.security.MessageDigest;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
@@ -22,9 +22,8 @@ import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
  * <p>依赖下载器 </p>
  * <p>仅支持 group:artifact:version 的格式</p>
  */
-
 public class RuntimeManager {
-
+    public static Logger logger = Logger.getLogger(RuntimeManager.class.getSimpleName());
     /**
      * 被加载到插件Classloader的依赖，默认是加载到 IsolatedClassLoader
      */
@@ -138,7 +137,8 @@ public class RuntimeManager {
             return false;
         }
         if (url.toString().endsWith(".jar"))
-            Bukkit.getLogger().info("Downloading " + url);
+            if (logger != null)
+                logger.info("Downloading " + url);
         try (InputStream is = connection.getInputStream()) {
             Files.copy(is, file.toPath(), REPLACE_EXISTING);
         } catch (Exception e) {
@@ -234,8 +234,8 @@ public class RuntimeManager {
         if (checkLibraryIllegal(dependency)) {
             if (printCache != null)
                 printCache.add(printTree("[F] " + dependency, depth - 1, isLast));
-            else
-                Bukkit.getLogger().info("[" + BukkitTemplate.getPlugin().getName() + "]" + printTree("[F] " + dependency, depth - 1, isLast));
+            else if (logger != null)
+                logger.info(printTree("[F] " + dependency, depth - 1, isLast));
             return true;
         }
         String groupId = split[0];
@@ -290,8 +290,8 @@ public class RuntimeManager {
         }
         if (printCache != null)
             printCache.add(printTree("[" + type + "] " + dependency, depth - 1, isLast));
-        else
-            Bukkit.getLogger().info("[" + BukkitTemplate.getPlugin().getName() + "]" + printTree("[" + type + "] " + dependency, depth - 1, isLast));
+        else if (logger != null)
+            logger.info(printTree("[" + type + "] " + dependency, depth - 1, isLast));
         if (!success || depth == maxDepth) return true;
 
         for (String repository : repositories) {
@@ -313,7 +313,8 @@ public class RuntimeManager {
                     }
                     return true;
                 } catch (ParserConfigurationException | IOException | SAXException e) {
-                    Bukkit.getLogger().warning("Loading file " + pomFile + " error!");
+                    if (logger != null)
+                        logger.warning("Loading file " + pomFile + " error!");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -406,9 +407,11 @@ public class RuntimeManager {
      */
     public boolean downloadAll() {
         if (dependencies.isEmpty()) return true;
-        Bukkit.getLogger().info("[" + BukkitTemplate.getPlugin().getName() + "] Loading libraries...");
-        Bukkit.getLogger().info("Successful Flags: [I]=Loading Isolated [A]=Loading Assembly");
-        Bukkit.getLogger().info("Failure Flags: [E]=Loading Error [N]=NetWork Error [F]=Library Format Error");
+        if (logger != null) {
+            logger.info("Loading libraries...");
+            logger.info("Successful Flags: [I]=Loading Isolated [A]=Loading Assembly");
+            logger.info("Failure Flags: [E]=Loading Error [N]=NetWork Error [F]=Library Format Error");
+        }
         AtomicBoolean failure = new AtomicBoolean(false);
         Stream<Map.Entry<String, Integer>> stream =
                 isParallel ?
@@ -420,12 +423,20 @@ public class RuntimeManager {
                     if (!downloadDependency(entry.getKey(), 1, entry.getValue(), repositories, printList, false)) {
                         failure.set(true);
                     }
-                    for (String s : printList) {
-                        Bukkit.getLogger().info(s);
+                    if (logger != null) {
+                        for (String s : printList) {
+                            logger.info(s);
+                        }
                     }
                 }
         );
-        return !failure.get();
+        boolean isFailure = failure.get();
+        if (logger != null) {
+            if (isFailure)
+                logger.warning("Loading libraries error.");
+            else logger.info("Loading libraries successfully.");
+        }
+        return !isFailure;
     }
 
     /**

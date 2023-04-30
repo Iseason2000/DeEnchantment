@@ -59,6 +59,7 @@ public class PluginYmlRuntime {
             e.printStackTrace();
             throw new RuntimeException("运行环境注入失败!");
         }
+        RuntimeManager.logger = BukkitTemplate.getPlugin().getLogger();
         runtimeManager.downloadAll();
         return runtimeManager;
     }

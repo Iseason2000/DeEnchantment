@@ -3,6 +3,7 @@ package top.iseason.bukkittemplate.runtime;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * 运行环境构造器
@@ -21,6 +22,7 @@ public class RuntimeBuilder {
         private final List<String> assemblyDependencies = new LinkedList<>();
         private final List<String> excludeDependencies = new LinkedList<>();
         private boolean isParallel = false;
+        private Logger logger = Logger.getLogger(RuntimeManager.class.getSimpleName());
 
         /**
          * 设置依赖储存路径
@@ -114,6 +116,14 @@ public class RuntimeBuilder {
         }
 
         /**
+         * 设置 logger null 不记录日志
+         */
+        public Builder logger(Logger logger) {
+            this.logger = logger;
+            return this;
+        }
+
+        /**
          * 构建运行环境并下载依赖
          *
          * @return 运行环境管理者
@@ -127,6 +137,7 @@ public class RuntimeBuilder {
             if (excludeDependencies == null) throw new IllegalArgumentException("excludeDependencies can not be null");
             if (storagePath == null) storagePath = new File("libraries");
             if (repositories.isEmpty()) throw new IllegalArgumentException("classLoader can not be null");
+            RuntimeManager.logger = this.logger;
             ClassAppender classAppender = new ClassAppender(classLoader.getParent());
             RuntimeManager runtimeManager = new RuntimeManager(storagePath, classAppender, repositories, dependencies, assemblyDependencies, isParallel);
             runtimeManager.addExcludes(excludeDependencies);
