@@ -27,7 +27,7 @@ object GiveCommand : CommandNode(
     description = "给予玩家特定负魔书",
     params = listOf(
         Param("[player]", suggestRuntime = ParamSuggestCache.playerParam), Param("[name]") {
-            BaseEnchant.enchants.filter { it.enable }.map { it.translateName.noColor()!! }
+            BaseEnchant.enchants.filter { it.enable }.map { it.translateName.noColor() }
         }, Param("<level>", listOf("1", "2", "3", "4", "5"))
     ),
     async = true

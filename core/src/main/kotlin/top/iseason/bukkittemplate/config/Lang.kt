@@ -14,11 +14,11 @@ open class Lang(
 
     @Comment(
         "",
-        "消息留空将不会显示，使用 '\\n' 或换行符 可以换行",
+        "消息留空将不会显示，使用 换行符 可以换行",
         "支持 & 颜色符号，1.17以上支持16进制颜色代码，如 #66ccff",
         "{0}、{1}、{2}、{3} 等格式为该消息独有的变量占位符",
         "所有消息支持PlaceHolderAPI",
-        "以下是一些特殊消息, 大小写不敏感，可以通过 \\n 自由组合",
+        "以下是一些特殊消息, 大小写不敏感，可以通过 多行 自由组合",
         "以 [Broadcast] 开头将以广播的形式发送，支持BungeeCord",
         "以 [Actionbar] 开头将发送ActionBar消息",
         "以 [Main-Title] 开头将发送大标题消息",
@@ -33,10 +33,10 @@ open class Lang(
     private var system: MemorySection? = null
 
     @Comment("", "消息前缀")
-    var system__msg_prefix = MessageUtils.defaultPrefix
+    private var system__msg_prefix = MessageUtils.defaultPrefix
 
     @Comment("", "控制台消息前缀")
-    var system__log_prefix = MessageUtils.defaultPrefix
+    private var system__log_prefix = MessageUtils.defaultPrefix
 
     @Comment(
         "", "是否使用 MiniMessage 模式, 同时不支持&符号, 第一次开启将会自动下载依赖",

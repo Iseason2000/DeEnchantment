@@ -1,12 +1,13 @@
 package top.iseason.bukkittemplate.config
 
 import org.bukkit.configuration.ConfigurationSection
-import org.bukkit.configuration.MemorySection
 import org.bukkit.configuration.file.YamlConfiguration
 import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.config.annotations.Comment
 import top.iseason.bukkittemplate.config.annotations.FilePath
 import top.iseason.bukkittemplate.config.annotations.Key
+import top.iseason.bukkittemplate.config.type.ConfigType
+import top.iseason.bukkittemplate.config.type.DefaultConfigType
 import top.iseason.bukkittemplate.debug.debug
 import top.iseason.bukkittemplate.debug.info
 import top.iseason.bukkittemplate.debug.warn
@@ -65,58 +66,42 @@ open class SimpleYAMLConfig(
         (config as YamlConfiguration).save(configPath)
     }
 
-    private val keys = mutableListOf<ConfigKey>().also { list ->
-        //判断是否全为键值
-        if (this@SimpleYAMLConfig.javaClass.getAnnotation(Key::class.java) != null) {
-            getAllFields().forEach {
-//                if ("INSTANCE" == it.name) return@forEach
-                if (Modifier.isFinal(it.modifiers)) {
-                    return@forEach
+    private val typeMap = HashMap<Field, ConfigType>()
+
+    /**
+     * 本配置类的所有项
+     */
+    private val keys = buildList {
+        //当前类是否标注了 @Key
+        val isAllKey = this@SimpleYAMLConfig.javaClass.getAnnotation(Key::class.java) != null
+        var superClass: Class<*>? = this@SimpleYAMLConfig::class.java
+        val list = ArrayList<Class<*>>()
+        do {
+            list.add(superClass!!)
+            superClass = superClass.superclass
+        } while (superClass != null && superClass != SimpleYAMLConfig::class.java)
+        for (i in list.size - 1 downTo 0) {
+            inner@ for (field in list[i].declaredFields) {
+                if (Modifier.isFinal(field.modifiers)) {
+                    continue@inner
                 }
-                val comments = mutableListOf<String>()
-                it.getAnnotationsByType(Comment::class.java).forEach { an ->
-                    //注释内容遍历
-                    an.value.forEach { value ->
-                        if (value.isBlank())
+                val keyAnnotation = field.getAnnotation(Key::class.java)
+                val key = keyAnnotation?.key?.ifEmpty { field.name.replace("__", ".").replace('_', '-') }
+                    ?: if (isAllKey) field.name.replace("__", ".").replace('_', '-') else continue@inner
+                val comments = LinkedList<String>()
+                for (comment in field.getAnnotationsByType(Comment::class.java)) {
+                    for (c in comment.value) {
+                        if (c.isBlank())
                             comments.add("")
-                        else if (!value.startsWith("#"))
-                            comments.add("# $value")
+                        else if (!c.startsWith("#"))
+                            comments.add("# $c")
                         else
-                            comments.add(value)
+                            comments.add(c)
                     }
                 }
-                list.add(
-                    ConfigKey(
-                        it.name.replace("__", ".").replace('_', '-'),
-                        it,
-                        if (comments.isEmpty()) null else comments
-                    )
-                )
+                typeMap[field] = DefaultConfigType.matchType(field.type)
+                add(ConfigKey(key, field, if (comments.isEmpty()) null else comments))
             }
-            return@also
-        }
-        getAllFields().forEach {
-            if (Modifier.isFinal(it.modifiers)) {
-                return@forEach
-            }
-            val keyAnnotation = it.getAnnotation(Key::class.java) ?: return@forEach
-            val key = keyAnnotation.key.ifEmpty { it.name.replace("__", ".").replace('_', '-') }
-            val comments = mutableListOf<String>()
-            it.getAnnotationsByType(Comment::class.java).forEach { an ->
-                //注释内容遍历
-                an.value.forEach { value ->
-                    if (value.isBlank())
-                        comments.add("")
-                    else if (!value.startsWith("#"))
-                        comments.add("# $value")
-                    else
-                        comments.add(value)
-                }
-            }
-            it.isAccessible = true
-//            it.isAccessible = true
-//            println(it.get(it))
-            list.add(ConfigKey(key, it, if (comments.isEmpty()) null else comments))
         }
     }
 
@@ -217,21 +202,13 @@ open class SimpleYAMLConfig(
             val key = iterator.next()
             //获取并设置注释
             var keyName = key.key
-            //识别@键 SakuraBind start
-            val anotherName = if (keyName.endsWith('@')) keyName.substring(0, keyName.length - 1) else "$keyName@"
-            keyName = if (newConfig.contains(anotherName)) anotherName else keyName
-            // SakuraBind end
+            val configType = typeMap[key.field]!!
             if (isReadOnly) {
-                var value = newConfig.get(keyName)
-                if (Map::class.java.isAssignableFrom(key.field.type) && value != null) {
-                    value = (value as MemorySection).getValues(false)
-                } else if (Set::class.java.isAssignableFrom(key.field.type) && value != null) {
-                    value = newConfig.getStringList(keyName).toHashSet()
-                }
+                val value = newConfig.get(keyName)
                 if (value != null) {
                     //获取修改的键值
                     try {
-                        key.setValue(this, value)
+                        key.setValue(this, configType.read(value, key.field))
                     } catch (e: Exception) {
                         debug("Loading config $configPath error! key:${keyName} value: $value")
                     }
@@ -258,11 +235,8 @@ open class SimpleYAMLConfig(
             }
             //将数据写入临时配置
             try {
-                var value = key.getValue(this)
-                if (value is Collection<*>) {
-                    value = value.toList()
-                }
-                temp.set(keyName, value)
+                val value = key.getValue(this)
+                temp.set(keyName, if (value == null) null else configType.save(value))
                 if (!temp.contains(keyName)) {
                     temp.createSection(keyName)
                 }

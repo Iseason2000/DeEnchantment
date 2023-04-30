@@ -17,7 +17,6 @@ import org.bukkit.entity.Player
 import top.iseason.bukkittemplate.BukkitTemplate
 import top.iseason.bukkittemplate.DisableHook
 import top.iseason.bukkittemplate.debug.warn
-import top.iseason.bukkittemplate.dependency.DependencyDownloader
 import top.iseason.bukkittemplate.hook.BungeeCordHook
 import top.iseason.bukkittemplate.hook.PlaceHolderHook
 import top.iseason.bukkittemplate.utils.other.submit
@@ -127,14 +126,12 @@ object MessageUtils {
         if (miniMessageSupport) return
         miniMessageSupport = true
         if (miniMessageLoaded) return
-        val dd = DependencyDownloader()
+        val dd = BukkitTemplate.getRuntimeManager()
             .addRepository("https://maven.aliyun.com/repository/public")
             .addRepository("https://repo.maven.apache.org/maven2/")
-        dd.dependencies = mutableMapOf(
-            "net.kyori:adventure-platform-bukkit:4.2.0" to 4,
-            "net.kyori:adventure-text-minimessage:4.12.0" to 1
-        )
-        dd.start(true)
+        dd.addDependency("net.kyori:adventure-platform-bukkit:4.3.0", 4)
+        dd.addDependency("net.kyori:adventure-text-minimessage:4.13.0", 1)
+        dd.downloadAll()
         audiences = BukkitAudiences.create(BukkitTemplate.getPlugin())
         miniMessageLoaded = true
         DisableHook.addTask {
@@ -162,7 +159,7 @@ object MessageUtils {
      * 例子: &a你好、#66ccff 你好、#6cf 你好
      */
     fun String.toColor(): String {
-        if (miniMessageSupport) return this
+//        if (miniMessageSupport) return this
         if (!hexColorSupport) return ChatColor.translateAlternateColorCodes('&', this)
         val matcher: Matcher = HEX_PATTERN.matcher(this)
         // Increase buffer size by 32 like it is in bungee cord api. Use buffer because it is sync.
@@ -226,7 +223,7 @@ object MessageUtils {
      */
     private fun CommandSender.sendMsg(msg: String) {
         if (miniMessageSupport)
-            audiences.sender(this).sendMessage(MiniMessage.miniMessage().deserialize(msg))
+            audiences.sender(this).sendMessage(MiniMessage.miniMessage().deserialize(msg.noColor()))
         else sendMessage(msg)
     }
 

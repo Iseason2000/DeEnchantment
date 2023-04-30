@@ -18,13 +18,12 @@ dependencies {
     // 本地依赖放在libs文件夹内
     compileOnly(fileTree("libs") { include("*.jar") })
     implementation("org.bstats:bstats-bukkit:3.0.1")
-    compileOnly("org.spigotmc:spigot-api:1.19.3-R0.1-SNAPSHOT")
+    compileOnly("org.spigotmc:spigot-api:1.19.4-R0.1-SNAPSHOT")
     compileOnly("com.willfp:eco:6.48.0")
     compileOnly("com.willfp:libreforge:3.127.2")
     compileOnly("com.willfp:EcoEnchants:9.15.3")
     compileOnly("com.github.Slimefun:Slimefun4:RC-32")
     compileOnly("io.github.baked-libs:dough-api:1.2.0")
-
 }
 
 // 插件名称，请在gradle.properties 修改
@@ -41,27 +40,33 @@ val version: String by rootProject
 // shadowJar 版本 ，请在gradle.properties 修改
 val shadowJar: com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar by tasks
 // exposed 数据库框架版本，请在gradle.properties 修改
-
 val exposedVersion: String by rootProject
 val obfuscated: String by rootProject
+val obfuscatedDictionary: String by rootProject
+val obfuscationDictionaryFile: File? = if (obfuscatedDictionary.isEmpty()) null
+else
+    File(obfuscatedDictionary).absoluteFile
+val obfuscatedMainClass =
+    if (obfuscationDictionaryFile?.exists() == true) {
+        obfuscationDictionaryFile.readLines().firstOrNull() ?: "a"
+    } else "a"
 val isObfuscated = obfuscated == "true"
 val shrink: String by rootProject
 val defaultFile = File("../build", "${rootProject.name}-${rootProject.version}.jar")
-val output =
+val output: File =
     if (isObfuscated)
-        File(jarOutputFile, "${rootProject.name}-${rootProject.version}-obfuscated.jar")
+        File(jarOutputFile, "${rootProject.name}-${rootProject.version}-obfuscated.jar").absoluteFile
     else
-        File(jarOutputFile, "${rootProject.name}-${rootProject.version}.jar")
+        File(jarOutputFile, "${rootProject.name}-${rootProject.version}.jar").absoluteFile
 
 tasks {
     shadowJar {
-
         if (isObfuscated) {
-            relocate("top.iseason.bukkittemplate.BukkitTemplate", "a")
+            relocate("top.iseason.bukkittemplate.BukkitTemplate", obfuscatedMainClass)
         }
         relocate("top.iseason.bukkittemplate", "$groupS.libs.core")
         relocate("org.bstats", "$groupS.libs.bstats")
-        relocate("io.github.bananapuncher714.nbteditor", "$groupS.libs.nbteditor")
+//        relocate("io.github.bananapuncher714.nbteditor", "$groupS.libs.nbteditor")
     }
     build {
         dependsOn("buildPlugin")
@@ -76,12 +81,13 @@ tasks {
                 if (it.trim().startsWith("#")) null else it
             }
             expand(
-                "main" to if (isObfuscated) "a" else "$groupS.libs.core.BukkitTemplate",
+                "main" to if (isObfuscated) obfuscatedMainClass else "$groupS.libs.core.BukkitTemplate",
                 "name" to pluginName,
                 "version" to project.version,
                 "author" to author,
                 "kotlinVersion" to getProperties("kotlinVersion"),
-                "exposedVersion" to exposedVersion
+                "exposedVersion" to getProperties("exposedVersion"),
+                "nbtEditorVersion" to getProperties("nbtEditorVersion")
             )
         }
     }
@@ -92,6 +98,10 @@ tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     injars(tasks.named("shadowJar"))
     if (!isObfuscated) {
         dontobfuscate()
+    } else if (obfuscationDictionaryFile?.exists() == true) {
+        //混淆词典
+        classobfuscationdictionary(obfuscationDictionaryFile)
+        obfuscationdictionary(obfuscationDictionaryFile)
     }
     if (shrink != "true") {
         dontshrink()
@@ -117,10 +127,9 @@ tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     //启用混淆的选项
     val allowObf = mapOf("allowobfuscation" to true)
     //class规则
-    if (isObfuscated) keep(allowObf, "class a {}")
+    if (isObfuscated) keep(allowObf, "class $obfuscatedMainClass {}")
     else keep("class $groupS.libs.core.BukkitTemplate {}")
     keep("class kotlin.Metadata {}")
-    keep(allowObf, "class $groupS.libs.core.PluginBootStrap {*;}")
     keep(allowObf, "class * implements $groupS.libs.core.BukkitPlugin {*;}")
     keepclassmembers("class * extends $groupS.libs.core.config.SimpleYAMLConfig {*;}")
     keepclassmembers("class * implements $groupS.libs.core.ui.container.BaseUI {*;}")
@@ -130,9 +139,7 @@ tasks.register<proguard.gradle.ProGuardTask>("buildPlugin") {
     keepclassmembers(allowObf, "class * extends org.jetbrains.exposed.dao.Entity {*;}")
     keepattributes("Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*")
     keepclassmembers("enum * {public static **[] values();public static ** valueOf(java.lang.String);}")
-
     keep(allowObf, "class * extends top.iseason.bukkit.deenchantment.listeners.BaseEnchant {*;}")
-
     repackageclasses()
     outjars(output)
 }

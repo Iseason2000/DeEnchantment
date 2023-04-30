@@ -20,6 +20,10 @@ class CoolDown<T> {
     }
 
     fun remove(key: T) = coolDownMap.remove(key)
+
+    fun getCoolDown(key: T, coolDown: Long) =
+        coolDown - System.currentTimeMillis() + (coolDownMap[key] ?: System.currentTimeMillis())
+
 }
 
 /**
@@ -39,6 +43,10 @@ class WeakCoolDown<T> {
     }
 
     fun remove(key: T) = coolDownMap.remove(key)
+
+    fun getCoolDown(key: T, coolDown: Long) =
+        coolDown - System.currentTimeMillis() + (coolDownMap[key] ?: System.currentTimeMillis())
+
 }
 
 /**
@@ -70,4 +78,8 @@ object EasyCoolDown {
         map[obj] = current
         return false
     }
+
+    fun getCoolDown(key: Any, coolDown: Long) =
+        coolDown - System.currentTimeMillis() + (coolDownMap[key.toString()] ?: System.currentTimeMillis())
+
 }

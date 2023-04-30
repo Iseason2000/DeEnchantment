@@ -11,7 +11,7 @@ import top.iseason.bukkit.deenchantment.listeners.triggers.EntityDeEnchantCaller
 import top.iseason.bukkit.deenchantment.settings.Config
 import top.iseason.bukkit.deenchantment.utils.ClassGetter
 import top.iseason.bukkittemplate.debug.info
-import top.iseason.bukkittemplate.utils.bukkit.EventUtils.register
+import top.iseason.bukkittemplate.utils.bukkit.EventUtils.registerListener
 import java.lang.reflect.Field
 
 object ListenerManager {
@@ -19,7 +19,7 @@ object ListenerManager {
     fun registerListeners() {
         registerControllers()
         registerEnchantments()
-        EntityDeEnchantCaller.register()
+        EntityDeEnchantCaller.registerListener()
     }
 
     fun unRegisterAll() {
@@ -44,7 +44,7 @@ object ListenerManager {
             val newInstance = instance.get(null) as BaseEnchant
             newInstance.load(false)
             if (newInstance.enable) {
-                newInstance.register()
+                newInstance.registerListener()
             }
         }
     }
@@ -53,35 +53,35 @@ object ListenerManager {
         val str = StringBuilder()
         if (Config.anvil && !EcoEnchantHook.hasHook) {
             str.append("铁砧、")
-            AnvilListener.register()
+            AnvilListener.registerListener()
         }
         if (Config.chestLoot) {
             str.append("箱子、")
-            ChestLootTableListener.register()
+            ChestLootTableListener.registerListener()
         }
         if (Config.enchant) {
             str.append("附魔台、")
-            EnchantListener.register()
+            EnchantListener.registerListener()
         }
         if (Config.spawn) {
             str.append("生物、")
-            EntitySpawnListener.register()
+            EntitySpawnListener.registerListener()
         }
         if (Config.trade) {
             str.append("交易、")
-            MerchantListener.register()
+            MerchantListener.registerListener()
         }
         if (Config.fishing) {
             str.append("钓鱼、")
-            PlayerFishListener.register()
+            PlayerFishListener.registerListener()
         }
         if (Config.reward) {
             str.append("给予、")
-            EntityDropItemListener.register()
+            EntityDropItemListener.registerListener()
         }
         if (Config.grindstone) {
             str.append("砂轮")
-            GrindstoneListener.register()
+            GrindstoneListener.registerListener()
         }
         info("${ChatColor.YELLOW}负魔应用于：${ChatColor.WHITE}$str")
     }

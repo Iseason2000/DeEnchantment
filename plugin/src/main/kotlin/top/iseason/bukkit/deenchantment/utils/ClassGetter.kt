@@ -21,7 +21,7 @@ class ClassGetter(plugin: JavaPlugin, packageName: String) {
         val relPath = packageName.replace('.', '/')
         val resPath = resource.path.replace("%20", " ").replaceFirst("[.]jar!.*".toRegex(), ".jar")
             .replaceFirst("file:".toRegex(), "")
-        val jarPath = URLDecoder.decode(resPath, "utf-8")
+        val jarPath = URLDecoder.decode(resPath, "UTF-8")
         try {
             val entries = JarFile(jarPath).entries()
             while (entries.hasMoreElements()) {

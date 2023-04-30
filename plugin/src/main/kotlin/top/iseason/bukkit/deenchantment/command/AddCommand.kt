@@ -24,7 +24,7 @@ object AddCommand : CommandNode(
     description = "将特定负魔添加到手上的东西上",
     params = listOf(
         Param("[name]") {
-            BaseEnchant.enchants.filter { it.enable }.map { it.translateName.noColor()!! }
+            BaseEnchant.enchants.filter { it.enable }.map { it.translateName.noColor() }
         },
         Param("<level>", listOf("1", "2", "3", "4", "5"))
     ),

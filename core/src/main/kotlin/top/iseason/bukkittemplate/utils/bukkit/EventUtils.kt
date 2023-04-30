@@ -16,7 +16,7 @@ object EventUtils {
     /**
      * 快速注册监听器
      */
-    fun Listener.register() {
+    fun Listener.registerListener() {
         Bukkit.getPluginManager().registerEvents(this, BukkitTemplate.getPlugin())
     }
 

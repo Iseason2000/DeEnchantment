@@ -34,7 +34,7 @@ object DeEnchantment : BukkitPlugin {
         setupCommands()
         CommandHandler.updateCommands()
         EcoEnchantHook.checkHooked()
-        info("&a插件已启用 作者: &6Iseason &5DeEnchantment v &6${javaPlugin.description.version}")
+        info("&a插件已启用 作者: &6Iseason &5DeEnchantment v&6${javaPlugin.description.version}")
         EquipmentScanner.runTaskTimerAsynchronously(javaPlugin, 0, 10)
     }
 

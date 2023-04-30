@@ -9,6 +9,8 @@ import top.iseason.bukkit.deenchantment.settings.Message
 import top.iseason.bukkittemplate.command.CommandNode
 import top.iseason.bukkittemplate.command.CommandNodeExecutor
 import top.iseason.bukkittemplate.command.ParmaException
+import top.iseason.bukkittemplate.debug.SimpleLogger
+import top.iseason.bukkittemplate.utils.bukkit.MessageUtils
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.sendColorMessage
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.toColor
 import java.io.File
@@ -19,7 +21,7 @@ object MigrateCommand : CommandNode(
     description = "将v1版本的旧配置迁移到新版",
     async = true,
 ) {
-    override var onExecute: CommandNodeExecutor? = CommandNodeExecutor { params, sender ->
+    override var onExecute: CommandNodeExecutor? = CommandNodeExecutor { _, sender ->
         val file = File(DeEnchantment.javaPlugin.dataFolder, "old_config.yml")
         if (!file.exists()) throw ParmaException("&6请将旧配置文件改名为&a\"old_config.yml\"&6并放入插件配置文件夹中!")
         sender.sendColorMessage(Message.command__migrating)
@@ -36,8 +38,8 @@ object MigrateCommand : CommandNode(
         Config.tooExpensive = config.getBoolean("AllowTooExpensive", true)
         Config.cleanConsole = config.getBoolean("CleanConsole", true)
         Config.save(false)
-        Message.system__log_prefix = config.getString("Prefix") ?: Message.system__log_prefix
-        Message.system__msg_prefix = config.getString("Prefix") ?: Message.system__msg_prefix
+        SimpleLogger.prefix = config.getString("Prefix") ?: SimpleLogger.prefix
+        MessageUtils.defaultPrefix = config.getString("Prefix") ?: MessageUtils.defaultPrefix
         Message.saveAsync(false)
         for (enchant in BaseEnchant.enchantConfigs) {
             val key = enchant.enchant.key.key.uppercase()

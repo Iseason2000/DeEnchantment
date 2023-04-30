@@ -1,15 +1,19 @@
 package top.iseason.bukkittemplate.hook
 
-import com.google.common.io.ByteStreams
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.plugin.messaging.PluginMessageListener
 import top.iseason.bukkittemplate.BukkitTemplate
+import top.iseason.bukkittemplate.DisableHook
 import top.iseason.bukkittemplate.debug.debug
-import top.iseason.bukkittemplate.utils.bukkit.EventUtils.listen
+import java.io.ByteArrayOutputStream
+import java.io.DataOutputStream
 
-object BungeeCordHook {
+
+object BungeeCordHook : Listener {
 
     private const val BUNGEE_CORD_CHANNEL = "BungeeCord"
 
@@ -18,7 +22,7 @@ object BungeeCordHook {
         private set
 
     private val bcListener: PluginMessageListener =
-        PluginMessageListener { channel: String, player: Player?, message: ByteArray? ->
+        PluginMessageListener { channel: String, _: Player?, _: ByteArray? ->
             if (bungeeCordEnabled) return@PluginMessageListener
             if (channel != BUNGEE_CORD_CHANNEL) {
                 return@PluginMessageListener
@@ -27,23 +31,28 @@ object BungeeCordHook {
             bungeeCordEnabled = true
         }
 
-    @JvmStatic
-    fun onEnable() {
-        Bukkit.getMessenger().registerOutgoingPluginChannel(BukkitTemplate.getPlugin(), "BungeeCord")
-        Bukkit.getMessenger().registerIncomingPluginChannel(BukkitTemplate.getPlugin(), "BungeeCord", bcListener)
-        val player = Bukkit.getOnlinePlayers().firstOrNull()
-        if (player != null) check(player)
-        listen<PlayerLoginEvent> {
-            check(this@listen.player)
-        }
+    init {
+        Bukkit.getScheduler().runTaskAsynchronously(BukkitTemplate.getPlugin(), Runnable {
+            Bukkit.getMessenger().registerOutgoingPluginChannel(BukkitTemplate.getPlugin(), "BungeeCord")
+            registerListener(bcListener)
+            val player = Bukkit.getOnlinePlayers().firstOrNull()
+            if (player != null) check(player)
+            Bukkit.getPluginManager().registerEvents(this, BukkitTemplate.getPlugin())
+        })
+        DisableHook.addTask(this::onDisable)
     }
 
+    /**
+     * 通过请求玩家IP来确认 bungeeCord 是否存在
+     */
     private fun check(player: Player) {
-        val byteArrayDataOutput = ByteStreams.newDataOutput()
-        byteArrayDataOutput.writeUTF("IP")
+        val stream = ByteArrayOutputStream()
+        val out = DataOutputStream(stream)
+        out.writeUTF("IP")
         try {
-            player.sendPluginMessage(BukkitTemplate.getPlugin(), BUNGEE_CORD_CHANNEL, byteArrayDataOutput.toByteArray())
+            player.sendPluginMessage(BukkitTemplate.getPlugin(), BUNGEE_CORD_CHANNEL, stream.toByteArray())
         } catch (_: Exception) {
+            bungeeCordEnabled = false
         }
     }
 
@@ -56,21 +65,34 @@ object BungeeCordHook {
     /**
      * 注册 BungeeCord 消息通道
      */
-    fun register(listener: PluginMessageListener) {
+    fun registerListener(listener: PluginMessageListener) {
         Bukkit.getMessenger().registerIncomingPluginChannel(BukkitTemplate.getPlugin(), BUNGEE_CORD_CHANNEL, listener)
     }
 
+    /**
+     * 广播消息
+     */
     fun broadcast(message: String) {
         broadcast(message, "Message")
     }
 
+    /**
+     * 广播 Raw消息
+     */
+    fun broadcastRaw(message: String) {
+        broadcast(message, "MessageRaw")
+    }
+
     private fun broadcast(message: String, type: String) {
-        val out = ByteStreams.newDataOutput()
+        val stream = ByteArrayOutputStream()
+        val out = DataOutputStream(stream)
         out.writeUTF(type)
         out.writeUTF("ALL")
         out.writeUTF(message)
+
         try {
-            Bukkit.getServer().sendPluginMessage(BukkitTemplate.getPlugin(), BUNGEE_CORD_CHANNEL, out.toByteArray())
+            Bukkit.getOnlinePlayers().randomOrNull()
+                ?.sendPluginMessage(BukkitTemplate.getPlugin(), BUNGEE_CORD_CHANNEL, stream.toByteArray())
         } catch (e: Exception) {
             e.printStackTrace()
             bungeeCordEnabled = false
@@ -78,7 +100,12 @@ object BungeeCordHook {
         }
     }
 
-    fun broadcastRaw(message: String) {
-        broadcast(message, "MessageRaw")
+    /**
+     * 检查bungee活跃
+     */
+    @EventHandler
+    fun onPlayerLogin(event: PlayerLoginEvent) {
+        check(event.player)
     }
+
 }

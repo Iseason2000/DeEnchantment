@@ -13,7 +13,7 @@ object ReloadCommand : CommandNode(
     description = "重新注册负魔",
     async = true
 ) {
-    override var onExecute: CommandNodeExecutor? = CommandNodeExecutor { params, sender ->
+    override var onExecute: CommandNodeExecutor? = CommandNodeExecutor { _, sender ->
         try {
             Config.reload()
             sender.sendColorMessage(Message.command__reload_success)
