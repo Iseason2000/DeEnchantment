@@ -14,7 +14,7 @@ object EntitySpawnListener : Listener {
         if (event.isCancelled) return
         val entity = event.entity
 //        if (entity !is Mob) return
-        submit(async = true) {
+        submit {
             val equipment = entity.equipment ?: return@submit
             val armorContents = equipment.armorContents
             for (armor in armorContents) {

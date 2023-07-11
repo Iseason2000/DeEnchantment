@@ -17,6 +17,7 @@ import top.iseason.bukkittemplate.debug.info
 import top.iseason.bukkittemplate.utils.bukkit.MessageUtils.noColor
 
 object DeEnchantment : BukkitPlugin {
+
     override fun onEnable() {
         Message.load(false)
         SimpleYAMLConfig.notifyMessage = "&a配置: &6%s &a已重载!"
